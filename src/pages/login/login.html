@@ -1,0 +1,33 @@
+<ion-content class="login-content">
+  <ion-row class="logo-row">
+    <ion-col>
+      <img class="app-logo" src="https://www.appolonia.fr/images/Resources/Articles/Presentation/image_presentation_opt.jpg"/>
+    </ion-col>
+  </ion-row>
+
+  <form class="input-container" #registerForm="ngForm">
+
+        <ion-item>
+          <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+        </ion-item>
+        
+        <ion-item no-lines class="checkbox-container">
+          <ion-checkbox (ngModel)="rememberMe" (ionChange)="updateRemember()"></ion-checkbox>
+          <ion-label>Remember Me</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+          <i class="fa fa-chevron-right fa-lg" ion-icon item-end (click)="login()"></i>
+        </ion-item>
+
+        <p>Forgot your password ? Please request a MCD.</p>
+
+  </form>
+</ion-content>
+
+<ion-footer *ngIf="showFooter()">
+  <ion-toolbar color="primary">
+      <button ion-button style="color: #ffffff" full clear type="submit" [disabled]="!registerForm.form.valid" (click)="login()">Login</button>
+  </ion-toolbar>
+</ion-footer>

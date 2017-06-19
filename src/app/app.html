@@ -1,0 +1,73 @@
+<ion-menu [content]="content" class="menu-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title menuClose>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item (click)="openPage(pages[0])">
+        <ion-row>
+          <ion-col col-3>
+            <i class="fa fa-home fa-2x"></i>
+          </ion-col>
+          <ion-col col-9>
+            Home
+          </ion-col>
+        </ion-row>
+      </button>
+
+      <button menuClose ion-item (click)="scan()">
+        <ion-row>
+          <ion-col col-3>
+            <i class="fa fa-qrcode fa-2x" ion-icon item-start></i>
+          </ion-col>
+          <ion-col col-9>
+            QR Code
+          </ion-col>
+        </ion-row>
+      </button>
+
+      <button menuClose ion-item (click)="openPage(pages[1])">
+        <ion-row>
+          <ion-col col-3>
+            <i class="fa fa-user-circle fa-2x" ion-icon item-start></i>
+          </ion-col>
+          <ion-col col-9>
+            Account
+          </ion-col>
+        </ion-row>
+      </button>
+
+      <button menuClose ion-item no-lines (click)="openPage(pages[2])">
+        <ion-row>
+          <ion-col col-3>
+            <i class="fa fa-cogs fa-2x" ion-icon item-start></i>
+          </ion-col>
+          <ion-col col-9>
+            Settings
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+
+    <div id="solde" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3>
+          <i class="fa fa-euro fa-2x" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9>
+          <div>
+            <h2>Balance</h2>
+            <p>{{solde}}€</p>
+          </div>
+        </ion-col>
+      </ion-row> 
+    </div>
+  </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

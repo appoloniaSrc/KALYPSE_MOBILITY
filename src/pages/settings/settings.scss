@@ -1,0 +1,33 @@
+page-settings {
+    
+    .page-content {
+        .component-box {
+
+            select {
+                background-color: color($colors, primary);
+                margin-top: 7px;
+
+                border: none;
+                border-bottom: 2px solid color($colors, tertiary);
+                color: color($colors, light);
+                width: 100%;
+                
+                font-size: 0.9em;
+            }
+        }
+
+        #last-component{
+            width: 90%;
+            margin: 0 auto 3% auto;
+
+            h4 {
+                color: color($colors, light);
+            }
+
+            .separator {
+                border-bottom: 2px solid color($colors, light);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,49 @@
+page-login {
+ 
+  .login-content {
+    background-color: color($colors, light);
+
+    p{
+      color: color($colors, dark);
+    }
+
+    a{
+      color: color($colors, secondary);
+    }
+
+    .logo-row {
+      padding-top: 2%;
+      margin-bottom: 6%;
+    }
+
+    .logo-row ion-col, .input-container {
+      justify-content: center;
+    }
+
+    .checkbox-container {
+      font-size: 80%;  
+    }
+
+    .checkbox {
+      margin: 9px 0px 9px 10px;
+    }
+
+    .input-container p {
+      text-align: center;
+    }
+
+      @media screen and (min-width: 800px) and (max-width: 1500px) {
+
+          .logo-row {
+          padding-top: 3%;
+          }
+      }
+
+      @media screen and (min-width: 1500px) {
+
+          .logo-row {
+          padding-top: 0%;
+          }
+      }
+   }
+}

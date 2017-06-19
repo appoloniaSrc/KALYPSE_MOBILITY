@@ -1,0 +1,188 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+p {
+    font-size: 0.9em;
+    color: color($colors, light);
+}
+
+.alertPopup, .alertPrompt {
+
+    .alert-title {
+        margin-bottom: 0.8em;
+        text-align: center;
+    }
+
+    .alert-sub-title{
+        text-align: center;
+    }
+}
+    
+.menu-content {
+
+    #solde {
+        position: absolute;
+        bottom: 2px;
+        border-top: 1px solid color($colors, dark);
+    }
+
+    ion-col {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}
+
+.login-content {
+
+    .app-logo, .answer-logo {
+        height: 35%;
+        width: 35%;
+    }
+
+    ion-row {
+        align-items: center;
+        text-align: center;
+    }
+
+    ion-col, ion-item {
+        padding: 0;
+    }
+
+    ion-input, ion-datetime {
+        font-size: 0.9em;
+    }
+
+    .input-container {
+        margin: 0 3%;
+    }
+
+    ion-label.required:after {content: " *"; color: color($colors, danger);}
+
+    @media screen and (min-width: 315px) and (max-width: 500px) {
+
+        .app-logo {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    @media screen and (min-width: 510px) and (max-width: 800px) {
+
+        .app-logo {
+            height: 50%;
+            width: 50%;
+        }
+    }
+
+    @media screen and (min-width: 800px) and (max-width: 1500px) {
+
+        .logo-row {
+            padding-top: 3%;
+        }
+
+        .app-logo {
+            height: 50%;
+            width: 50%;
+        }
+      }
+
+      @media screen and (min-width: 1500px) {
+
+        .logo-row {
+            padding-top: 0%;
+        }
+
+        .app-logo {
+            height: 35%;
+            width: 35%;
+        }
+    }
+}
+
+.page-content {
+    background: color($colors, tertiary);
+
+    .component-box {
+        width: 90%;
+        background-color: color($colors, primary);
+        border-radius: 5px;
+        padding: 2px;
+        margin: 10% auto;
+        box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.7);
+    
+        .item-icon {
+            justify-content: center;
+        }
+
+        .item-content {
+            justify-content: flex-start;
+        }
+
+        .item-icon-end {
+            justify-content: flex-end;
+        }
+
+        p {
+            font-size: 0.8em;
+            margin: 0;
+            color: color($colors, light);
+        }
+
+        h4 {
+            font-weight: bold;
+            width: 100%;
+            margin: 0;
+            font-size: 1.0em;
+            color: color($colors, light);
+            margin: auto 0;
+        }
+
+        .fa {
+            color: color($colors, light);
+        }
+    
+    }
+    
+    @media screen and (min-width: 315px) and (max-width: 500px) {
+
+        .component-box {
+            margin: 10% auto;
+        }
+    }
+
+    @media screen and (min-width: 510px) and (max-width: 800px) {
+
+        .component-box {
+            margin: 5% auto;
+        }
+    }
+
+    @media screen and (min-width: 800px) and (max-width: 1500px) {
+
+        .component-box {
+            margin: 5% auto;
+        }
+    }
+
+    @media screen and (min-width: 1500px) {
+
+        .component-box {
+            margin: 3% auto;
+        }
+    }
+}

@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Account
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="page-content">
+
+  <ion-list>
+
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-user fa-2x icon-start" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>
+            <h4>First Name</h4>
+            <p>{{firstName}}</p>
+            <h4 style="margin-top: 5px;">Last Name</h4>
+            <p>{{lastName}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-at fa-2x icon-start" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>  
+            <h4>Email</h4>
+            <p>{{email}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-birthday-cake fa-2x icon-start" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>  
+            <h4>Birthday</h4>
+            <p>{{birthday}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-credit-card-alt fa-2x icon-start" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>
+            <h4>Cashless Account</h4>
+            <p>{{cashlessAccount}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+  </ion-list>
+
+  <div style="text-align: center;">
+    <p>For any changes to your account data,<br> please request a MCD.</p>
+  </div>
+
+</ion-content>

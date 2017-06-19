@@ -1,0 +1,101 @@
+page-home {
+  .page-content {
+
+    ion-slides {
+      width: 100%;
+      height: 50%;
+      box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.4); 
+    }
+
+    .slide-overlay {
+      position: absolute;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, .5);
+      height: 35%;
+      width: 100%;
+    }
+
+    .homeBody {
+      width: 100%;
+      height: 50%;
+    }
+
+    .function-row {
+      width: 100%;
+      height: 50%;
+    }
+
+    .function-col {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .function {
+      width: 70%;
+      height: 70%;
+      padding: 5px;
+      background-color: color($colors, primary);
+      border-radius: 5px;
+      text-align: center;
+      box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .function .function-icon {
+      height: 80%;
+      padding: 3px;
+      border-radius: 100%;
+      border-color: #ffffff;
+    }
+
+    .function .function-title {
+      height: 20%;
+      margin: 0;
+    }
+
+    .function .fa {
+      color: color($colors, light);
+      margin-right: 0;
+      margin-bottom: 0.2em;
+    }
+
+    @media screen and (min-width: 315px) and (max-width: 800px) {
+
+        ion-slides {
+          height: 40%;
+        }
+
+        .homeBody {
+          height: 60%;
+        }
+    }
+
+    @media screen and (min-width: 800px) and (max-width: 1500px) {
+
+        ion-slides {
+          height: 45%;
+        }
+
+        .homeBody {
+          height: 55%;
+        }
+    }
+
+    @media screen and (min-width: 1500px) {
+
+        ion-slides {
+          height: 50%;
+        }
+
+        .homeBody {
+          height: 50%;
+        }
+    }
+  }
+}

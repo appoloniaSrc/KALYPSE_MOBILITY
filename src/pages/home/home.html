@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Home
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content class="page-content">
+
+  <ion-slides pager loop="true" autoplay="6000">
+    <ion-slide>
+      <img src="./images/casino1.png">
+      <div class="slide-overlay">
+        <h1>Casino 1</h1>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <img src="./images/casino2.png">
+      <div class="slide-overlay">
+        <h1>Casino 2</h1>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <img src="./images/casino3.png">
+      <div class="slide-overlay">
+        <h1>Casino 3</h1>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+  <!--<button ion-button secondary menuToggle>Toggle Menu</button>
+  <button ion-button (click)="scan()"> Scan Barcode </button>
+  <button ion-button (click)="encodeData()"> Scan Barcode </button>
+
+  <br>
+
+  <div *ngIf="results">
+    <p>Text : {{results.text}}</p>
+    <p>Format : {{results.format}}</p>
+  </div>-->
+  <div class="homeBody">
+    <ion-row class="function-row">
+      <ion-col col-6 class="function-col">
+        <button class="function">
+          <div class="function-content">
+            <i class="fa fa-line-chart fa-5x" ion-icon></i>
+            <p class="function-title">Jackpots</p>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col col-6 class="function-col">
+        <button class="function">
+          <div class="function-content">
+            <i class="fa fa-bell fa-5x" ion-icon></i>
+            <p class="function-title">Appel</p>
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="function-row">
+      <ion-col col-6 class="function-col">
+        <button class="function">
+          <div class="function-content">
+            <i class="fa fa-cutlery fa-5x" ion-icon></i>
+            <p class="function-title">Bar</p>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col col-6 class="function-col">
+        <button class="function">
+          <div class="function-content">
+            <i class="fa fa-info-circle fa-5x" ion-icon></i>
+            <p class="function-title">Info</p>
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+</ion-content>
