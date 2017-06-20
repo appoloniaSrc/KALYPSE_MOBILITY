@@ -20,6 +20,17 @@ page-home {
       height: 50%;
     }
 
+    .home-content {
+      height: 100%;
+      width: 100%;
+    }
+
+    .div-scan {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .function-row {
       width: 100%;
       height: 50%;
@@ -28,6 +39,7 @@ page-home {
     .function-col {
       width: 100%;
       height: 100%;
+
       display: flex;
       justify-content: center;
       align-items: center;
