@@ -32,6 +32,177 @@ $colors: (
   dark:       #000000
 );
 
+// General color variables
+
+$general-colors: (
+  link:       #2b78e4,
+  danger:     #ff0000,
+  good:       #0eed0e,
+  light:      #ffffff,
+  dark:       #000000
+);
+
+// Color Variables for Login page
+
+$login-page-colors: (
+  background: #ffffff,
+  text:       #000000
+);
+
+$button-footer-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+// Color Variables for the Menu
+
+$menu-colors: (
+  background: #ffffff,
+  header:     #606060,
+  text:       #ffffff,
+  icon:       #ffffff,
+  divider:    #000000
+);
+
+// Color Variables for Home page
+
+$home-page-colors: (
+  background: #b2b2b2,
+  header:     #606060,
+  text:       #ffffff
+);
+
+$scan-qrcode-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+$transfer-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+$jackpots-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+    // Color Variables for Jackpots page
+
+    $jackpots-page-colors: (
+      background: #ffffff,
+      header:     #606060,
+      text:       #000000
+    );
+
+    $jackpots-list-colors: (
+      background:      #b2b2b2,
+      header-backgound:#ff0000,
+      header-text:     #ffffff,
+      header-icon:     #ffffff,
+      information-line-background: #8c8c8c,
+      information-line-text:       #000000,
+      impair-line-background:      #b2b2b2,
+      pair-line-background:        #8c8c8c,
+      line-text:                   #000000,
+      line-button-bacgound:        #ff0000,
+      line-button-text:            #ffffff,
+    );
+
+    $jackpots-tabs-color: (
+
+    );
+
+$call-mcd-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+$brewery-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+    // Color Variables for Brewery page
+
+    $brewery-page-colors: (
+      background: #ffffff,
+      header:     #606060,
+      text:       #000000
+    );
+
+    $brewery-list-colors: (
+      background:      #b2b2b2,
+      header-backgound:#ff0000,
+      header-text:     #ffffff,
+      header-icon:     #ffffff,
+      information-line-background: #8c8c8c,
+      information-line-text:       #000000,
+      impair-line-background:      #b2b2b2,
+      pair-line-background:        #8c8c8c,
+      line-text:                   #000000,
+      line-button-bacgound:        #ff0000,
+      line-button-text:            #ffffff,
+    );
+
+$information-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+// Color Variables for Account page
+
+$account-page-colors: (
+  background: #b2b2b2,
+  header:     #606060,
+  text:       #ffffff
+);
+
+$account-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+// Color Variables for Settings page
+
+$settings-page-colors: (
+  background: #b2b2b2,
+  header:     #606060,
+  text:       #ffffff,
+  divider:    #ffffff
+);
+
+$settings-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
+);
+
+// Color Variables for Transfer page
+
+$transfer-page-colors: (
+  background: #b2b2b2,
+  header:     #606060,
+  text:       #ffffff,
+);
+
+$transfer-box-colors: (
+  header-background: #606060,
+  header-text:       #ffffff,
+  header-icon:       #ffffff,
+  content-background:#8c8c8c,
+  content-text:      #ffffff,
+  content-icon:      #ffffff
+);
+
 
 // App iOS Variables
 // --------------------------------------------------
