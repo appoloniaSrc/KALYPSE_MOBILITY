@@ -9,7 +9,7 @@ page-transfert {
 
         .component-box {
             background-color: color($colors, quaternary);
-            height: 73.6px;
+            height: 7em;
             padding: 0;
 
             ion-label {
@@ -36,20 +36,22 @@ page-transfert {
             .item-icon-end {
                 height: 100%;
                 margin: 0;
-                padding: 4vw;
+                padding: 0 4vw;
+                float: right;
             }
 
             .item-body-start {
-                margin: 1em;
                 width: 70%;
+                height: 100%;
+                float: left;
+                padding: 1em;
+
+                display: flex;
+                align-items: center;
             }
 
             .item-content {
                 padding: 1em 0 1em 1em;
-            }
-
-            input {
-                margin: 0;
             }
 
             #otherAmountInput {

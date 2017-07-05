@@ -8,26 +8,37 @@
   <form class="input-container" #registerForm="ngForm">
 
         <ion-item>
-          <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+          <ion-input type="text" placeholder="Email" name="identifiantField" [(ngModel)]="registerCredentials.identifiant" required></ion-input>
         </ion-item>
         
         <ion-item no-lines class="checkbox-container">
-          <ion-checkbox (ngModel)="rememberMe" (ionChange)="updateRemember()"></ion-checkbox>
+          <ion-checkbox name="rememberMeCheckbox" [(ngModel)]="rememberMe" mode="md"></ion-checkbox>
           <ion-label>Remember Me</ion-label>
         </ion-item>
 
-        <ion-item>
-          <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-          <i class="fa fa-chevron-right fa-lg" ion-icon item-end (click)="login()"></i>
-        </ion-item>
+        <div style="display: flex;
+                    justify-content: flex-start;
+                    align-items: center;">
+          <ion-item>
+            <ion-input type="password" placeholder="Password" name="passwordField" [(ngModel)]="registerCredentials.password" required></ion-input>
+          </ion-item>
+          <i class="fa fa-chevron-right fa-lg" style="padding: 20px 0 20px 20px;" (click)="login()"></i>
+        </div>
 
-        <p>Forgot your password ? Please request a MCD.</p>
+        <p>Forgot your password ? Please click <a (click)="goRecoverPassword()">here</a></p>
 
   </form>
 </ion-content>
 
 <ion-footer *ngIf="showFooter()">
   <ion-toolbar color="primary">
-      <button ion-button style="color: #ffffff" full clear type="submit" [disabled]="!registerForm.form.valid" (click)="login()">Login</button>
+      <ion-row>
+        <ion-col>
+          <button ion-button style="color: #ffffff;" full clear (click)="createAccount()">First Visit</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button style="color: #ffffff;" full clear type="submit" [disabled]="!registerForm.form.valid" (click)="login()">Login</button>
+        </ion-col>
+      </ion-row>
   </ion-toolbar>
 </ion-footer>

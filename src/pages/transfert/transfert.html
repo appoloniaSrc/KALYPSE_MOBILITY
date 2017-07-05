@@ -35,66 +35,44 @@
       </ion-row>
     </div>
 
-    <div class="component-box" ion-item no-lines>
-      <div class="item-body-start" item-start>
-        <h4>Default</h4>
-        <p>{{amountDefault}} <i class="fa fa-euro"></i></p>
+    <div class="component-box">
+      <div class="item-body-start">
+        <div>
+          <h4>Default</h4>
+          <p>{{amountDefault}} <i class="fa fa-euro"></i></p>
+        </div>
       </div>
-      <div class="item-icon-end" item-end (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer()">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
     </div>
 
-    <div class="component-box" ion-item no-lines>
-      <div class="item-body-start" item-start>
-        <h4>Maximum</h4>
-        <p>{{amountMax}} <i class="fa fa-euro"></i></p>
+    <div class="component-box">
+      <div class="item-body-start">
+        <div>
+          <h4>Maximum</h4>
+          <p>{{amountMax}} <i class="fa fa-euro"></i></p>
+        </div>
       </div>
 
-      <div class="item-icon-end" item-end (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer()">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
   </div>
 
-    <div class="component-box" ion-item no-lines>
-      <!--<ion-grid>
-        <ion-row>
-          <ion-col col-10 class="item-content">
-            <div>
-              <h4>Other amount</h4>
-              <ion-item ion-item no-lines color="primary">
-                <ion-input type="number" placeholder="0.00" name="otherAmount"></ion-input>
-                <i class="fa fa-euro" ion-icon item-end></i>
-              </ion-item>
-            </div>
-          </ion-col>
-          <ion-col col-2 class="item-icon-end" (click)="startTransfer()">
-            <i class="fa fa-hand-pointer-o fa-2x"></i>
-          </ion-col>
-        </ion-row>
-      </ion-grid>-->
+    <div class="component-box">
 
-      <!--<div class="item-body-start" item-start>
-        <h4>Other amount</h4>
-        <ion-item ion-item no-lines color="primary">
-          <ion-input type="number" placeholder="0.00" name="otherAmount"></ion-input>
-          <i class="fa fa-euro" ion-icon item-end></i>
-        </ion-item>
+      <div class="item-body-start">
+        <div>
+          <h4>Other amount</h4>
+          <ion-item ion-item no-lines color="quaternary">
+            <ion-input type="number" placeholder="0.00" name="otherAmount"></ion-input>
+            <i class="fa fa-euro" ion-icon item-end></i>
+          </ion-item>
+        </div>
       </div>
 
-      <div class="item-icon-end" item-end (click)="startTransfer()">
-        <i class="fa fa-hand-pointer-o fa-2x"></i>
-      </div>-->
-
-      <div class="item-body-start" item-start>
-        <h4>Other amount</h4>
-        <ion-item ion-item no-lines color="quaternary">
-          <ion-input type="number" placeholder="0.00" name="otherAmount"></ion-input>
-          <i class="fa fa-euro" ion-icon item-end></i>
-        </ion-item>
-      </div>
-
-      <div class="item-icon-end" item-end (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer()">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
       

@@ -16,23 +16,12 @@
  
 <ion-content class="page-content">
 
-  <ion-slides pager loop="true" autoplay="6000">
-    <ion-slide>
-      <img src="./images/casino1.png">
+  <ion-slides class="slide-information" pager loop="true" autoplay="4000" effect="flip" speed="800">
+    <ion-slide *ngFor="let slideInfoTemplate of slidesInfoTemplate">
+      <img src="{{ slideInfoTemplate.thumbnailURL }}">
       <div class="slide-overlay">
-        <h1>Casino 1</h1>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <img src="./images/casino2.png">
-      <div class="slide-overlay">
-        <h1>Casino 2</h1>
-      </div>
-    </ion-slide>
-    <ion-slide>
-      <img src="./images/casino3.png">
-      <div class="slide-overlay">
-        <h1>Casino 3</h1>
+        <h1>{{ slideInfoTemplate.titleSlide }}</h1>
+        <p>{{ slideInfoTemplate.bodySlide }}</p>
       </div>
     </ion-slide>
   </ion-slides>
@@ -40,7 +29,7 @@
   <div class="homeBody">
 
     <div class="home-content div-scan" *ngIf="!isScannedEGM" >
-        <button class="function" (click)="isScannedEGM = true;">
+        <button class="function" (click)="scan()">
           <div class="function-content">
             <i class="fa fa-qrcode fa-5x" ion-icon></i>
             <p class="function-title">Scan QR Code</p>
@@ -49,43 +38,48 @@
     </div>
 
     <div class="home-content" *ngIf="isScannedEGM" >
-      <ion-row class="function-row">
-        <ion-col col-6 class="function-col">
-          <button class="function">
-            <div class="function-content">
-              <i class="fa fa-line-chart fa-5x" ion-icon></i>
-              <p class="function-title">Jackpots</p>
-            </div>
-          </button>
-        </ion-col>
-        <ion-col col-6 class="function-col">
-          <button class="function">
-            <div class="function-content">
-              <i class="fa fa-bell fa-5x" ion-icon></i>
-              <p class="function-title">Appel</p>
-            </div>
-          </button>
-        </ion-col>
-      </ion-row>
+      <ion-slides class="slide-body" pager>
 
-      <ion-row class="function-row">
-        <ion-col col-6 class="function-col">
-          <button class="function">
-            <div class="function-content">
-              <i class="fa fa-cutlery fa-5x" ion-icon></i>
-              <p class="function-title">Bar</p>
-            </div>
-          </button>
-        </ion-col>
-        <ion-col col-6 class="function-col">
-          <button class="function">
-            <div class="function-content">
-              <i class="fa fa-info-circle fa-5x" ion-icon></i>
-              <p class="function-title">Info</p>
-            </div>
-          </button>
-        </ion-col>
-      </ion-row>
+        <ion-slide *ngFor="let pageFunctionsTemplate of pagesFunctionsTemplate">
+          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty && !pageFunctionsTemplate.slidesFunctions[1].isEmpty">
+            <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[0].title)">
+                <div class="function-content">
+                  <i class="fa {{ pageFunctionsTemplate.slidesFunctions[0].icon }} fa-5x" ion-icon></i>
+                  <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[0].title }}</p>
+                </div>
+              </button>
+            </ion-col>
+            <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[1].isEmpty">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[1].title)">
+                <div class="function-content">
+                  <i class="fa {{ pageFunctionsTemplate.slidesFunctions[1].icon }} fa-5x" ion-icon></i>
+                  <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[1].title }}</p>
+                </div>
+              </button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty && !pageFunctionsTemplate.slidesFunctions[3].isEmpty" >
+            <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[2].title)">
+                <div class="function-content">
+                  <i class="fa {{ pageFunctionsTemplate.slidesFunctions[2].icon }} fa-5x" ion-icon></i>
+                  <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[2].title }}</p>
+                </div>
+              </button>
+            </ion-col>
+            <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[3].isEmpty">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[3].title)">
+                <div class="function-content">
+                  <i class="fa {{ pageFunctionsTemplate.slidesFunctions[3].icon }} fa-5x" ion-icon></i>
+                  <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[3].title }}</p>
+                </div>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-slide>
+      </ion-slides>
     </div>
   </div>
 

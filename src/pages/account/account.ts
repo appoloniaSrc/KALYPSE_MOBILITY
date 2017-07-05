@@ -9,13 +9,27 @@ import { AuthenticationProvider } from '../../providers/authentication/authentic
 })
 export class AccountPage {
 
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
+  TAG = "AccountPage";
+
   firstName: any;
   lastName: any;
   email: any;
   birthday: any;
   cashlessAccount: any;
 
-  constructor(public nav: NavController, public navParams: NavParams,  private auth: AuthenticationProvider) {
+  //=================================
+	// CONSTRUCTOR
+	//=================================
+
+  constructor(
+    public nav: NavController
+    ,public navParams: NavParams
+    ,private auth: AuthenticationProvider
+  ) {
     this.firstName = "Example";
     this.lastName = "TEST";
     this.email = this.firstName + "." + this.lastName + "@gmail.com";
@@ -23,11 +37,16 @@ export class AccountPage {
     this.cashlessAccount = "***************123";
   }
 
+  //=================================
+	// METHODS
+	//=================================
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad AccountPage');
   }
 
-    public logout() {
+  // Deconnexion
+  public logout() {
     this.auth.logout().subscribe(succ => {
       this.nav.setRoot('LoginPage')
     });

@@ -31,6 +31,10 @@ p {
         text-align: center;
     }
 }
+
+.text-error {
+    color: color($colors, danger) !important;
+}
     
 .menu-content {
 
@@ -48,10 +52,28 @@ p {
 }
 
 .login-content {
+    background-color: color($colors, light);
 
     .app-logo, .answer-logo {
         height: 35%;
         width: 35%;
+    }
+
+    p{
+      color: color($colors, dark);
+    }
+
+    a{
+      color: color($colors, secondary);
+    }
+
+    .logo-row {
+      padding-top: 2%;
+      margin-bottom: 6%;
+    }
+
+    .logo-row ion-col, .input-container {
+      justify-content: center;
     }
 
     ion-row {
@@ -69,6 +91,7 @@ p {
 
     .input-container {
         margin: 0 3%;
+        text-align: center;
     }
 
     ion-label.required:after {content: " *"; color: color($colors, danger);}
@@ -79,6 +102,11 @@ p {
             height: 100%;
             width: 100%;
         }
+
+        .answer-logo {
+            height: 60%;
+            width: 60%;
+        }
     }
 
     @media screen and (min-width: 510px) and (max-width: 800px) {
@@ -86,6 +114,11 @@ p {
         .app-logo {
             height: 50%;
             width: 50%;
+        }
+
+        .answer-logo {
+            height: 35%;
+            width: 35%;
         }
     }
 
@@ -99,6 +132,11 @@ p {
             height: 50%;
             width: 50%;
         }
+
+        .answer-logo {
+            height: 25%;
+            width: 25%;
+        }
       }
 
       @media screen and (min-width: 1500px) {
@@ -110,6 +148,11 @@ p {
         .app-logo {
             height: 35%;
             width: 35%;
+        }
+
+        .answer-logo {
+            height: 15%;
+            width: 15%;
         }
     }
 }
@@ -135,6 +178,8 @@ p {
 
         .item-icon-end {
             justify-content: flex-end;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
         p {
@@ -156,6 +201,13 @@ p {
             color: color($colors, light);
         }
     
+    }
+
+    .header-list {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        background-color: color($colors, danger);
+        color: color($colors, light);
     }
     
     @media screen and (min-width: 315px) and (max-width: 500px) {

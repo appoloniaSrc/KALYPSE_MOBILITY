@@ -1,18 +1,29 @@
 page-home {
   .page-content {
 
-    ion-slides {
+    .slide-information {
       width: 100%;
-      height: 50%;
+      height: 45%;
       box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.4); 
-    }
 
-    .slide-overlay {
-      position: absolute;
-      bottom: 0;
-      background-color: rgba(255, 255, 255, .5);
-      height: 35%;
-      width: 100%;
+      .slide-overlay {
+        position: absolute;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, .5);
+        height: 35%;
+        width: 100%;
+
+        h1 {
+          margin-top: 1.5rem;
+          font-size: 1.6rem;
+
+          font-weight: bold;
+        }
+
+        p{
+         color: #000000; 
+        }
+      }
     }
 
     .homeBody {
@@ -31,18 +42,28 @@ page-home {
       align-items: center;
     }
 
+    .slide-body {
+      height: 100%;
+      width: 100%;
+
+      .slide-zoom {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
     .function-row {
       width: 100%;
       height: 50%;
-    }
 
-    .function-col {
-      width: 100%;
-      height: 100%;
+      .function-col {
+        width: 100%;
+        height: 100%;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
 
     .function {
@@ -57,51 +78,108 @@ page-home {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      .function-icon {
+        height: 80%;
+        padding: 3px;
+        border-radius: 100%;
+        border-color: #ffffff;
+      }
+
+      .function-title {
+        height: 20%;
+        margin: 0;
+        font-weight: bold;
+      }
+
+      .fa {
+        color: color($colors, light);
+        margin-right: 0;
+        margin-bottom: 0.2em;
+      }
     }
 
-    .function .function-icon {
-      height: 80%;
-      padding: 3px;
-      border-radius: 100%;
-      border-color: #ffffff;
-    }
+    @media screen and (min-width: 315px) and (max-width: 500px) {
 
-    .function .function-title {
-      height: 20%;
-      margin: 0;
-    }
+      .slide-information {
+        height: 40%;
+      }
 
-    .function .fa {
-      color: color($colors, light);
-      margin-right: 0;
-      margin-bottom: 0.2em;
-    }
+      .homeBody {
+        height: 60%;
+      }
 
-    @media screen and (min-width: 315px) and (max-width: 800px) {
+      .slide-overlay {
+        height: 20%;
 
-        ion-slides {
-          height: 40%;
+        h1 {
+          margin-top: 1.5rem;
+          margin-bottom: 0.5rem;
+          font-size: 1.6rem;
         }
 
-        .homeBody {
-          height: 60%;
+        p{
+          margin: 0.5rem 0;
+          font-size: 1.3rem;
         }
+      }
     }
 
-    @media screen and (min-width: 800px) and (max-width: 1500px) {
+    @media screen and (min-width: 501px) and (max-width: 800px) {
 
-        ion-slides {
+      .slide-information {
+        height: 40%;
+      }
+
+      .homeBody {
+        height: 60%;
+      }
+
+      .slide-overlay {
+        height: 20%;
+
+        h1 {
+          margin-top: 2.5rem;
+          margin-bottom: 1rem;
+          font-size: 2.6rem;
+        }
+
+        p{
+          margin: 0.5rem 0;
+          font-size: 1.3rem;
+        }
+      }
+    }
+
+    @media screen and (min-width: 801px) and (max-width: 1500px) {
+
+        .slide-information {
           height: 45%;
         }
 
         .homeBody {
           height: 55%;
         }
+
+        .slide-overlay {
+        height: 30%;
+
+        h1 {
+          margin-top: 2.5rem;
+          margin-bottom: 1rem;
+          font-size: 2.6rem;
+        }
+
+        p{
+          margin: 1rem 0;
+          font-size: 1.3rem;
+        }
+      }
     }
 
-    @media screen and (min-width: 1500px) {
+    @media screen and (min-width: 1501px) {
 
-        ion-slides {
+        .slide-information {
           height: 50%;
         }
 

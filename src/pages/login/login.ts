@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, Keyboard, IonicPage, Platform } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
 import { AuthenticationProvider } from '../../providers/authentication/authentication';
  
 @IonicPage()
@@ -9,47 +11,71 @@ import { AuthenticationProvider } from '../../providers/authentication/authentic
   providers: [Keyboard]
 })
 export class LoginPage {
+
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
   TAG = "LoginPage";
 
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+
+  registerCredentials = { identifiant: '', password: '' };
   inputText: any;
-  displayFooter: boolean = true;
+
   rememberMe: boolean;
+
+  //=================================
+	// CONSTRUCTOR
+	//=================================
  
-  constructor(private platform: Platform, private nav: NavController, private auth: AuthenticationProvider, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private keyboard: Keyboard) {
-  /*this.pref.length().then((length) => {
+  constructor(
+    private platform: Platform
+    ,private nav: NavController
+    ,private auth: AuthenticationProvider
+    ,private alertCtrl: AlertController
+    ,private loadingCtrl: LoadingController
+    ,private keyboard: Keyboard
+    ,private pref: Storage
+  ) {
 
-    console.log(this.TAG + " ----> constructor : LocalStorage lenght = " + length + ".");
+    this.pref.length().then(result => {
 
-    if(length != 0){
-      console.log(this.TAG + " ----> constructor : LocalStorage OK.");
+      console.log(this.TAG + " ----> constructor : LocalStorage lenght = " + result + ".");
 
-      this.pref.get('email').then((value) => {
-        console.log(this.TAG + " ----> constructor : email value = " + value + ".");
-        this.registerCredentials.email = value;
-      });
-      this.pref.get('password').then((value) => {
-        console.log(this.TAG + " ----> constructor : password value = " + value + ".");
-        this.registerCredentials.password = value;
-      });
+      if(result != 0){
+        console.log(this.TAG + " ----> constructor : LocalStorage OK.");
 
-      this.login();
-    }
-    else{
-      console.log(this.TAG + " ----> constructor : LocalStorage NO.");
-    }
-  });*/
+        this.pref.get('identifiant').then((value) => {
+          console.log(this.TAG + " ----> constructor : identifiant value = " + value + ".");
+          this.registerCredentials.identifiant = value;
+        });
+
+      }
+      else{
+        console.log(this.TAG + " ----> constructor : LocalStorage NO.");
+      }
+    });
 
   }
+
+  //=================================
+  // METHODS
+  //=================================
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
   }
  
   public login() {
-    this.showLoading()
-    /*this.auth.login(this.registerCredentials).subscribe(allowed => {
+    this.showLoading();
+
+    if(this.rememberMe)
+    {
+      // set a key/value
+      this.pref.set('identifiant', this.registerCredentials.identifiant);
+    }
+      /*}this.auth.login(this.registerCredentials).subscribe(allowed => {
       if (allowed) {
         this.nav.setRoot('HomePage');
       } else {
@@ -61,8 +87,16 @@ export class LoginPage {
       });*/
     this.nav.setRoot('HomePage');
   }
+
+  public createAccount() {
+    this.nav.push('RegisterPage');
+  }
+
+  public goRecoverPassword() {
+    this.nav.push('ForgotPasswordPage');
+  }
  
-  showLoading() {
+  private showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
       dismissOnPageChange: true
@@ -70,7 +104,7 @@ export class LoginPage {
     this.loading.present();
   }
  
-  showError(text) {
+  private showError(text) {
     this.loading.dismiss();
  
     let alert = this.alertCtrl.create({
@@ -81,11 +115,7 @@ export class LoginPage {
     alert.present(prompt);
   }
 
-  updateRemember() {
-    console.log("Cucumbers new state:" + this.rememberMe);
-  }
-
-  showFooter() {
+  private showFooter() {
     var isShowing;
 
     if(!this.keyboard.isOpen){

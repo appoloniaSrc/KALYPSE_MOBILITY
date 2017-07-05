@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthenticationProvider } from '../../providers/authentication/authentication';
 
+import { HelpPage } from './../help/help';
+
 /**
  * Generated class for the SettingsPage page.
  *
@@ -15,8 +17,27 @@ import { AuthenticationProvider } from '../../providers/authentication/authentic
 })
 export class SettingsPage {
 
-  constructor(public nav: NavController, private auth: AuthenticationProvider, public navParams: NavParams) {
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
+  TAG = "SettingsPage";
+
+  //=================================
+	// CONSTRUCTOR
+	//=================================
+
+  constructor(
+    public nav: NavController
+    ,private auth: AuthenticationProvider
+    ,public navParams: NavParams
+  ) {
+    
   }
+
+  //=================================
+	// METHODS
+	//=================================
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SettingsPage');
@@ -26,6 +47,10 @@ export class SettingsPage {
     this.auth.logout().subscribe(succ => {
       this.nav.setRoot('LoginPage')
     });
+  }
+
+  goHelpPage(){
+    this.nav.push(HelpPage);
   }
 
 }

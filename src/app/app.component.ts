@@ -1,10 +1,10 @@
-import { TransfertPage } from './../pages/transfert/transfert';
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, Nav, AlertController, IonicApp } from 'ionic-angular';
+import { Platform, Nav, IonicApp, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import {Push, PushObject, PushOptions} from "@ionic-native/push";
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 import { AccountPage } from '../pages/account/account';
@@ -14,17 +14,35 @@ import { SettingsPage } from '../pages/settings/settings';
   templateUrl: 'app.html'
 })
 export class MyApp {
+
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
   TAG = "MyApp";
+
   @ViewChild(Nav) nav: Nav;
 
-  rootPage:any = 'LoginPage';
+  rootPage:any = "LoginPage";
 
   pages: Array<{title: string, component: any}>;
 
   solde = "120.00"
-  resultsScan : any;
+
+  isFinishDisplay = false;
+
+  //=================================
+	// CONSTRUCTOR
+	//=================================
  
-  constructor(private platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen, private barcode: BarcodeScanner, private alertCtrl: AlertController) {
+  constructor (
+    private platform: Platform
+    ,private statusBar: StatusBar
+    ,private splashScreen: SplashScreen
+    ,private alertCtrl: AlertController
+    ,private pref: Storage
+    //,private push: Push
+  ) {
 
     let self = this;
 
@@ -33,35 +51,41 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      
-      window.addEventListener("orientationchange", function(){
-        console.log("MyApp ---> constructor (window event listener orientationchange) : orientation = '" + window.orientation + "'.");
-      });
 
+      // Clear all preferences
+      //this.pref.clear();
+
+      // Override event BackButton on mobile
       platform.registerBackButtonAction(function(event) {
         let nav = self.nav;
         if(nav.getActive().component.name == "HomePage" || nav.getActive().component.name == "LoginPage"){
-          let alert = self.alertCtrl.create({
-            title: 'Quit',
-            message: 'Do you want to quit this application?',
-            buttons: [
-              {
-                text: 'Cancel',
-                role: 'cancel',
-                handler: () => {
-                  console.log('Cancel clicked');
+          if(!this.isFinishDisplay)
+          { 
+            let alert = self.alertCtrl.create({
+              title: 'Quit',
+              message: 'Do you want to quit this application?',
+              buttons: [
+                {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                    this.isFinishDisplay = false;
+                  }
+                },
+                {
+                  text: 'OK',
+                  handler: () => {
+                    console.log('OK clicked');
+                    self.platform.exitApp();
+                  }
                 }
-              },
-              {
-                text: 'OK',
-                handler: () => {
-                  console.log('OK clicked');
-                  self.platform.exitApp();
-                }
-              }
-            ]
-          });
-          alert.present();
+              ]
+            });
+            alert.present();
+
+            this.isFinishDisplay = true;
+          }
         }
         else {
           nav.setRoot(HomePage);
@@ -69,7 +93,9 @@ export class MyApp {
       })
     });
 
-    // used for an example of ngFor and navigation
+    //this.initPushNotification();
+
+    // Array of pages
     this.pages = [
       { title: 'Home', component: HomePage }
       ,{ title: 'Account', component: AccountPage }
@@ -77,74 +103,71 @@ export class MyApp {
     ];
   }
 
+  //=================================
+	// METHODS
+	//=================================
+
+  // Open the page passed as argument
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
       this.nav.setRoot(page.component);
   }
 
-  async scan()
-  {
-    if(this.platform.is('ios') || this.platform.is('android') || this.platform.is('windows')){
-      await this.barcode.scan().then((barcodeData) => {
-          // Success! Barcode data is here
-          this.resultsScan = barcodeData;
-          console.log(this.resultsScan);
-
-          if(this.resultsScan.text != "")
-            this.showPrompt();
-
-      }, (err) => {
-          // An error occurred
-          console.log(err);
-          this.showAlert("Scan QRCode", 
-                  "Error scan : " + err);
-      });
+  /*private initPushNotification() {
+    if (!this.platform.is('cordova')) {
+      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
+      return;
     }
-    else
-      this.showAlert("Error", "Scan not avaible for this platform.");
+    const options: PushOptions = {
+      android: {
+        senderID: "889128944192"
+        ,vibrate: true
+        ,sound: true
+        ,forceShow: true
+      },
+      ios: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+      windows: {}
+    };
+    const pushObject: PushObject = this.push.init(options);
 
-    //this.nav.push(TransfertPage);
-  }
-
-  private showAlert(title, message) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: message,
-      buttons: ['OK'],
-      cssClass: 'alertPopup'
+    pushObject.on('registration').subscribe((data: any) => {
+      console.log("device token ->", data.registrationId);
+      //TODO - send device token to server
     });
-    alert.present();
-  }
 
-  public showPrompt() {
-    let prompt = this.alertCtrl.create({
-      title: 'Transfert',
-      subTitle: "Enter your pin code to use your cashless account",
-      inputs: [
-        {
-          name: 'Pin',
-          placeholder: 'Enter your pin code',
-          type: 'number'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-          }
-        },
-        {
-          text: 'OK',
-          handler: data => {
-            this.nav.push(TransfertPage);
-          }
-        }
-      ],
-      enableBackdropDismiss: false,
-      cssClass: 'alertPrompt'
+    pushObject.on('notification').subscribe((data: any) => {
+      console.log('message', data.message);
+      //if user using app and push notification comes
+      if (data.additionalData.foreground) {
+        // if application open, show popup
+        let confirmAlert = this.alertCtrl.create({
+          title: 'New Notification',
+          message: data.message,
+          buttons: [{
+            text: 'Ignore',
+            role: 'cancel'
+          }, {
+            text: 'View',
+            handler: () => {
+              //TODO: Your logic here
+              this.nav.push(HomePage, {message: data.message});
+            }
+          }]
+        });
+        confirmAlert.present();
+      } else {
+        //if user NOT using app and push notification comes
+        //TODO: Your logic on click of push notification directly
+        this.nav.push(HomePage, {message: data.message});
+        console.log("Push notification clicked");
+      }
     });
-    prompt.present();
-  }
 
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+  }*/
 }

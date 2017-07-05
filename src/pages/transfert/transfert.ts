@@ -14,6 +14,12 @@ import { AuthenticationProvider } from '../../providers/authentication/authentic
   templateUrl: 'transfert.html',
 })
 export class TransfertPage {
+  
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
+  TAG = "BarPage";
 
   loading : Loading;
 
@@ -23,13 +29,27 @@ export class TransfertPage {
   amountDefault:any;
   amountMax:any;
 
-  constructor(public nav: NavController, private auth: AuthenticationProvider, public navParams: NavParams, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+  //=================================
+	// CONSTRUCTOR
+	//=================================
+
+  constructor(
+    public nav: NavController
+    ,private auth: AuthenticationProvider
+    ,public navParams: NavParams
+    ,private loadingCtrl: LoadingController
+    ,private toastCtrl: ToastController
+  ) {
     this.masNumber = "123";
     this.amountEuros = "500.00";
     this.amountCredits = "500.00";
     this.amountDefault = "50.00";
     this.amountMax = "1 500";
   }
+
+  //=================================
+	// METHODS
+	//=================================
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TransfertPage');

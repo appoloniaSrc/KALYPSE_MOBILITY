@@ -1,0 +1,35 @@
+<ion-content class="login-content">
+  <ion-row class="logo-row">
+    <ion-col>
+      <img class="app-logo" src="https://www.appolonia.fr/images/Resources/Articles/Presentation/image_presentation_opt.jpg"/>
+    </ion-col>
+  </ion-row>
+    
+  <form class="input-container" #registerForm="ngForm">
+
+    <p>For your account creation to be successful, follow all steps. In this step, please fill n° card client field and give your birthday :</p>
+          
+    <ion-item style="margin-bottom: 15px;">
+      <ion-label class="required" color="primary" stacked>N° Card Client</ion-label>
+      <ion-input type="number" placeholder="Place your n° Card Client" name="numberCardClient" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="required" color="primary" stacked>Birthday</ion-label>
+      <ion-datetime name="birthday" placeholder="Select your birthday" displayFormat="MM/DD/YYYY" pickerFormat="MMMM DD YYYY" ></ion-datetime>
+    </ion-item>
+
+    <p class="text-error"></p>
+    
+  </form>
+</ion-content>
+
+<ion-footer *ngIf="showFooter()">
+
+  <ion-toolbar color="primary">
+      <button ion-button full clear style="color: #ffffff;" [disabled]="!registerForm.form.valid" (click)="createAccountStep2()">
+      Next Step &nbsp; <i class="fa fa-chevron-right fa-lg" style="color: #ffffff;"></i>
+    </button>
+  </ion-toolbar>
+
+</ion-footer>

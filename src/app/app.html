@@ -7,6 +7,8 @@
 
   <ion-content>
     <ion-list>
+
+      <!--Button to go Home page-->
       <button menuClose ion-item (click)="openPage(pages[0])">
         <ion-row>
           <ion-col col-3>
@@ -18,17 +20,7 @@
         </ion-row>
       </button>
 
-      <button menuClose ion-item (click)="scan()">
-        <ion-row>
-          <ion-col col-3>
-            <i class="fa fa-qrcode fa-2x" ion-icon item-start></i>
-          </ion-col>
-          <ion-col col-9>
-            QR Code
-          </ion-col>
-        </ion-row>
-      </button>
-
+      <!--Button to go Account page-->
       <button menuClose ion-item (click)="openPage(pages[1])">
         <ion-row>
           <ion-col col-3>
@@ -40,6 +32,7 @@
         </ion-row>
       </button>
 
+      <!--Button to go Settings page-->
       <button menuClose ion-item no-lines (click)="openPage(pages[2])">
         <ion-row>
           <ion-col col-3>
@@ -52,6 +45,7 @@
       </button>
     </ion-list>
 
+    <!--Location of balance-->
     <div id="solde" ion-item no-lines>
       <ion-row>
         <ion-col col-3>
