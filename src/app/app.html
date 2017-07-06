@@ -1,11 +1,11 @@
-<ion-menu [content]="content" class="menu-content">
+<ion-menu [content]="content" id="menu">
   <ion-header>
-    <ion-toolbar color="primary">
+    <ion-toolbar>
       <ion-title menuClose>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
+  <ion-content class="menu-content">
     <ion-list>
 
       <!--Button to go Home page-->
@@ -15,7 +15,7 @@
             <i class="fa fa-home fa-2x"></i>
           </ion-col>
           <ion-col col-9>
-            Home
+            <p>Home</p>
           </ion-col>
         </ion-row>
       </button>
@@ -24,10 +24,10 @@
       <button menuClose ion-item (click)="openPage(pages[1])">
         <ion-row>
           <ion-col col-3>
-            <i class="fa fa-user-circle fa-2x" ion-icon item-start></i>
+            <i class="fa fa-user-circle fa-2x"></i>
           </ion-col>
           <ion-col col-9>
-            Account
+            <p>Account</p>
           </ion-col>
         </ion-row>
       </button>
@@ -36,10 +36,10 @@
       <button menuClose ion-item no-lines (click)="openPage(pages[2])">
         <ion-row>
           <ion-col col-3>
-            <i class="fa fa-cogs fa-2x" ion-icon item-start></i>
+            <i class="fa fa-cogs fa-2x"></i>
           </ion-col>
           <ion-col col-9>
-            Settings
+            <p>Settings</p>
           </ion-col>
         </ion-row>
       </button>

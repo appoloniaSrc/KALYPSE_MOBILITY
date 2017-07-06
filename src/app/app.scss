@@ -15,10 +15,9 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-p {
-    font-size: 0.9em;
-    color: color($colors, light);
-}
+//==========================================================
+// CSS General
+//==========================================================
 
 .alertPopup, .alertPrompt {
 
@@ -33,38 +32,70 @@ p {
 }
 
 .text-error {
-    color: color($colors, danger) !important;
+    color: color($general-colors, danger) !important;
 }
+
+//==========================================================
+// CSS Sidemenu
+//==========================================================
+
+#menu {
+
+    .toolbar-background {
+        background: color($menu-colors, header-background) !important;
+    }
+
+    .toolbar-title {
+        color: color($menu-colors, header-text) !important;
+    }
     
-.menu-content {
+    .menu-content {
+        background-color: color($menu-colors, background) !important;
 
-    #solde {
-        position: absolute;
-        bottom: 2px;
-        border-top: 1px solid color($colors, dark);
-    }
+        p, h2, .fa {
+            color: color($menu-colors, text);
+        }
 
-    ion-col {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        .fa {
+            color: color($menu-colors, icon);
+        }
+
+        button, #solde {
+            background: none
+        }
+
+        #solde {
+            position: absolute;
+            bottom: 2px;
+            border-top: 1px solid color($menu-colors, divider);
+        }
+
+        ion-col {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
     }
 }
 
-.login-content {
-    background-color: color($colors, light);
+//==========================================================
+// CSS Connexion Pages (Login, Register, Register-2, Forgot-password, Forgot-password-2)
+//==========================================================
+
+.connexion-content {
+    background-color: color($connexion-pages-colors, background);
 
     .app-logo, .answer-logo {
         height: 35%;
         width: 35%;
     }
 
-    p{
-      color: color($colors, dark);
+    p, h1, .label{
+      color: color($connexion-pages-colors, text) !important;
     }
 
     a{
-      color: color($colors, secondary);
+      color: color($general-colors, link);
     }
 
     .logo-row {
@@ -94,7 +125,7 @@ p {
         text-align: center;
     }
 
-    ion-label.required:after {content: " *"; color: color($colors, danger);}
+    ion-label.required:after {content: " *"; color: color($general-colors, danger);}
 
     @media screen and (min-width: 315px) and (max-width: 500px) {
 
@@ -157,27 +188,72 @@ p {
     }
 }
 
+.connexion-footer {
+
+    .toolbar-background {
+        background: color($connexion-button-footer-colors, background) !important;
+    }
+
+    button {
+        color: color($connexion-button-footer-colors, text) !important;
+    }
+
+    .fa {
+        color: color($connexion-button-footer-colors, icon) !important;
+    }
+
+}
+
+//==========================================================
+// CSS Other Pages (Home, Account, Settings, Transfer, Jackpots, Bewery, Info, Help)
+//==========================================================
+
+.page-header {
+    .toolbar-background {
+        background: color($page-colors, header-background) !important;
+    }
+
+    .toolbar-title {
+        color: color($page-colors, header-text) !important;
+    }
+
+    .bar-button {
+        color: color($page-colors, header-icon) !important;
+    }
+}
+
 .page-content {
-    background: color($colors, tertiary);
+    background: color($page-colors, background);
+
+    p {
+        color: color($page-colors, text);
+    }
 
     .component-box {
         width: 90%;
-        background-color: color($colors, primary);
+        background-color: color($page-box-colors, general-background);
         border-radius: 5px;
         padding: 2px;
         margin: 10% auto;
         box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.7);
     
         .item-icon {
+            display: flex;
             justify-content: center;
+            align-items: center;
         }
 
         .item-content {
+            display: flex;
             justify-content: flex-start;
+            align-items: center;
         }
 
         .item-icon-end {
+            display: flex;
             justify-content: flex-end;
+            align-items: center;
+
             border-top-right-radius: 5px;
             border-bottom-right-radius: 5px;
         }
@@ -185,7 +261,7 @@ p {
         p {
             font-size: 0.8em;
             margin: 0;
-            color: color($colors, light);
+            color: color($page-box-colors, text);
         }
 
         h4 {
@@ -193,12 +269,12 @@ p {
             width: 100%;
             margin: 0;
             font-size: 1.0em;
-            color: color($colors, light);
+            color: color($page-box-colors, text);
             margin: auto 0;
         }
 
         .fa {
-            color: color($colors, light);
+            color: color($page-box-colors, icon);
         }
     
     }
@@ -206,8 +282,8 @@ p {
     .header-list {
         border-top-left-radius: 1rem;
         border-top-right-radius: 1rem;
-        background-color: color($colors, danger);
-        color: color($colors, light);
+        background-color: color($page-list-colors, header-backgound);
+        color: color($page-list-colors, header-text);
     }
     
     @media screen and (min-width: 315px) and (max-width: 500px) {

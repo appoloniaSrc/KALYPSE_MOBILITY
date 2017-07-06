@@ -41,8 +41,4 @@ export class JackpotsTabsPage {
     console.log('ionViewDidLoad JackpotsTabsPage');
   }
 
-  private backHome(){
-    this.nav.setRoot(HomePage);
-  }
-
 }

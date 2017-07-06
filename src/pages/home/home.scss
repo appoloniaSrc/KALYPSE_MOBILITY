@@ -70,7 +70,7 @@ page-home {
       width: 70%;
       height: 70%;
       padding: 5px;
-      background-color: color($colors, primary);
+      background: color($function-box-colors, background);
       border-radius: 5px;
       text-align: center;
       box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.7); 
@@ -79,21 +79,16 @@ page-home {
       justify-content: center;
       align-items: center;
 
-      .function-icon {
-        height: 80%;
-        padding: 3px;
-        border-radius: 100%;
-        border-color: #ffffff;
-      }
-
       .function-title {
         height: 20%;
         margin: 0;
         font-weight: bold;
+
+        color: color($function-box-colors, text) !important;
       }
 
       .fa {
-        color: color($colors, light);
+        color: color($function-box-colors, icon);
         margin-right: 0;
         margin-bottom: 0.2em;
       }

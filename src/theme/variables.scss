@@ -4,17 +4,19 @@ $font-path: "../assets/fonts";
 
 @import "ionic.globals";
 
-
+//======================================================================
 // Shared Variables
-// --------------------------------------------------
+//======================================================================
+
 // To customize the look and feel of this app, you can override
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-
+//======================================================================
 // Named Color Variables
-// --------------------------------------------------
+//======================================================================
+
 // Named colors makes it easy to reuse colors on various components.
 // It's highly recommended to change the default colors
 // to match your app's branding. Ionic uses a Sass map of
@@ -33,6 +35,7 @@ $colors: (
 );
 
 // General color variables
+//######################################################################
 
 $general-colors: (
   link:       #2b78e4,
@@ -42,35 +45,75 @@ $general-colors: (
   dark:       #000000
 );
 
-// Color Variables for Login page
+// Color Variables for Connexion pages
+//######################################################################
 
-$login-page-colors: (
+$connexion-pages-colors: (
   background: #ffffff,
   text:       #000000
 );
 
-$button-footer-colors: (
+$connexion-button-footer-colors: (
   background: #606060,
   text:       #ffffff,
   icon:       #ffffff
 );
 
 // Color Variables for the Menu
+//######################################################################
 
 $menu-colors: (
-  background: #ffffff,
-  header:     #606060,
-  text:       #ffffff,
-  icon:       #ffffff,
-  divider:    #000000
+  background:            #ffffff,
+  header-background:     #606060,
+  header-text:           #ffffff,
+  text:                  #000000,
+  icon:                  #000000,
+  divider:               #000000
+);
+
+// Color Variables for pages (Default use)
+//######################################################################
+
+$page-colors: (
+  background:            #b2b2b2,
+  header-background:     #606060,
+  header-text:           #ffffff,
+  header-icon:           #ffffff,
+  text:                  #ffffff
+);
+
+$page-box-colors: (
+  general-background:   #606060,
+  transfer-background:  #8c8c8c,
+  text:                 #ffffff,
+  icon:                 #ffffff
+);
+
+$page-list-colors: (
+  background:      #b2b2b2,
+  header-backgound:#ff0000,
+  header-text:     #ffffff,
+  header-icon:     #ffffff,
+  impair-line-background:      #b2b2b2,
+  pair-line-background:        #8c8c8c,
+  line-text:                   #000000,
+  line-button-bacgound:        #ff0000,
+  line-button-text:            #ffffff,
 );
 
 // Color Variables for Home page
+//######################################################################
 
 $home-page-colors: (
   background: #b2b2b2,
   header:     #606060,
   text:       #ffffff
+);
+
+$function-box-colors: (
+  background: #606060,
+  text:       #ffffff,
+  icon:       #ffffff
 );
 
 $scan-qrcode-box-colors: (
@@ -90,8 +133,9 @@ $jackpots-box-colors: (
   text:       #ffffff,
   icon:       #ffffff
 );
-
+    //----------------------------------------------------------------------
     // Color Variables for Jackpots page
+    //----------------------------------------------------------------------
 
     $jackpots-page-colors: (
       background: #ffffff,
@@ -129,7 +173,9 @@ $brewery-box-colors: (
   icon:       #ffffff
 );
 
+    //----------------------------------------------------------------------
     // Color Variables for Brewery page
+    //----------------------------------------------------------------------
 
     $brewery-page-colors: (
       background: #ffffff,
@@ -157,7 +203,18 @@ $information-box-colors: (
   icon:       #ffffff
 );
 
+    //----------------------------------------------------------------------
+    // Color Variables for Information page
+    //----------------------------------------------------------------------
+
+    $information-page-colors: (
+      background: #ffffff,
+      header:     #606060,
+      text:       #000000
+    );
+
 // Color Variables for Account page
+//######################################################################
 
 $account-page-colors: (
   background: #b2b2b2,
@@ -172,6 +229,7 @@ $account-box-colors: (
 );
 
 // Color Variables for Settings page
+//######################################################################
 
 $settings-page-colors: (
   background: #b2b2b2,
@@ -186,7 +244,14 @@ $settings-box-colors: (
   icon:       #ffffff
 );
 
+$settings-select-colors: (
+  background: color($settings-box-colors, background),
+  border-bottom:  #8c8c8c,
+  text:           #ffffff
+);
+
 // Color Variables for Transfer page
+//######################################################################
 
 $transfer-page-colors: (
   background: #b2b2b2,
@@ -203,30 +268,34 @@ $transfer-box-colors: (
   content-icon:      #ffffff
 );
 
-
+//======================================================================
 // App iOS Variables
-// --------------------------------------------------
+//======================================================================
+
 // iOS only Sass variables can go here
 
 
 
-
+//======================================================================
 // App Material Design Variables
-// --------------------------------------------------
+//======================================================================
+
 // Material Design only Sass variables can go here
 
 
 
-
+//======================================================================
 // App Windows Variables
-// --------------------------------------------------
+//======================================================================
+
 // Windows only Sass variables can go here
 
 
 
-
+//======================================================================
 // App Theme
-// --------------------------------------------------
+//======================================================================
+
 // Ionic apps can have different themes applied, which can
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
@@ -234,18 +303,19 @@ $transfer-box-colors: (
 
 @import "ionic.theme.default";
 
+//======================================================================
+// Icons
+//======================================================================
 
-// Ionicons
-// --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
 @import "../../node_modules/font-awesome/scss/font-awesome";
 
-
+//======================================================================
 // Fonts
-// --------------------------------------------------
+//======================================================================
 
 @import "roboto";
 @import "noto-sans";

@@ -1,4 +1,4 @@
-<ion-content class="login-content">
+<ion-content class="connexion-content">
   <ion-row class="logo-row">
     <ion-col>
       <img class="app-logo" src="https://www.appolonia.fr/images/Resources/Articles/Presentation/image_presentation_opt.jpg"/>
@@ -30,14 +30,14 @@
   </form>
 </ion-content>
 
-<ion-footer *ngIf="showFooter()">
-  <ion-toolbar color="primary">
+<ion-footer class="connexion-footer" *ngIf="showFooter()">
+  <ion-toolbar>
       <ion-row>
         <ion-col>
-          <button ion-button style="color: #ffffff;" full clear (click)="createAccount()">First Visit</button>
+          <button ion-button full clear (click)="createAccount()">First Visit</button>
         </ion-col>
         <ion-col>
-          <button ion-button style="color: #ffffff;" full clear type="submit" [disabled]="!registerForm.form.valid" (click)="login()">Login</button>
+          <button ion-button full clear type="submit" [disabled]="!registerForm.form.valid" (click)="login()">Login</button>
         </ion-col>
       </ion-row>
   </ion-toolbar>

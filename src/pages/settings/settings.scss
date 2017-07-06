@@ -1,15 +1,20 @@
 page-settings {
     
     .page-content {
+
+        p {
+            color: color($settings-page-colors, text) !important;
+        }
+
         .component-box {
 
             select {
-                background-color: color($colors, primary);
+                background: color($settings-select-colors, background);
                 margin-top: 7px;
 
                 border: none;
-                border-bottom: 2px solid color($colors, tertiary);
-                color: color($colors, light);
+                border-bottom: 2px solid color($settings-select-colors, border-bottom);
+                color: color($settings-select-colors, text);
                 width: 100%;
                 
                 font-size: 0.9em;
@@ -21,11 +26,11 @@ page-settings {
             margin: 0 auto 3% auto;
 
             h4 {
-                color: color($colors, light);
+                color: color($settings-page-colors, text);
             }
 
             .separator {
-                border-bottom: 2px solid color($colors, light);
+                border-bottom: 2px solid color($settings-page-colors, divider);
             }
         }
     }
