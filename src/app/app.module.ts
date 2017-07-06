@@ -14,13 +14,13 @@ import { HomePageModule } from '../pages/home/home.module';
 import { AccountPageModule } from '../pages/account/account.module';
 import { SettingsPageModule } from '../pages/settings/settings.module';
 import { TransfertPageModule } from '../pages/transfert/transfert.module';
-import { JackpotsPageModule } from '../pages/jackpots/jackpots.module';
 import { JackpotsTabsPageModule } from './../pages/jackpots-tabs/jackpots-tabs.module';
 import { JackpotsTopdayPageModule } from './../pages/jackpots-topday/jackpots-topday.module';
 import { JackpotsTopmonthPageModule } from './../pages/jackpots-topmonth/jackpots-topmonth.module';
 import { JackpotsMachinePageModule } from './../pages/jackpots-machine/jackpots-machine.module';
 import { BarPageModule } from '../pages/bar/bar.module';
 import { InformationsPageModule } from '../pages/informations/informations.module';
+import { HelpPageModule } from './../pages/help/help.module';
 
 import { AuthenticationProvider } from '../providers/authentication/authentication';
 import { WebserviceProvider } from '../providers/webservice/webservice';
@@ -45,6 +45,7 @@ import { WebserviceProvider } from '../providers/webservice/webservice';
     ,JackpotsMachinePageModule
     ,BarPageModule
     ,InformationsPageModule
+    ,HelpPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

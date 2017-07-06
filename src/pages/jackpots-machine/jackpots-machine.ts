@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { HomePage } from './../home/home';
-
 @IonicPage()
 @Component({
   selector: 'page-jackpots-machine',
@@ -10,16 +8,31 @@ import { HomePage } from './../home/home';
 })
 export class JackpotsMachinePage {
 
-  constructor(public nav: NavController, public navParams: NavParams) {
+  //=================================
+	// ATTRIBUTES
+	//=================================
+
+  TAG = "JackpotsMachinePage";
+
+  //=================================
+	// CONSTRUCTOR
+	//=================================
+
+  constructor(
+    public nav: NavController
+    ,public navParams: NavParams
+  ) {
+
+
+
   }
+
+  //=================================
+	// METHODS
+	//=================================
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad JackpotsMachinePage');
   }
-
-  private backHome(){
-    this.nav.setRoot(HomePage);
-  }
-
 
 }
