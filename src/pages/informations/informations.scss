@@ -1,3 +1,24 @@
 page-informations {
+    .page-header {
+        .toolbar-background {
+            background: color($informations-page-colors, header-background) !important;
+        }
 
+        .toolbar-title {
+            color: color($informations-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($informations-page-colors, header-icon) !important;
+        }
+    }
+
+
+    .page-content {
+        background: color($informations-page-colors, background) !important;
+
+        p {
+            color: color($informations-page-colors, text) !important;
+        }
+    }
 }

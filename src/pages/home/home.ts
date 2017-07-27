@@ -3,11 +3,13 @@ import { Platform, NavController, IonicPage, Slides, AlertController } from 'ion
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
 import { TransfertPage } from './../transfert/transfert';
 import { JackpotsTabsPage } from './../jackpots-tabs/jackpots-tabs';
 import { BarPage } from './../bar/bar';
 import { InformationsPage } from './../informations/informations';
+
+import { AuthenticationWebService } from '../../providers/authentication/authentication.web.service';
+import { LoggerService } from './../../providers/logger/logger.service';
  
 @IonicPage()
 @Component({
@@ -51,10 +53,12 @@ export class HomePage {
 
   constructor (
     private platform: Platform
-    ,private nav: NavController
-    ,private auth: AuthenticationProvider
-    ,private barcode: BarcodeScanner
-    ,private alertCtrl: AlertController
+    , private nav: NavController
+    , private auth: AuthenticationWebService
+    , private barcode: BarcodeScanner
+    , private alertCtrl: AlertController
+
+    , private logger: LoggerService
   ) {
 
     platform.ready().then(() => {
@@ -73,7 +77,7 @@ export class HomePage {
           ,{ slidesFunctions: this.FunctionsTemplate = [
                                     { function: '', icon: 'fa-cutlery', title: 'Bar', isEmpty: false }
                                     ,{ function: '', icon: 'fa-info-circle', title: 'Info', isEmpty: false }
-                                    ,{ function: '', icon: '', title: '', isEmpty: true }
+                                    ,{ function: '', icon: 'fa-cutlery', title: 'point de fidelité', isEmpty: false }
                                     ,{ function: '', icon: '', title: '', isEmpty: true }
                                   ]}
         ];
@@ -121,10 +125,20 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
   }
  
+  // Deconnexion
   public logout() {
-    this.auth.logout().subscribe(succ => {
-      this.nav.setRoot('LoginPage')
-    });
+
+    this.logger.warn_log(this.TAG, "logout()", "method start");
+
+    this.auth.logout()
+      .then(() => {
+        this.nav.setRoot('LoginPage')
+      })
+      .catch(err => {
+        this.logger.error_log(this.TAG, "logout()", err);
+      });
+
+      this.logger.warn_log(this.TAG, "logout()", "method start");
   }
 
   async scan()

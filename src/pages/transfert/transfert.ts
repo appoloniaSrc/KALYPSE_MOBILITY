@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController, Loading } from 'ionic-angular';
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
+
+import { AuthenticationWebService } from './../../providers/authentication/authentication.web.service';
+import { LoggerService } from './../../providers/logger/logger.service';
 
 /**
  * Generated class for the TransfertPage page.
@@ -35,10 +37,12 @@ export class TransfertPage {
 
   constructor(
     public nav: NavController
-    ,private auth: AuthenticationProvider
-    ,public navParams: NavParams
-    ,private loadingCtrl: LoadingController
-    ,private toastCtrl: ToastController
+    , private auth: AuthenticationWebService
+    , public navParams: NavParams
+    , private loadingCtrl: LoadingController
+    , private toastCtrl: ToastController
+
+    , private logger: LoggerService
   ) {
     this.masNumber = "123";
     this.amountEuros = "500.00";

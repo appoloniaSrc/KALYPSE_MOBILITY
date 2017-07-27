@@ -3,12 +3,14 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav, IonicApp, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {Push, PushObject, PushOptions} from "@ionic-native/push";
+import { Push, PushObject, PushOptions } from "@ionic-native/push";
 import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 import { AccountPage } from '../pages/account/account';
 import { SettingsPage } from '../pages/settings/settings';
+
+import { AuthenticationWebService } from './../providers/authentication/authentication.web.service';
  
 @Component({
   templateUrl: 'app.html'
@@ -41,19 +43,20 @@ export class MyApp {
     ,private splashScreen: SplashScreen
     ,private alertCtrl: AlertController
     ,private pref: Storage
+    ,private auth: AuthenticationWebService
     //,private push: Push
   ) {
 
     let self = this;
 
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+        // Okay, so the platform is ready and our plugins are available.
+        // Here you can do any higher level native things you might need.
+        statusBar.styleDefault();
+        splashScreen.hide();
 
-      // Clear all preferences
-      //this.pref.clear();
+        // Clear all preferences
+        //this.pref.clear();
 
       // Override event BackButton on mobile
       platform.registerBackButtonAction(function(event) {
@@ -87,8 +90,11 @@ export class MyApp {
             this.isFinishDisplay = true;
           }
         }
-        else {
+        else if(nav.getActive().component.name == "AccountPage" || nav.getActive().component.name == "SettingsPage"){
           nav.setRoot(HomePage);
+        }
+        else {
+          nav.remove(nav.getActive().index);
         }
       })
     });

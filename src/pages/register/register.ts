@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, Keyboard, Platform } from 'ionic-angular';
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
+
+import { AuthenticationWebService } from './../../providers/authentication/authentication.web.service';
+import { LoggerService } from './../../providers/logger/logger.service';
 
 /**
  * Generated class for the RegisterPage page.
@@ -28,10 +30,12 @@ export class RegisterPage {
 
   constructor(
     private platform: Platform
-    ,private nav: NavController
-    ,private auth: AuthenticationProvider
-    ,private alertCtrl: AlertController
-    ,public keyboard: Keyboard
+    , private nav: NavController
+    , private auth: AuthenticationWebService
+    , private alertCtrl: AlertController
+    , public keyboard: Keyboard
+
+    , private logger: LoggerService
   ) {
 
 
@@ -49,23 +53,6 @@ export class RegisterPage {
 
   public createAccountStep2() {
     this.nav.push('Register_2Page');
-  }
-
-  private showFooter() {
-    var isShowing;
-
-    if(!this.keyboard.isOpen){
-      if(this.platform.is('ios') || this.platform.is('android') || this.platform.is('windows')){
-        isShowing = false;
-      }
-      else {
-        isShowing = true;
-      }
-    }
-    else
-      isShowing = true;
-
-    return isShowing;
   }
 
 }

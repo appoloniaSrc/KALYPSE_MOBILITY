@@ -1,6 +1,25 @@
 page-transfert {
 
+    .page-header {
+        .toolbar-background {
+            background: color($transfer-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($transfer-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($transfer-page-colors, header-icon) !important;
+        }
+    }
+
     .page-content {
+        background: color($transfer-page-colors, background) !important;
+
+        p {
+            color: color($transfer-page-colors, text) !important;
+        }
 
         #subTitle {
             margin: 1.5em 0 0 0;
@@ -8,7 +27,7 @@ page-transfert {
         }
 
         .component-box {
-            background-color: color($colors, quaternary);
+            background-color: color($transfer-box-colors, content-background) !important;
             height: 7em;
             padding: 0;
 
@@ -18,15 +37,25 @@ page-transfert {
 
             h4 {
                 margin-bottom: 8px;
+                color: color($transfer-box-colors, content-text) !important;
+            }
+
+            p {
+                color: color($transfer-box-colors, content-text) !important;
             }
 
             .item-inner {
                 padding: 0;
             }
 
+            .item-input {
+                background-color: color($transfer-box-colors, content-background) !important;
+                color: color($transfer-box-colors, content-text) !important;
+            }
+
             .item-title, .item-icon-end {
-                background-color: color($colors, primary);
-                color: color($colors, light);
+                background-color: color($transfer-box-colors, header-background) !important;
+                color: color($transfer-box-colors, header-text) !important;
 
                 display: flex;
                 justify-content: center;
@@ -55,11 +84,8 @@ page-transfert {
             }
 
             #otherAmountInput {
-                background-color: color($colors, quaternary);
-
                 border: none;
-                border-bottom: 2px solid color($colors, primary);
-                color: color($colors, light);
+                border-bottom: 2px solid color($transfer-box-colors, header-background) !important;
                 
                 font-size: 0.9em;
             }
@@ -88,7 +114,12 @@ page-transfert {
             }
 
             h4 {
-                font-size: 1.2em;
+                margin-bottom: 1.2em;
+                color: color($transfer-box-colors, content-text) !important;
+            }
+
+            p {
+                color: color($transfer-box-colors, content-text) !important;
             }
 
             

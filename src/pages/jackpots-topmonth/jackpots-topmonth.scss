@@ -1,3 +1,29 @@
 page-jackpots-topmonth {
+    .page-header {
+        .toolbar-background {
+            background: color($jackpots-page-colors, header-background) !important;
+        }
 
+        .toolbar-title {
+            color: color($jackpots-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($jackpots-page-colors, header-icon) !important;
+        }
+    }
+
+    .page-content {
+        background: color($jackpots-page-colors, background) !important;
+
+        p {
+            color: color($jackpots-page-colors, text) !important;
+        }
+
+        .header-list {
+            background-color: color($jackpots-list-colors, header-background) !important;
+            color: color($jackpots-list-colors, header-text) !important;
+        }
+
+    }
 }

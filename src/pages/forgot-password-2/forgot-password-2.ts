@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, Loading, Keyboard, IonicPage, Platform } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Loading, Keyboard, IonicPage, Platform } from 'ionic-angular';
 
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
+import {Md5} from 'ts-md5/dist/md5';
 
-/**
- * Generated class for the ForgotPassword_2Page page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+import { AuthenticationWebService } from './../../providers/authentication/authentication.web.service';
+import { LoggerService } from './../../providers/logger/logger.service';
+
 @IonicPage()
 @Component({
   selector: 'page-forgot-password-2',
@@ -20,7 +17,10 @@ export class ForgotPassword_2Page {
 	// ATTRIBUTES
 	//=================================
 
+  TAG = "ForgotPassword_2Page";
 
+  dataCredentials = { pswd: '', 	pswdConfirm: '' };
+  errorText = "";
 
   //=================================
 	// CONSTRUCTOR
@@ -29,13 +29,14 @@ export class ForgotPassword_2Page {
   constructor(
     private platform: Platform
     ,private nav: NavController
-    ,private auth: AuthenticationProvider
+    ,private navParams: NavParams
     ,private alertCtrl: AlertController
     ,private loadingCtrl: LoadingController
     ,private keyboard: Keyboard
+
+    , private auth: AuthenticationWebService
+    , private logger: LoggerService
   ) {
-
-
 
   }
 
@@ -44,28 +45,37 @@ export class ForgotPassword_2Page {
   //=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ForgotPassword_2Page');
   }
 
   public forgotPasswordFinished() {
-    this.nav.setRoot('LoginPage');
-  }
 
-  private showFooter() {
-    var isShowing;
+    this.logger.warn_log(this.TAG, "forgotPasswordFinished()", "method start");
 
-    if(!this.keyboard.isOpen){
-      if(this.platform.is('ios') || this.platform.is('android') || this.platform.is('windows')){
-        isShowing = false;
-      }
-      else {
-        isShowing = true;
-      }
+    // Start Change Password processus
+
+    if(this.dataCredentials.pswd == this.dataCredentials.pswdConfirm) {
+      var hashedPswd = Md5.hashStr(this.dataCredentials.pswd).toString();
+    } else {
+      this.errorText = "Please enter the same password";
+      this.dataCredentials.pswd = "";
+      this.dataCredentials.pswdConfirm = "";
+
+      return;
     }
-    else
-      isShowing = true;
 
-    return isShowing;
+    this.auth.changePassword(hashedPswd)
+      .then(() => {
+        this.nav.setRoot("LoginPage");
+      })
+      .catch(err => {
+        this.logger.error_log(this.TAG, "forgotPasswordFinished()", err);
+
+        this.errorText = err;
+        this.dataCredentials.pswd = "";
+        this.dataCredentials.pswdConfirm = "";
+      });
+
+    this.logger.warn_log(this.TAG, "forgotPasswordFinished()", "method end");
   }
 
 }

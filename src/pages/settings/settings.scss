@@ -1,15 +1,43 @@
 page-settings {
+
+    .page-header {
+        .toolbar-background {
+            background: color($settings-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($settings-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($settings-page-colors, header-icon) !important;
+        }
+    }
     
     .page-content {
+        background: color($settings-page-colors, background) !important;
 
         p {
             color: color($settings-page-colors, text) !important;
         }
 
         .component-box {
+            background-color: color($settings-box-colors, background) !important;
+
+            p {
+                color: color($settings-box-colors, text) !important;
+            }
+
+            h4 {
+                color: color($settings-box-colors, text) !important;
+            }
+
+            .fa {
+                color: color($settings-box-colors, icon) !important;
+            }
 
             select {
-                background: color($settings-select-colors, background);
+                background: color($settings-select-colors, background) !important;
                 margin-top: 7px;
 
                 border: none;

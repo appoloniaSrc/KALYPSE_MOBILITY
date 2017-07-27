@@ -31,10 +31,6 @@
     }
 }
 
-.text-error {
-    color: color($general-colors, danger) !important;
-}
-
 //==========================================================
 // CSS Sidemenu
 //==========================================================
@@ -125,7 +121,11 @@
         text-align: center;
     }
 
-    ion-label.required:after {content: " *"; color: color($general-colors, danger);}
+    .text-error {
+        color: color($general-colors, danger) !important;
+    }
+
+    .required:after {content: " *"; color: color($general-colors, danger);}
 
     @media screen and (min-width: 315px) and (max-width: 500px) {
 
@@ -210,15 +210,15 @@
 
 .page-header {
     .toolbar-background {
-        background: color($page-colors, header-background) !important;
+        background: color($page-colors, header-background);
     }
 
     .toolbar-title {
-        color: color($page-colors, header-text) !important;
+        color: color($page-colors, header-text);
     }
 
     .bar-button {
-        color: color($page-colors, header-icon) !important;
+        color: color($page-colors, header-icon);
     }
 }
 
@@ -282,7 +282,7 @@
     .header-list {
         border-top-left-radius: 1rem;
         border-top-right-radius: 1rem;
-        background-color: color($page-list-colors, header-backgound);
+        background-color: color($page-list-colors, header-background);
         color: color($page-list-colors, header-text);
     }
     

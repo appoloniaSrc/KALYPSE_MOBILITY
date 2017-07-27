@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AuthenticationProvider } from '../../providers/authentication/authentication';
 
 import { HelpPage } from './../help/help';
+import { AuthenticationWebService } from '../../providers/authentication/authentication.web.service';
+import { LoggerService } from './../../providers/logger/logger.service';
 
 /**
  * Generated class for the SettingsPage page.
@@ -29,8 +30,10 @@ export class SettingsPage {
 
   constructor(
     public nav: NavController
-    ,private auth: AuthenticationProvider
-    ,public navParams: NavParams
+    , private auth: AuthenticationWebService
+    , public navParams: NavParams
+
+    , private logger: LoggerService
   ) {
     
   }
@@ -43,10 +46,20 @@ export class SettingsPage {
     console.log('ionViewDidLoad SettingsPage');
   }
 
+  // Deconnexion
   public logout() {
-    this.auth.logout().subscribe(succ => {
-      this.nav.setRoot('LoginPage')
-    });
+
+    this.logger.warn_log(this.TAG, "logout()", "method start");
+
+    this.auth.logout()
+      .then(() => {
+        this.nav.setRoot('LoginPage')
+      })
+      .catch(err => {
+        this.logger.error_log(this.TAG, "logout()", err);
+      });
+
+      this.logger.warn_log(this.TAG, "logout()", "method start");
   }
 
   goHelpPage(){

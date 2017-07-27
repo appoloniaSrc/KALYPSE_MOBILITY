@@ -41,7 +41,7 @@
       <ion-slides class="slide-body" pager>
 
         <ion-slide *ngFor="let pageFunctionsTemplate of pagesFunctionsTemplate">
-          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty && !pageFunctionsTemplate.slidesFunctions[1].isEmpty">
+          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty || !pageFunctionsTemplate.slidesFunctions[1].isEmpty">
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty">
               <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[0].title)">
                 <div class="function-content">
@@ -60,7 +60,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty && !pageFunctionsTemplate.slidesFunctions[3].isEmpty" >
+          <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty || !pageFunctionsTemplate.slidesFunctions[3].isEmpty" >
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty">
               <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[2].title)">
                 <div class="function-content">

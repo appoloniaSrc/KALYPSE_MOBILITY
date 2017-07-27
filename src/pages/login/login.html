@@ -8,7 +8,7 @@
   <form class="input-container" #registerForm="ngForm">
 
         <ion-item>
-          <ion-input type="text" placeholder="Email" name="identifiantField" [(ngModel)]="registerCredentials.identifiant" required></ion-input>
+          <ion-input type="email" placeholder="Email" name="identifiantField" [(ngModel)]="registerCredentials.identifiant" required></ion-input>
         </ion-item>
         
         <ion-item no-lines class="checkbox-container">
@@ -25,12 +25,14 @@
           <i class="fa fa-chevron-right fa-lg" style="padding: 20px 0 20px 20px;" (click)="login()"></i>
         </div>
 
+        <p class="text-error">{{errorText}}</p>
+
         <p>Forgot your password ? Please click <a (click)="goRecoverPassword()">here</a></p>
 
   </form>
 </ion-content>
 
-<ion-footer class="connexion-footer" *ngIf="showFooter()">
+<ion-footer class="connexion-footer">
   <ion-toolbar>
       <ion-row>
         <ion-col>

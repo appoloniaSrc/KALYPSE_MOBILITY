@@ -22,8 +22,9 @@ import { BarPageModule } from '../pages/bar/bar.module';
 import { InformationsPageModule } from '../pages/informations/informations.module';
 import { HelpPageModule } from './../pages/help/help.module';
 
-import { AuthenticationProvider } from '../providers/authentication/authentication';
-import { WebserviceProvider } from '../providers/webservice/webservice';
+import { WebserviceModule } from './../providers/webservice/webservice.module';
+import { Utils } from './../providers/utils/utils.service';
+import { LoggerService } from '../providers/logger/logger.service';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,8 @@ import { WebserviceProvider } from '../providers/webservice/webservice';
     ,HttpModule
     ,IonicModule.forRoot(MyApp)
     ,IonicStorageModule.forRoot()
+
+    ,WebserviceModule
 
     ,HomePageModule
     ,AccountPageModule
@@ -56,8 +59,8 @@ import { WebserviceProvider } from '../providers/webservice/webservice';
     SplashScreen,
     BarcodeScanner,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthenticationProvider,
-    WebserviceProvider
+    Utils,
+    LoggerService
   ]
 })
 export class AppModule {}
