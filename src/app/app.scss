@@ -285,6 +285,8 @@
         background-color: color($page-list-colors, header-background);
         color: color($page-list-colors, header-text);
     }
+
+    .required:after {content: " *"; color: color($general-colors, danger);}
     
     @media screen and (min-width: 315px) and (max-width: 500px) {
 

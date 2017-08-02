@@ -6,11 +6,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Push, PushObject, PushOptions } from "@ionic-native/push";
 import { Storage } from '@ionic/storage';
 
-import { HomePage } from '../pages/home/home';
-import { AccountPage } from '../pages/account/account';
-import { SettingsPage } from '../pages/settings/settings';
+import { HomePage } from '../pages/ApplicationPages/HomePages/home/home';
+import { AccountPage } from '../pages/ApplicationPages/AccountPages/account/account';
+import { SettingsPage } from '../pages/ApplicationPages/SettingsPages/settings/settings';
 
 import { AuthenticationWebService } from './../providers/authentication/authentication.web.service';
+import { LoggerService } from './../providers/logger/logger.service';
  
 @Component({
   templateUrl: 'app.html'
@@ -24,12 +25,13 @@ export class MyApp {
   TAG = "MyApp";
 
   @ViewChild(Nav) nav: Nav;
-
   rootPage:any = "LoginPage";
-
   pages: Array<{title: string, component: any}>;
 
   solde = "120.00"
+
+  timerLogout: number;
+
 
   isFinishDisplay = false;
 
@@ -39,24 +41,47 @@ export class MyApp {
  
   constructor (
     private platform: Platform
-    ,private statusBar: StatusBar
-    ,private splashScreen: SplashScreen
-    ,private alertCtrl: AlertController
-    ,private pref: Storage
-    ,private auth: AuthenticationWebService
+    , private statusBar: StatusBar
+    , private splashScreen: SplashScreen
+    , private alertCtrl: AlertController
+    , private pref: Storage
+
+    , private auth: AuthenticationWebService
+    , private logger: LoggerService
     //,private push: Push
   ) {
 
     let self = this;
 
     platform.ready().then(() => {
-        // Okay, so the platform is ready and our plugins are available.
-        // Here you can do any higher level native things you might need.
-        statusBar.styleDefault();
-        splashScreen.hide();
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
 
-        // Clear all preferences
-        //this.pref.clear();
+      // Clear preferences
+      this.auth.logout()
+        .catch(err => {
+          this.logger.error_log(this.TAG, "logout()", err);
+        });
+
+      // When the app is put in the background
+      platform.pause.subscribe(() => {
+        this.timerLogout = setTimeout(() => {
+          this.auth.logout()
+            .then(() => {
+              this.nav.setRoot('LoginPage')
+            })
+            .catch(err => {
+              this.logger.error_log(this.TAG, "logout()", err);
+            });
+        }, 100000);
+      }); 
+
+      // When the app is put in the foreground
+      platform.resume.subscribe(() => {
+        clearTimeout(this.timerLogout);
+      });
 
       // Override event BackButton on mobile
       platform.registerBackButtonAction(function(event) {
@@ -72,14 +97,17 @@ export class MyApp {
                   text: 'Cancel',
                   role: 'cancel',
                   handler: () => {
-                    console.log('Cancel clicked');
                     this.isFinishDisplay = false;
                   }
                 },
                 {
                   text: 'OK',
                   handler: () => {
-                    console.log('OK clicked');
+                    // Clear preferences
+                    this.auth.logout()
+                      .catch(err => {
+                        this.logger.error_log(this.TAG, "logout()", err);
+                      });
                     self.platform.exitApp();
                   }
                 }
@@ -111,8 +139,8 @@ export class MyApp {
 
   //=================================
 	// METHODS
-	//=================================
-
+  //=================================
+  
   // Open the page passed as argument
   openPage(page) {
     // Reset the content nav to have just this page

@@ -1,0 +1,44 @@
+<ion-content class="connexion-content">
+  <ion-row class="logo-row">
+    <ion-col>
+      <img class="app-logo" src="https://www.appolonia.fr/images/Resources/Articles/Presentation/image_presentation_opt.jpg"/>
+    </ion-col>
+  </ion-row>
+    
+  <form class="input-container" [formGroup]="authForm" novalidate>
+
+    <p style="text-align: center;">For your account creation to be successful, follow all steps. In this step, please fill email fields and password fields :</p>
+          
+    <ion-item>
+      <ion-label class="required" stacked>Email</ion-label>
+      <ion-input type="email" placeholder="Place your Email here" formControlName="email"></ion-input>
+    </ion-item>
+
+    <!-- <p class="text-error" style="margin-bottom: 1vw">{{errorEmail}}</p> -->
+
+    <ion-item>
+      <ion-label class="required" stacked>Password</ion-label>
+      <ion-input type="password" placeholder="Place your password here" formControlName="password"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="required" stacked>Confirm Password</ion-label>
+      <ion-input type="password" placeholder="Confirm your password here" formControlName="confirmPassword"></ion-input>
+    </ion-item>
+
+    <!-- <p class="text-error">{{errorPassword}}</p> -->
+
+    <p style="text-align: center;">* For the password, please use at least one uppercase letter and one digit.<br> The password must be between 4 and 8 characters long.</p>
+    
+  </form>
+</ion-content>
+
+<ion-footer class="connexion-footer">
+
+  <ion-toolbar>
+      <button ion-button full clear [disabled]="!authForm.valid" (click)="finishInscription()">
+      Validate
+    </button>
+  </ion-toolbar>
+
+</ion-footer>

@@ -1,0 +1,107 @@
+<ion-header class="page-header">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Account
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="page-content">
+
+  <ion-list>
+
+    <!--First Name & Last Name box-->
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-user fa-2x"></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>
+            <h4>First Name</h4>
+            <p>{{dataClient.firstName}}</p>
+            <h4 style="margin-top: 5px;">Last Name</h4>
+            <p>{{dataClient.lastName}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!--Email box-->
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-at fa-2x"></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>  
+            <h4>Email</h4>
+            <p>{{dataClient.email}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!--Birthday box-->
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-birthday-cake fa-2x"></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>  
+            <h4>Birthday</h4>
+            <p>{{dataClient.birthday}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!--Client number card box-->
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-credit-card-alt fa-2x"></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div>
+            <h4>Credit Card ID</h4>
+            <p>{{dataClient.creditCardID}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!--Client number card box-->
+    <div class="component-box" (click)="changePassword()" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-lock fa-2x"></i>
+        </ion-col>
+        <ion-col col-6 class="item-content">
+          <div>
+            <h4>Change Password</h4>
+          </div>
+        </ion-col>
+        <ion-col col-3 class="item-icon-end">
+          <i class="fa fa-chevron-right fa-lg"></i>
+        </ion-col>
+      </ion-row>
+    </div>
+
+  </ion-list>
+
+  <div style="text-align: center;">
+    <p>For any changes to your account data,<br> please request a MCD.</p>
+  </div>
+
+</ion-content>

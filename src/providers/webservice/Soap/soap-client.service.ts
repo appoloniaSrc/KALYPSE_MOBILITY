@@ -71,6 +71,21 @@ export class SoapClientService {
 			});
         
 	}
+
+	public createGetRequest(
+        WSservice: WebServiceConfig
+        , action: string
+        , headers: Headers
+    ): Promise<any> {
+
+		return this.http.get(WSservice.UrlService + '/' + action, {	headers : headers })
+			.timeout(5000)
+			.toPromise()
+			.catch(err => {
+				this.logger.error_log(this.TAG, "createGetRequest()", err);
+			});
+        
+	}
 }
 
 //#############################################################################

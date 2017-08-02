@@ -95,9 +95,9 @@ export class AuthenticationWebService {
 	//=========================================================================
 
 	//TODO: login: asser login/pwd is const  / languageCode : set to '' OR use the config language code (eng,fra) ?
-	async login(userLogin: string, userPassword: string): Promise<any> {
+	async checkCustomerWithCredentials(userLogin: string, userPassword: string): Promise<any[]> {
 
-		this.logger.warn_log(this.TAG, "login()", "method start");
+		this.logger.warn_log(this.TAG, "checkCustomerWithCredentials()", "method start");
 
 		// Get Authorization to access Webservice
 
@@ -114,7 +114,7 @@ export class AuthenticationWebService {
 			// Get Customer with his credentials
 
 			let loading = this.loadingCtrl.create({
-				content: 'Get Customer ...',
+				content: 'Check Customer ...',
 				dismissOnPageChange: true
 			});
 			loading.present();
@@ -127,25 +127,20 @@ export class AuthenticationWebService {
 					loading.dismiss();
 				})
 				.catch(err => {
-						this.logger.error_log(this.TAG, "login()", err);
+						this.logger.error_log(this.TAG, "checkCustomerWithCredentials()", err);
 						loading.dismiss();
 						return Promise.reject("Credentials False");
 					});
 
-			// Save informations client into preferences
-			this.pref.set("CLIENT_ID", customerArray[0]["a:ClientId"]);
-			this.pref.set("LANGUAGE", customerArray[0]["a:Language"]);
-			this.pref.set("CURRENCY", customerArray[0]["a:Currency"]);
-
-			this.logger.warn_log(this.TAG, "login()", "method end");
-			return Promise.resolve();
+			this.logger.warn_log(this.TAG, "checkCustomerWithCredentials()", "method end");
+			return Promise.resolve(customerArray);
 		} else {
-			this.logger.warn_log(this.TAG, "login()", "method end");
+			this.logger.warn_log(this.TAG, "checkCustomerWithCredentials()", "method end");
 			return Promise.reject("Error at the authorization to access Webservice");
 		}
 	}
 
-	async checkUserCardNumIDAndBirth(userCardNumID: string, userBirthhday: string): Promise<any> {
+	async checkUserCardNumIDAndBirth(userCardNumID: string, userBirthhday: string): Promise<{clientID: string;}> {
 
 		this.logger.warn_log(this.TAG, "checkUserCardNumIDAndBirth()", "method start");
 
@@ -194,17 +189,15 @@ export class AuthenticationWebService {
 					return Promise.reject("Data False");
 				});
 
-			this.pref.set("CLIENT_ID", clientID);
-
 			this.logger.warn_log(this.TAG, "checkUserCardNumIDAndBirth()", "method end");
-			return Promise.resolve();
+			return Promise.resolve({clientID});
 		} else {
 			this.logger.warn_log(this.TAG, "checkUserCardNumIDAndBirth()", "method end");
 			return Promise.reject("Error at the authorization to access Webservice");
 		}
 	}
 
-	async changePassword(userPassword: string): Promise<any> {
+	async changePassword(clientID: string, userPassword: string): Promise<any> {
 
 		this.logger.warn_log(this.TAG, "changePassword()", "method start");
 
@@ -229,14 +222,6 @@ export class AuthenticationWebService {
 				dismissOnPageChange: true
 			});
 			loading.present();
-
-			// Get clientID in preferences
-
-			let clientID = ""; 
-			this.pref.get("CLIENT_ID")
-				.then(value => {
-					clientID = value;
-				});
 
 			await this.webservice._updateCustomerPassword(hashedKey, clientID, userPassword)
 				.then(() => {
@@ -287,7 +272,6 @@ export class AuthenticationWebService {
 			await this.webservice._getCustomer(hashedKey, siteID, "customer", clientID, true)
 				.then(result => {
 					customerArray = result;
-					loading.dismiss();
 				})
 				.catch(err => {
 					this.logger.error_log(this.TAG, "getDataCustomer()", err);
@@ -328,10 +312,13 @@ export class AuthenticationWebService {
 
 		}).then(() => { isOK = true });
 
-		if(isOK)
+		if(isOK) {
+			this.logger.warn_log(this.TAG, "logout()", "method end");
 			return Promise.resolve();
-		else
-			return Promise.reject("Logout don't be execute")
+		} else {
+			this.logger.warn_log(this.TAG, "logout()", "method end");
+			return Promise.reject("Logout don't be execute");
+		}
 	}
 
 	// checkSessionToken(token: string): Promise<any> {

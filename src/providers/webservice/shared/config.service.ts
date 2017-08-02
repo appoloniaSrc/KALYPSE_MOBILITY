@@ -12,13 +12,6 @@ export class WebServiceConfig {
 	timeout_delay: number = 5000;
 }
 
-export class _loginInfo {
-	AssetLogin: string = 'mobile';
-	AssetPassword: string = '149D6993159ACABE3344FED9B8AD1B1A8BCFF686'; //mobile:2018
-
-	Language: string = "ENG";
-}
-
 @Injectable()
 export class ConfigService {
 
@@ -30,7 +23,6 @@ export class ConfigService {
 
 	ApplicationCode = 'APPKTM';
 	PantheonService: WebServiceConfig = null;
-	loginInfos: _loginInfo = new _loginInfo();
 
 	siteId: string = "";
 	ws_timeout: number = 5000;
