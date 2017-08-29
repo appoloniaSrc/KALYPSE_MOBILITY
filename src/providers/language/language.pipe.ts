@@ -9,7 +9,7 @@ import { LanguageService } from './language.service';
  *   value | lang[:language]
  * Example:
  *   {{ 'WELCOME' | lang }} -> 'Welcome'
- *   {{ 'WELCOME' | lang:fra }} -> 'Bienvenue'
+ *   {{ 'WELCOME' | lang:fr }} -> 'Bienvenue'
  */
 @Pipe({
 	name: 'lang',

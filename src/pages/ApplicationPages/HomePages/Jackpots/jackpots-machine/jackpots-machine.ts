@@ -32,7 +32,6 @@ export class JackpotsMachinePage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JackpotsMachinePage');
   }
 
 }

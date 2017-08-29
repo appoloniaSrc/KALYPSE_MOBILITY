@@ -30,7 +30,6 @@ export class InformationsPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad InformationsPage');
   }
 
 }

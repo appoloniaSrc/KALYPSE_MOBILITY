@@ -5,9 +5,11 @@ import { Storage } from '@ionic/storage';
 
 import {Md5} from 'ts-md5/dist/md5';
 
-import { AuthenticationWebService } from './../../../../providers/authentication/authentication.web.service';
+import { AuthentificationWebService } from './../../../../providers/authentification/authentification.web.service';
 import { LoggerService } from './../../../../providers/logger/logger.service';
+import { LanguageService } from './../../../../providers/language/language.service';
 import { PasswordValidator } from './../../../../providers/utils/validator.service';
+import { Utils } from './../../../../providers/utils/utils.service';
 
 @IonicPage()
 @Component({
@@ -38,8 +40,10 @@ export class ChangePasswordPage {
     , private formBuilder: FormBuilder
     , private pref: Storage
 
-    , private auth: AuthenticationWebService
+    , private auth: AuthentificationWebService
     , private logger: LoggerService
+    , private langService: LanguageService
+    , private utils: Utils
   ) {
 
     this.authForm = formBuilder.group({
@@ -56,70 +60,90 @@ export class ChangePasswordPage {
 
   ionViewDidLoad() {
 
-    this.pref.get('CLIENT_EMAIL')
-      .then((value) => {
-        this.clientEmail = value;
-      }).catch(err => {
-        this.logger.error_log(this.TAG, "ionViewDidLoad()", "Get Email error = " + err);
-      });
+    setTimeout(
+      this.pref.get('IDENTIFIANT')
+        .then((value) => {
+          this.clientEmail = value;
+        }).catch(err => {
+          this.logger.error_log(this.TAG, "ionViewDidLoad()", "Get Email error = " + err);
+        })
+    , this.logger.EVENT_WRITE_FILE);
 
-    this.pref.get("CLIENT_ID")
-      .then(value => {
-         this.clientID = value;
-      })
-      .catch(err => {
-        this.logger.error_log(this.TAG, "ionViewDidLoad()", "Get Client ID error = " +err);
-      });
+    setTimeout(
+      this.pref.get("CLIENT_ID")
+        .then(value => {
+          this.clientID = value;
+        })
+        .catch(err => {
+          this.logger.error_log(this.TAG, "ionViewDidLoad()", "Get Client ID error = " +err);
+        })
+    , this.logger.EVENT_WRITE_FILE);
     
   }
 
   async resetPassword() {
-    this.logger.warn_log(this.TAG, "resetPassword()", "method start");
+    await this.logger.info_log(this.TAG, "resetPassword()", "Start Method");
 
-    var isCustomerFind = false;
-
-    // Start Check customer processus for check old password
-    let hashedOldPswd = Md5.hashStr(this.authForm.controls['oldPassword'].value).toString();
-
-    await this.auth.checkCustomerWithCredentials(this.clientEmail, hashedOldPswd)
-      .then(() => {
-         this.logger.log_log(this.TAG, "resetPassword()", "Customer Find");
-         isCustomerFind = true;
-      })
-      .catch(err => {
-        this.logger.error_log(this.TAG, "resetPassword()", err);
-        this.errorText = err;
-      });
-
-    // Start Change password processus
-
-    if(isCustomerFind) {
-      if(this.authForm.controls['password'].value == this.authForm.controls['confirmPassword'].value) {
-        if(this.authForm.controls['password'].value != this.authForm.controls['oldPassword'].value) {
-          var hashedPswd = Md5.hashStr(this.authForm.controls['password'].value).toString();
-        } else {
-          this.errorText = "Enter a password other than the old password";
-          return;
-        }
-        
+    if(this.authForm.controls['password'].value == this.authForm.controls['confirmPassword'].value) {
+      if(this.authForm.controls['password'].value != this.authForm.controls['oldPassword'].value) {
+        var hashedPswd = Md5.hashStr(this.authForm.controls['password'].value).toString();
       } else {
-        this.errorText = "Please enter the same password";
+        this.errorText = "Enter a password other than the old password";
         return;
       }
+      
+    } else {
+      this.errorText = "Please enter the same password at confirmation";
+      return;
+    }
 
-      await this.auth.changePassword(this.clientID, hashedPswd)
+    // Get Authorization to access Webservice
+
+		var isOK: boolean;
+		var hashedKey = "";
+		await this.auth.authWebService_Token_Hashedkey()
+			.then(result => {
+				isOK = result.isOK;
+				hashedKey = result.hashedKey;
+			});
+
+    if(isOK) {
+
+      var isCustomerFind = false;
+
+      // Start Check customer processus for check old password
+      let hashedOldPswd = Md5.hashStr(this.authForm.controls['oldPassword'].value).toString();
+
+      await this.auth.checkCustomerWithCredentials(hashedKey, this.clientEmail, hashedOldPswd)
         .then(() => {
-          this.nav.remove(this.nav.getActive().index);
+          this.logger.log_log(this.TAG, "resetPassword()", "Customer Find");
+          isCustomerFind = true;
         })
         .catch(err => {
           this.logger.error_log(this.TAG, "resetPassword()", err);
-
-          this.errorText = err;
+          this.errorText = "Customer not found. Please check your wifi connection or restart app.";
         });
-    }
+        await this.utils.delay(this.logger.EVENT_WRITE_FILE);
 
-    this.logger.warn_log(this.TAG, "resetPassword()", "method end");
-    return;
+      // Start Change password processus
+
+      if(isCustomerFind) {
+
+        await this.auth.changePassword(hashedKey, this.clientID, hashedPswd)
+          .then(() => {
+            this.nav.remove(this.nav.getActive().index);
+          })
+          .catch(err => {
+            this.logger.error_log(this.TAG, "resetPassword()", err);
+            this.errorText = err;
+          });
+          await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+      }
+    } else {
+			this.errorText = this.langService.get("ACCESS_WEBSERVICE_ERROR_MESSAGE");
+		}
+
+    await this.logger.info_log(this.TAG, "resetPassword()", "End Method");
   }
 
 }

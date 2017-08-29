@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { LoggerService } from './../../logger/logger.service';
+import { Utils } from './../../utils/utils.service';
 
 
 export class WebServiceConfig {
@@ -37,6 +38,7 @@ export class ConfigService {
 		public storage: Storage
 
 		, private logger: LoggerService
+		, private utils: Utils
 	) {
 		this.init_config();
 		this.load_config();
@@ -86,9 +88,9 @@ export class ConfigService {
 					this.logger.log_log(this.TAG, "load_config()", "using ws_timeout = " + ret);
 					this.set_ws_timeout(parseInt(ret));
 				}
-			})
-			;
+			});
 
+		setTimeout(function(){},this.logger.EVENT_WRITE_FILE);
 		return this._config_load_promise;
 	}
 

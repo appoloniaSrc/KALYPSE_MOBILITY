@@ -38,7 +38,6 @@ export class JackpotsTabsPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JackpotsTabsPage');
   }
 
 }

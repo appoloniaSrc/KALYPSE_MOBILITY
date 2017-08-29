@@ -1,5 +1,8 @@
 {
   "name": "KALYPSE_MOBILITY",
   "app_id": "3160bb8c",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

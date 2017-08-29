@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
-import { AuthenticationWebService } from './../../../providers/authentication/authentication.web.service';
+import { AuthentificationWebService } from './../../../providers/authentification/authentification.web.service';
 import { LoggerService } from './../../../providers/logger/logger.service';
+import { Utils } from './../../../providers/utils/utils.service';
+import { DftService } from './../../../providers/dft/dft.service';
 
 @IonicPage()
 @Component({
   selector: 'page-transfert',
-  templateUrl: 'transfert.html',
+  templateUrl: 'transfert.html'
 })
 export class TransfertPage {
   
@@ -15,15 +18,21 @@ export class TransfertPage {
 	// ATTRIBUTES
 	//=================================
 
-  TAG = "BarPage";
+  TAG = "TransfertPage";
 
-  loading : Loading;
+  transferType: number;
 
-  masNumber:any;
-  amountEuros:any;
-  amountCredits:any;
-  amountDefault:any;
-  amountMax:any;
+  siteID: string;
+  clientID: string;
+  cardNumber: string;
+  pinCode: string;
+
+  egmID:string;
+  amountEuros:string;
+  amountCredits:string;
+  amountDefault:string;
+  amountMax:string;
+  otherAmount:string;
 
   //=================================
 	// CONSTRUCTOR
@@ -31,18 +40,17 @@ export class TransfertPage {
 
   constructor(
     public nav: NavController
-    , private auth: AuthenticationWebService
     , public navParams: NavParams
     , private loadingCtrl: LoadingController
     , private toastCtrl: ToastController
+    , private pref: Storage
 
     , private logger: LoggerService
+    , private utils: Utils
+    , private auth: AuthentificationWebService
+    , private dft: DftService
   ) {
-    this.masNumber = "123";
-    this.amountEuros = "500.00";
-    this.amountCredits = "500.00";
-    this.amountDefault = "50.00";
-    this.amountMax = "1 500";
+
   }
 
   //=================================
@@ -50,29 +58,112 @@ export class TransfertPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TransfertPage');
+    this.init();
   }
 
-  private startTransfer(){
-    this.showLoading();
+  private async init() {
 
-    let toast = this.toastCtrl.create({
-      message: 'Success transfer',
-      duration: 3000
-    });
-    toast.present();
+    await this.logger.info_log(this.TAG, "init()", "End Method");
 
-    toast.onDidDismiss(() => {
-      this.loading.dismiss();
-    });
+    console.log(this.navParams)
+
+    this.transferType = this.navParams.get("TRANSFER_TYPE");
+
+    this.siteID = this.navParams.get("SITE_ID");
+    this.clientID = this.navParams.get("CLIENT_ID");
+    this.cardNumber = this.navParams.get("CARD_NUMBER");
+    this.egmID = this.navParams.get("EGM_ID");
+    this.pinCode = this.navParams.get("PIN_CODE");
+
+    if(this.transferType != null && this.siteID != null && this.clientID != null && this.cardNumber != null && this.egmID != null && this.pinCode != null){
+      // Get Authorization to access Webservice
+
+      var isOK: boolean;
+      var hashedKey = "";
+      await this.auth.authWebService_Token_Hashedkey()
+        .then(result => {
+          isOK = result.isOK;
+          hashedKey = result.hashedKey;
+        });
+
+      if(isOK) {
+
+        if(this.transferType == 0){
+          await this.dft.getLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.siteID + this.egmID, "0")
+            .then(result => {
+              this.amountEuros = result[0]["a:Balance"];
+              this.amountCredits = result[0]["a:Credits"];
+              this.amountDefault = result[0]["a:DefaultAmount"];
+              this.amountMax = result[0]["a:MaxAmount"];
+            })
+            .catch(err => {
+              this.logger.error_log(this.TAG, "init()", err);
+            })
+        } else if(this.transferType == 1) {
+          await this.dft.getCashlessData(hashedKey, this.clientID, this.siteID, this.siteID + this.egmID, "0", this.pinCode)
+            .then(result => {
+              this.amountEuros = result[0]["a:Balance"];
+              this.amountCredits = result[0]["a:Credits"];
+              this.amountDefault = result[0]["a:DefaultAmount"];
+              this.amountMax = result[0]["a:MaxAmount"];
+            })
+            .catch(err => {
+              this.logger.error_log(this.TAG, "init()", err);
+            })
+        }
+
+        await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+      } else {
+        this.utils.alert_error_simple("ACCESS_WEBSERVICE_ERROR_MESSAGE")
+      }
+    }
+
+    await this.logger.info_log(this.TAG, "init()", "End Method");
   }
 
-  private showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-      dismissOnPageChange: true
-    });
-    this.loading.present();
+  async startTransfer(ammountSelect: string){
+    // Get Authorization to access Webservice
+
+    console.warn(ammountSelect);
+
+    if(ammountSelect == "" || ammountSelect == undefined){
+      this.utils.alert_warning_simple("BAD_SELECTED_CREDITS");
+      return;
+    }
+
+    if(parseFloat(ammountSelect) > parseFloat(this.amountMax)){
+      this.utils.alert_warning_simple("MAX_BET_EXCEEDED_MESSAGE");
+      return;
+    }
+
+		var isOK: boolean;
+    var hashedKey = "";
+    await this.auth.authWebService_Token_Hashedkey()
+      .then(result => {
+        isOK = result.isOK;
+        hashedKey = result.hashedKey;
+      });
+
+    if(isOK) {
+      if(this.transferType == 0){
+        await this.dft.burnLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.egmID, ammountSelect, this.cardNumber, "0")
+          .then(result => {
+            this.utils.alert_success_simple("SUCCESS_TRANSFER_MESSAGE");
+          })
+      } else if(this.transferType == 1) {
+        await this.dft.burnCashlessDFT(hashedKey, this.siteID, this.clientID, this.egmID, ammountSelect, this.cardNumber, "0", this.pinCode)
+          .then(result => {
+            this.utils.alert_success_simple("SUCCESS_TRANSFER_MESSAGE");
+          })
+      }
+
+      await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+    } else {
+			this.utils.alert_error_simple("ACCESS_WEBSERVICE_ERROR_MESSAGE")
+		}
+
+    await this.logger.info_log(this.TAG, "startTransfer()", "End Method");
+
   }
 
 }

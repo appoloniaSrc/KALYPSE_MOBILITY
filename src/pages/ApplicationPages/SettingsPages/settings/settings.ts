@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { HelpPage } from './../help/help';
-import { AuthenticationWebService } from './../../../../providers/authentication/authentication.web.service';
+import { AuthentificationWebService } from './../../../../providers/authentification/authentification.web.service';
 import { LoggerService } from './../../../../providers/logger/logger.service';
+import { Utils } from './../../../../providers/utils/utils.service';
 
 
 @IonicPage()
@@ -25,10 +26,11 @@ export class SettingsPage {
 
   constructor(
     public nav: NavController
-    , private auth: AuthenticationWebService
+    , private auth: AuthentificationWebService
     , public navParams: NavParams
 
     , private logger: LoggerService
+    , private utils: Utils
   ) {
     
   }
@@ -42,9 +44,9 @@ export class SettingsPage {
   }
 
   // Deconnexion
-  public logout() {
+  public async logout() {
 
-    this.logger.warn_log(this.TAG, "logout()", "method start");
+    await this.logger.info_log(this.TAG, "logout()", "Start Method");
 
     this.auth.logout()
       .then(() => {
@@ -53,8 +55,9 @@ export class SettingsPage {
       .catch(err => {
         this.logger.error_log(this.TAG, "logout()", err);
       });
+    await this.utils.delay(this.logger.EVENT_WRITE_FILE);
 
-      this.logger.warn_log(this.TAG, "logout()", "method start");
+    await this.logger.info_log(this.TAG, "logout()", "End Method");
   }
 
   goHelpPage(){

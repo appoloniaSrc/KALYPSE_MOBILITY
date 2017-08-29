@@ -32,7 +32,6 @@ export class JackpotsTopdayPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad JackpotsTopdayPage');
   }
 
 }

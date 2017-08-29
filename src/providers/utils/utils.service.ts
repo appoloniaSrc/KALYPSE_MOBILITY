@@ -8,6 +8,7 @@ import { LoggerService } from '../logger/logger.service';
 //import * as moment from 'moment-timezone';
 
 import { LanguageService } from '../language/language.service';
+import { ErrorCaseService } from './../error-case/error-case.service';
 
 //=============================================================================
 // Standalone exports
@@ -60,15 +61,18 @@ export class Utils {
   
 	TAG = "Utils";
 
+	EVENT_DISMISS_ALERT = 5000;
+
   	//=========================================================================
 	// CONSTRUCTOR
 	//=========================================================================
 
 	constructor(
-		public alertCtrl: AlertController
-		, public toastCtrl: ToastController
+		private alertCtrl: AlertController
+		, private toastCtrl: ToastController
 
-		, public langService: LanguageService
+		, private langService: LanguageService
+		, private errorService: ErrorCaseService 
 		, private logger: LoggerService
 	) {
 
@@ -78,7 +82,11 @@ export class Utils {
 
 	//=========================================================================
 	// FUNCTIONS
-  	//=========================================================================
+	//=========================================================================
+	  
+	public delay(timeMs: number) {
+		return new Promise(resolve => setTimeout(resolve , timeMs));
+	}
 
 	leave_form_view(_form: NgForm, save_func: () => Promise<any>): Promise<any> {
 
@@ -131,7 +139,9 @@ export class Utils {
 						role: 'cancel',
 						handler: () => reject()
 					},
-				]
+				],
+				enableBackdropDismiss: false,
+				cssClass: 'alert-popup'
 			});
 			alert.present();
 		})
@@ -156,7 +166,9 @@ export class Utils {
 						text: this.langService.get('YES'),
 						handler: () => options.on_confirm ? options.on_confirm().catch(err => reject(err)) : resolve(true)
 					}
-				]
+				],
+				enableBackdropDismiss: false,
+				cssClass: 'alert-popup'
 			});
 			alert.present();
 		})
@@ -168,11 +180,81 @@ export class Utils {
 			let alert = this.alertCtrl.create({
 				title: title,
 				message: message,
-				buttons: [{ text: 'OK', handler: () => resolve() }]
+				buttons: [{ text: 'OK', handler: () => resolve() }],
+				enableBackdropDismiss: false,
+				cssClass: 'alert-popup'
 			});
 			alert.present();
 		})
 	};
+
+	alert_success_simple(label_message?: string) {
+		
+		let alert = this.alertCtrl.create({
+			title: this.langService.get("SUCCESS"),
+			subTitle: this.langService.get(label_message),
+			buttons: ['OK'],
+			enableBackdropDismiss: false,
+			cssClass: 'alert-success'
+		});
+		alert.present();
+
+		setTimeout(function() {
+			alert.dismiss();
+		}, this.EVENT_DISMISS_ALERT);
+	}
+
+	alert_warning_simple(label_message?: string) {
+		
+		let alert = this.alertCtrl.create({
+			title: this.langService.get("WARNING"),
+			subTitle: this.langService.get(label_message),
+			buttons: ['OK'],
+			enableBackdropDismiss: false,
+			cssClass: 'alert-warning'
+		});
+		alert.present();
+
+		setTimeout(function() {
+			alert.dismiss();
+		}, this.EVENT_DISMISS_ALERT);
+	}
+
+	alert_error_simple(label_message?: string) {
+
+		let alert = this.alertCtrl.create({
+			title: this.langService.get("ERR"),
+			subTitle: this.langService.get(label_message),
+			buttons: ['OK'],
+			enableBackdropDismiss: false,
+			cssClass: 'alert-error'
+		});
+		alert.present();
+
+		setTimeout(function() {
+			alert.dismiss();
+		}, this.EVENT_DISMISS_ALERT);
+	}
+
+	alert_error(error) {
+		
+		let labelError = this.errorService.get(error)
+		console.log(labelError);
+		let message = this.langService.get(labelError);
+
+		let alert = this.alertCtrl.create({
+			title: this.langService.get("ERR") + ' "' + error + '"',
+			subTitle: message,
+			buttons: ['OK'],
+			enableBackdropDismiss: false,
+			cssClass: 'alert-error'
+		});
+		alert.present();
+
+		setTimeout(function() {
+			alert.dismiss();
+		}, this.EVENT_DISMISS_ALERT);
+	}
 
 	json2array(source: any): Array<any> {
 		return json2array(source);

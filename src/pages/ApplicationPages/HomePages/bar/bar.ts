@@ -30,7 +30,6 @@ export class BarPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad BarPage');
   }
 
 }

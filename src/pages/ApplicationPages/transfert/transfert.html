@@ -1,8 +1,12 @@
 <ion-header class="page-header">
   <ion-navbar>
-    <ion-title>
-      Transfert
-    </ion-title>
+    <ion-title>Transfert</ion-title>
+
+    <ion-buttons end>
+      <button ion-button>
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -11,12 +15,12 @@
 
   <ion-list>
 
-    <p id="subTitle">You have selected the MAS n°{{masNumber}}, how much do you want to transfer ?</p>
+    <p id="subTitle">You have selected the MAS n°{{egmID}}, how much do you want to transfer ?</p>
 
     <div id="balance-component" class="component-box">
       <ion-row class="row-title">
         <ion-col col-12 class="item-title">
-            <h2>Your Balance</h2>
+            <h2>Balance</h2>
         </ion-col>
       </ion-row>
       <ion-row class="row-body">
@@ -38,11 +42,11 @@
     <div class="component-box">
       <div class="item-body-start">
         <div>
-          <h4>Default</h4>
+          <h4>Default bet</h4>
           <p>{{amountDefault}} <i class="fa fa-euro"></i></p>
         </div>
       </div>
-      <div class="item-icon-end" (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer(amountDefault)">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
     </div>
@@ -50,12 +54,12 @@
     <div class="component-box">
       <div class="item-body-start">
         <div>
-          <h4>Maximum</h4>
+          <h4>Maximum bet</h4>
           <p>{{amountMax}} <i class="fa fa-euro"></i></p>
         </div>
       </div>
 
-      <div class="item-icon-end" (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer(amountMax)">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
   </div>
@@ -64,15 +68,15 @@
 
       <div class="item-body-start">
         <div>
-          <h4>Other amount</h4>
+          <h4>Other bet</h4>
           <ion-item ion-item no-lines>
-            <ion-input type="number" placeholder="0.00" name="otherAmount"></ion-input>
+            <ion-input type="number" placeholder="0.00" name="otherAmount" [(ngModel)]="otherAmount"></ion-input>
             <i class="fa fa-euro" ion-icon item-end></i>
           </ion-item>
         </div>
       </div>
 
-      <div class="item-icon-end" (click)="startTransfer()">
+      <div class="item-icon-end" (click)="startTransfer(otherAmount)">
         <i class="fa fa-hand-pointer-o fa-2x"></i>
       </div>
       

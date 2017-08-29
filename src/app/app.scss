@@ -19,15 +19,59 @@
 // CSS General
 //==========================================================
 
-.alertPopup, .alertPrompt {
+.alert-md .alert-head {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.alert-popup, .alert-error, .alert-success, .alert-warning, .alert-prompt {
 
     .alert-title {
-        margin-bottom: 0.8em;
+        margin-bottom: 0.9em;
+        padding: 0.5em 1em;
+        
         text-align: center;
+
+        background-color: color($colors, primary)!important;
+        color: color($general-colors, light)!important;
+
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
     }
 
     .alert-sub-title{
+        padding: 0 0.5em;
         text-align: center;
+    }
+}
+
+.alert-success {
+    .alert-title {
+        background-color:color($general-colors, good)!important;
+    }
+
+    .alert-button-group{
+
+    }
+}
+
+.alert-warning {
+    .alert-title {
+        background-color:color($general-colors, warning)!important;
+    }
+
+    .alert-button-group{
+
+    }
+}
+
+.alert-error {
+    .alert-title {
+        background-color: color($general-colors, danger)!important;
+    }
+
+    .alert-button-group {
+
     }
 }
 

@@ -10,8 +10,9 @@ import { HomePage } from '../pages/ApplicationPages/HomePages/home/home';
 import { AccountPage } from '../pages/ApplicationPages/AccountPages/account/account';
 import { SettingsPage } from '../pages/ApplicationPages/SettingsPages/settings/settings';
 
-import { AuthenticationWebService } from './../providers/authentication/authentication.web.service';
+import { AuthentificationWebService } from './../providers/authentification/authentification.web.service';
 import { LoggerService } from './../providers/logger/logger.service';
+import { Utils } from './../providers/utils/utils.service';
  
 @Component({
   templateUrl: 'app.html'
@@ -30,10 +31,7 @@ export class MyApp {
 
   solde = "120.00"
 
-  timerLogout: number;
-
-
-  isFinishDisplay = false;
+  timerLogout: any;
 
   //=================================
 	// CONSTRUCTOR
@@ -46,8 +44,9 @@ export class MyApp {
     , private alertCtrl: AlertController
     , private pref: Storage
 
-    , private auth: AuthenticationWebService
+    , private auth: AuthentificationWebService
     , private logger: LoggerService
+    , private utils: Utils
     //,private push: Push
   ) {
 
@@ -60,22 +59,19 @@ export class MyApp {
       splashScreen.hide();
 
       // Clear preferences
-      this.auth.logout()
-        .catch(err => {
-          this.logger.error_log(this.TAG, "logout()", err);
-        });
+      this.auth.deletePref();
+
+      // Set Site ID
+      this.pref.set("SITE_ID", "00154");
 
       // When the app is put in the background
       platform.pause.subscribe(() => {
         this.timerLogout = setTimeout(() => {
-          this.auth.logout()
+          this.auth.deletePref()
             .then(() => {
               this.nav.setRoot('LoginPage')
-            })
-            .catch(err => {
-              this.logger.error_log(this.TAG, "logout()", err);
             });
-        }, 100000);
+        }, 600000);
       }); 
 
       // When the app is put in the foreground
@@ -87,35 +83,13 @@ export class MyApp {
       platform.registerBackButtonAction(function(event) {
         let nav = self.nav;
         if(nav.getActive().component.name == "HomePage" || nav.getActive().component.name == "LoginPage"){
-          if(!this.isFinishDisplay)
-          { 
-            let alert = self.alertCtrl.create({
-              title: 'Quit',
-              message: 'Do you want to quit this application?',
-              buttons: [
-                {
-                  text: 'Cancel',
-                  role: 'cancel',
-                  handler: () => {
-                    this.isFinishDisplay = false;
-                  }
-                },
-                {
-                  text: 'OK',
-                  handler: () => {
-                    // Clear preferences
-                    this.auth.logout()
-                      .catch(err => {
-                        this.logger.error_log(this.TAG, "logout()", err);
-                      });
-                    self.platform.exitApp();
-                  }
-                }
-              ]
-            });
-            alert.present();
+          var isCloseApp: boolean;
+          utils.alert_confirm({title: "Quit", message: "Do you want to quit this application ?"})
+            .then(result => isCloseApp = result);
 
-            this.isFinishDisplay = true;
+          if(isCloseApp){
+            auth.deletePref();
+            platform.exitApp();
           }
         }
         else if(nav.getActive().component.name == "AccountPage" || nav.getActive().component.name == "SettingsPage"){

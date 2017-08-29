@@ -28,8 +28,8 @@ $font-path: "../assets/fonts";
 $colors: (
   primary:     #606060
   ,secondary:  #2b78e4
-  ,danger:     #ff0000
-  ,good:       #0eed0e
+  ,danger:     #FC2828
+  ,good:       #31DB64
   ,light:      #ffffff
   ,dark:       #000000
 );
@@ -41,6 +41,7 @@ $general-colors: (
   link:        #2b78e4
   ,danger:     color($colors, danger)
   ,good:       color($colors, good)
+  ,warning:    #FF9500
   ,light:      color($colors, light)
   ,dark:       color($colors, dark)
 );

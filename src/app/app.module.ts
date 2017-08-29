@@ -5,6 +5,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { File } from '@ionic-native/file';
 
 //======================================================================
 // Ionic providers
@@ -14,6 +15,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { EmailComposer } from '@ionic-native/email-composer';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
@@ -49,28 +51,20 @@ import { TransfertPageModule } from '../pages/ApplicationPages/transfert/transfe
 // Providers Modules
 //**********************************************************************
 
-import { WebserviceModule } from './../providers/webservice/webservice.module';
-import { Utils } from './../providers/utils/utils.service';
-import { LoggerService } from '../providers/logger/logger.service';
+import { CoreModule } from './../providers/core.module';
 
-import { LanguagePipe } from '../providers/language/language.pipe';
-import { LanguageService } from '../providers/language/language.service';
 
 @NgModule({
   declarations: [
     MyApp
-    , LanguagePipe
   ],
-  exports: [
-		LanguagePipe
-	],
   imports: [
     BrowserModule
     , HttpModule
     , IonicModule.forRoot(MyApp)
     , IonicStorageModule.forRoot()
 
-    , WebserviceModule
+    , CoreModule
 
     , HomePageModule
     , AccountPageModule
@@ -92,10 +86,9 @@ import { LanguageService } from '../providers/language/language.service';
     StatusBar
     , SplashScreen
     , BarcodeScanner
+    , EmailComposer
+    , File
     , {provide: ErrorHandler, useClass: IonicErrorHandler}
-    , LanguageService
-    , Utils
-    , LoggerService
   ]
 })
 export class AppModule {}

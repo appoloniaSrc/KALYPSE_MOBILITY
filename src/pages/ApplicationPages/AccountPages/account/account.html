@@ -7,6 +7,9 @@
       Account
     </ion-title>
     <ion-buttons end>
+      <button ion-button>
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
       <button ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
@@ -74,7 +77,7 @@
         </ion-col>
         <ion-col col-9 class="item-content">
           <div>
-            <h4>Credit Card ID</h4>
+            <h4>N° Card Client</h4>
             <p>{{dataClient.creditCardID}}</p>
           </div>
         </ion-col>

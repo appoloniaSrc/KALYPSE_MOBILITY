@@ -6,7 +6,7 @@ import 'rxjs/add/operator/timeout';
 
 import { WebServiceConfig  } from '../shared/config.service';
 import { LoggerService } from './../../logger/logger.service';
-
+import { Utils } from './../../utils/utils.service';
 
 import { LanguageService } from '../../language/language.service';
 
@@ -32,9 +32,8 @@ export class SoapClientService {
 
 		, public langService: LanguageService
 		, private logger: LoggerService
+		, private utils: Utils
 	) {
-
-
 
 	}
 
@@ -46,12 +45,12 @@ export class SoapClientService {
 	// WEB SERVICE OPERATIONS
 	//#############################################################################################################
 
-	public createPostRequest(
+	public async createPostRequest(
         WSservice: WebServiceConfig
         , action: string
         , attributes: string
         , headers: Headers
-    ): Promise<any> {
+    ) {
 
         var body = '<?xml version="1.0" encoding="utf-8"?>\n' +
             '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:' + WSservice.label + '="' + WSservice.targetNamespace + '">\n' +
@@ -63,28 +62,29 @@ export class SoapClientService {
                 '\t</soapenv:Body>\n' +
 			'</soapenv:Envelope>';
 
-		return this.http.post(WSservice.UrlService, body, {	headers : headers })
+		let request = this.http.post(WSservice.UrlService, body, {	headers : headers })
 			.timeout(5000)
-			.toPromise()
-			.catch(err => {
-				this.logger.error_log(this.TAG, "createPostRequest()", err);
-			});
-        
+			.toPromise();
+		await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+		
+		return request;
 	}
 
-	public createGetRequest(
+	public async createGetRequest(
         WSservice: WebServiceConfig
         , action: string
         , headers: Headers
-    ): Promise<any> {
+    ) {
 
-		return this.http.get(WSservice.UrlService + '/' + action, {	headers : headers })
+		let request = this.http.get(WSservice.UrlService + '/' + action, {	headers : headers })
 			.timeout(5000)
 			.toPromise()
 			.catch(err => {
 				this.logger.error_log(this.TAG, "createGetRequest()", err);
 			});
-        
+		await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+		
+		return request;
 	}
 }
 
@@ -98,6 +98,19 @@ export class SoapClientParameters {
 	add(name: string, value: string): SoapClientParameters {
 		this._pl[name] = value;
 		return this;
+	}
+
+	toString(): string {
+		var s = "";
+        
+		for (var p in this._pl) {
+			s += p + ' = ' + this._pl[p];
+
+			if(this._pl[p] != this._pl[this._pl.length-1])
+				s += ', ';
+        }
+        
+		return s;
 	}
 
 	toXml(webservice: WebServiceConfig): string {

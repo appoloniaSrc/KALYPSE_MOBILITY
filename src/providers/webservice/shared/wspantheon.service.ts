@@ -10,6 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import { SoapClientService, SoapClientParameters } from './../Soap/soap-client.service';
 import { ConfigService } from './config.service';
 import { LoggerService } from './../../logger/logger.service';
+import { Utils } from './../../utils/utils.service';
 
 
 @Injectable()
@@ -21,8 +22,8 @@ export class WSPantheonService {
 
     TAG = "WSPantheonService";
 
-    USER_PANTHEON_LOGIN = "PANTHEON_LOYALTY";
-    USER_PANTHEON_PASS = "Dlf62s5cgCSiCXfk1fa3EQ1g1jIgQo9N";
+    USER_PANTHEON_LOGIN = "MOBILITY";
+    USER_PANTHEON_PASS = "VnnijWE1nE5YoI4dzOEiNZQsaOHkcCc9";
 
 	//=========================================================================
 	// CONSTRUCTOR
@@ -35,18 +36,83 @@ export class WSPantheonService {
         , private soapClient: SoapClientService
         , private config: ConfigService
         , private logger: LoggerService
+        , private utils: Utils
 	) {
 
     }
 
     //=========================================================================
-	// FUNCTIONS
+	// METHODS
     //=========================================================================
 
     //#############################################################################################################
 	// WEB SERVICE OPERATIONS
-	//#############################################################################################################
+    //#############################################################################################################
     
+    public async  _activeCustomerWebAccount(hashedKey: string, clientId: string): Promise<boolean> {
+
+        var isActive = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/ActiveCustomerWebAccount"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("clientId", clientId);
+
+        await this.logger.log_log(this.TAG, "_activeCustomerWebAccount()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "ActiveCustomerWebAccount", attributes.toXml(this.config.PantheonService), headers).then(result =>{
+
+            let dataResponse = this._getDataResponse(result.text(), "ActiveCustomerWebAccount");
+
+            isActive = dataResponse[0] == "true" ? true : false;
+
+        })
+        .catch(err => {
+            let error = this._catchError(err);
+
+            this.logger.error_log(this.TAG, "_activeCustomerWebAccount()", error);
+            return Promise.reject(error);
+        });
+        await await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+
+        return Promise.resolve(isActive);
+    }
+    
+    public async  _loginIsExisting(hashedKey: string, login: string): Promise<boolean> {
+
+        var isExisting = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/LoginIsExisting"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("login", login);
+
+        await this.logger.log_log(this.TAG, "_loginIsExisting()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "LoginIsExisting", attributes.toXml(this.config.PantheonService), headers).then(result =>{
+
+            let dataResponse = this._getDataResponse(result.text(), "LoginIsExisting");
+            
+            isExisting = dataResponse[0] == "true" ? true : false;
+
+        })
+        .catch(err => {
+            let error = this._catchError(err);
+
+            this.logger.error_log(this.TAG, "_loginIsExisting()", error);
+            return Promise.reject(error);
+        });
+        await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+
+        return Promise.resolve(isExisting);
+    }
+
     public async _getVersion(): Promise<string> {
 
         var version = "";
@@ -61,28 +127,21 @@ export class WSPantheonService {
 
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetVersion", attributes.toXml(this.config.PantheonService), headers).then(result =>{
 
-            this.logger.log_log(this.TAG, "_getVersion()", result.text());
+            let dataResponse = this._getDataResponse(result.text(), "GetVersion");
+            version = dataResponse.toString();
 
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetVersion")
-            version = dataArray.toString();
-
-            isOK = version != "" ? true : false, error = "Response data empty";
+            isOK = version != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(version);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getVersion()", error);
+            await this.logger.error_log(this.TAG, "_getVersion()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -102,30 +161,26 @@ export class WSPantheonService {
         let attributes = new SoapClientParameters();
         attributes.add("UserName", this.USER_PANTHEON_LOGIN);
 
-        await this.soapClient.createPostRequest(this.config.PantheonService, "GetToken", attributes.toXml(this.config.PantheonService), headers).then(result =>{
+        await this.logger.log_log(this.TAG, "_getToken()", "Request Parameters : " + attributes.toString());
 
-            this.logger.log_log(this.TAG, "_getToken()", result.text());
+        await this.soapClient.createPostRequest(this.config.PantheonService, "GetToken", attributes.toXml(this.config.PantheonService), headers)
+            .then(result => {
 
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
+                let dataArray = this._getDataResponse(result.text(), "GetToken")
+                token = dataArray.toString();
+    
+                isOK = token != undefined ? true : false, error = "Response data undefined";
+
+            })
+            .catch(err => {
+                error = this._catchError(err);
             });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetToken")
-            token = dataArray.toString();
-            
-            isOK = token != "" ? true : false, error = "Response data empty";
-
-        })
-        .catch(err => {
-            error = err;
-        });
 
         if(isOK) {
             return Promise.resolve(token);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getToken()", error);
+            await this.logger.error_log(this.TAG, "_getToken()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -136,7 +191,7 @@ export class WSPantheonService {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getSite()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_getSite()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -153,41 +208,36 @@ export class WSPantheonService {
         attributes.add("hashedKey", hashedKey);
         attributes.add("siteId", siteID);
 
+        await this.logger.log_log(this.TAG, "_getSite()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetSite", attributes.toXml(this.config.PantheonService), headers).then(result =>{
 
-            this.logger.log_log(this.TAG, "_getSite()", result.text());
-            
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
+            let dataResponse = this._getDataResponse(result.text(), "GetSite");
+            siteArray = dataResponse;
 
-            let dataArray = this._getDataResponse(sResultJson, "GetSite")
-            siteArray = dataArray;
-
-            isOK = siteArray.length != 0 ? true : false, error = "Response data empty";
+            isOK = siteArray != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(siteArray);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getSite()", error);
+            await this.logger.error_log(this.TAG, "_getSite()", error);
             // Return Error Message
             return Promise.reject(error);
         }
 
     }
-
+ 
     public async _getCustomer(hashedKey: string, siteID: string, typeID: string, idSearched: string, withPoints: boolean): Promise<any[]> {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getCustomer()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_getCustomer()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -207,31 +257,26 @@ export class WSPantheonService {
         attributes.add("idSearched", idSearched);
         attributes.add("withPoints", withPoints.toString());
 
+        await this.logger.log_log(this.TAG, "_getCustomer()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetCustomer", attributes.toXml(this.config.PantheonService), headers)
         .then(result => {
 
-            this.logger.log_log(this.TAG, "_getCustomer()", result.text());
+            let dataResponse = this._getDataResponse(result.text(), "GetCustomer");
+            customerArray = dataResponse;
 
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetCustomer")
-            customerArray = dataArray;
-
-            isOK = customerArray[0]["a:ClientId"] ? true : false, error = "Response data empty";
+            isOK = customerArray != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(customerArray);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getCustomer()", error);
+            await this.logger.error_log(this.TAG, "_getCustomer()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -242,7 +287,7 @@ export class WSPantheonService {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getCustomerByCredential()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_getCustomerByCredential()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -260,30 +305,25 @@ export class WSPantheonService {
         attributes.add("login", login);
         attributes.add("passwordCrypted", hashedPwd);
 
+        await this.logger.log_log(this.TAG, "_getCustomerByCredential()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetCustomerByCredential", attributes.toXml(this.config.PantheonService), headers).then(result =>{
 
-            this.logger.log_log(this.TAG, "_getCustomerByCredential()", result.text());
-
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetCustomerByCredential")
+            let dataArray = this._getDataResponse(result.text(), "GetCustomerByCredential")
             customerArray = dataArray;
 
-            isOK = customerArray[0]["a:ClientId"] ? true : false, error = "Response data empty";
+            isOK = customerArray[0]["a:ClientId"] != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(customerArray);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getCustomerByCredential()", error);
+            await this.logger.error_log(this.TAG, "_getCustomerByCredential()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -294,7 +334,7 @@ export class WSPantheonService {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getClientIDByCardNubmberID()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_getClientIDByCardNubmberID()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -311,31 +351,26 @@ export class WSPantheonService {
         attributes.add("hashedKey", hashedKey);
         attributes.add("cardNumberId", cardNumberID);
 
+        await this.logger.log_log(this.TAG, "_getClientIDByCardNubmberID()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetClientIDByCardNumberId", attributes.toXml(this.config.PantheonService), headers)
         .then(result => {
 
-            this.logger.log_log(this.TAG, "_getClientIDByCardNubmberID()", result.text());
+            let dataResponse = this._getDataResponse(result.text(), "GetClientIDByCardNumberId");
+            clientID = dataResponse.toString();
 
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetClientIDByCardNumberId")
-            clientID = dataArray.toString();
-
-            isOK = clientID != "" ? true : false, error = "Response data empty";
+            isOK = clientID != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(clientID);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getClientIDByCardNubmberID()", error);
+            await this.logger.error_log(this.TAG, "_getClientIDByCardNubmberID()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -346,7 +381,7 @@ export class WSPantheonService {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getPlayerCardsByClientID()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_getPlayerCardsByClientID()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -365,83 +400,26 @@ export class WSPantheonService {
         attributes.add("cardValid", cardValid.toString());
         attributes.add("cardCashless", cardCashless.toString());
 
+        await this.logger.log_log(this.TAG, "_getPlayerCardsByClientID()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "GetPlayerCardsByClientID", attributes.toXml(this.config.PantheonService), headers)
         .then(result => {
 
-            this.logger.log_log(this.TAG, "_getPlayerCardsByClientID()", result.text());
-
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "GetPlayerCardsByClientID")
+            let dataArray = this._getDataResponse(result.text(), "GetPlayerCardsByClientID")
             playerCardArray = dataArray;
 
-            isOK = playerCardArray[0]["a:cPlayerCards"] ? true : false, error = "Response data empty";
+            isOK = playerCardArray != undefined ? true : false, error = "Response data undefined";
 
         })
         .catch(err => {
-            error = err;
+            error = this._catchError(err);
         });
 
         if(isOK) {
             return Promise.resolve(playerCardArray[0]["a:cPlayerCards"]);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getPlayerCardsByClientID()", error);
-            // Return Error Message
-            return Promise.reject(error);
-        }
-
-    }
-
-    public async _updateCustomerPassword(hashedKey: string, clientId: string, hashedPwd: string): Promise<any> {
-
-        if(hashedKey == ""){
-            // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_updateCustomerPassword()", "hashedKey empty");
-            // Return Error Message
-            return Promise.reject("hashedKey empty");
-        }
-
-        var error = "";
-        var isOK = false;
-
-        var headers = new Headers();
-        headers.append('Content-Type', 'text/xml; charset=utf-8');
-        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/UpdateCustomerPassword"');
-
-        let attributes = new SoapClientParameters();
-        attributes.add("hashedKey", hashedKey);
-        attributes.add("clientId", clientId);
-        attributes.add("newPasswordCrypted", hashedPwd);
-
-
-        await this.soapClient.createPostRequest(this.config.PantheonService, "UpdateCustomerPassword", attributes.toXml(this.config.PantheonService), headers).then(result =>{
-
-            this.logger.log_log(this.TAG, "_updateCustomerPassword()", result.text());
-            
-            var sResultJson = ""
-            xml2js.parseString( result.text(), function (err, result) {
-                sResultJson = result;
-            });
-
-            let dataArray = this._getDataResponse(sResultJson, "UpdateCustomerPassword")
-            let passwordChange = dataArray.toString();
-            
-            isOK = passwordChange != "" ? true : false, error = "Response data empty";
-
-        })
-        .catch(err => {
-            this.logger.error_log(this.TAG, "_updateCustomerPassword()", err);
-        });
-
-        if(isOK) {
-            return Promise.resolve();
-        } else {
-            // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_updateCustomerPassword()", error);
+            await this.logger.error_log(this.TAG, "_getPlayerCardsByClientID()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -452,7 +430,7 @@ export class WSPantheonService {
 
         if(hashedKey == ""){
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_SearchClient()", "hashedKey empty");
+            await this.logger.error_log(this.TAG, "_SearchClient()", "hashedKey empty");
             // Return Error Message
             return Promise.reject("hashedKey empty");
         }
@@ -473,30 +451,454 @@ export class WSPantheonService {
         attributes.add("clientID", clientID);
         attributes.add("nbCardEncoded", nbCardEncoded);
 
+        await this.logger.log_log(this.TAG, "_SearchClient()", "Request Parameters : " + attributes.toString());
+
         await this.soapClient.createPostRequest(this.config.PantheonService, "SearchClient", attributes.toXml(this.config.PantheonService), headers)
             .then(result =>{
-                this.logger.log_log(this.TAG, "_SearchClient()", result.text());
 
-                var sResultJson = "";
-                xml2js.parseString( result.text(), function (err, result) {
-                    sResultJson = result;
-                });
-
-                let dataArray = this._getDataResponse(sResultJson, "SearchClient");
+                let dataArray = this._getDataResponse(result.text(), "SearchClient")
                 clientArray = dataArray;
-
-                isOK = clientArray[0]["a:cClient"] ? true : false, error = "Response data empty";
+    
+                isOK = clientArray != undefined ? true : false, error = "Response data undefined";
 
             })
             .catch(err => {
-                error = err;
+                error = this._catchError(err);
             });
 
         if(isOK) {
             return Promise.resolve(clientArray);
         } else {
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_SearchClient()", error);
+            await this.logger.error_log(this.TAG, "_SearchClient()", error);
+            // Return Error Message
+            return Promise.reject(error);
+        }
+
+    }
+
+    public async _updateCustomerPassword(hashedKey: string, clientId: string, hashedPwd: string): Promise<boolean> {
+
+        if(hashedKey == ""){
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_updateCustomerPassword()", "hashedKey empty");
+            // Return Error Message
+            return Promise.reject("hashedKey empty");
+        }
+
+        var isUpdate = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/UpdateCustomerPassword"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("clientId", clientId);
+        attributes.add("newPasswordCrypted", hashedPwd);
+
+        await this.logger.log_log(this.TAG, "_updateCustomerPassword()", "Request Parameters : " + attributes.toString());
+
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "UpdateCustomerPassword", attributes.toXml(this.config.PantheonService), headers)
+            .then(result =>{
+
+                let dataArray = this._getDataResponse(result.text(), "UpdateCustomerPassword")
+
+                isUpdate = dataArray[0] != undefined ? true : false;
+
+            })
+            .catch(err => {
+                let error = this._catchError(err);
+
+                this.logger.error_log(this.TAG, "_updateCustomerPassword()", error);
+                return Promise.reject(error);
+            });
+        await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+
+        return Promise.resolve(isUpdate);
+
+    }
+
+    public async _updateCustomer(hashedKey: string, siteId: string, clientId: string, civility: string, name: string
+                , firstname: string, birthday: string, adress1: string, adress2: string, postcode: string
+                , town: string, country: string, telephone: string, mobile: string, email: string
+                , birthtown: string, birthcountry: string, job: string, language: string, currency: string
+                , pseudo: string, isShownInternet: string, birthDpt: string, familySit: string, nationality: string): Promise<boolean> {
+
+        if(hashedKey == ""){
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_updateCustomer()", "hashedKey empty");
+            // Return Error Message
+            return Promise.reject("hashedKey empty");
+        }
+
+        var isUpdate = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/UpdateCustomer"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("siteId", siteId);
+        attributes.add("clientId", clientId);
+        attributes.add("civility", civility);
+        attributes.add("name", name);
+        attributes.add("firstname", firstname);
+        attributes.add("birthday", birthday);
+        attributes.add("adress1", adress1);
+        attributes.add("adress2", adress2);
+        attributes.add("postcode", postcode);
+        attributes.add("town", town);
+        attributes.add("country", country);
+        attributes.add("telephone", telephone);
+        attributes.add("mobile", mobile);
+        attributes.add("email", email);
+        attributes.add("birthtown", birthtown);
+        attributes.add("birthcountry", birthcountry);
+        attributes.add("job", job);
+        attributes.add("language", language);
+        attributes.add("currency", currency);
+        attributes.add("pseudo", pseudo);
+        attributes.add("isShownInternet", isShownInternet);
+        attributes.add("birthDpt", birthDpt);
+        attributes.add("familySit", familySit);
+        attributes.add("nationality", nationality);
+
+        await this.logger.log_log(this.TAG, "_updateCustomer()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "UpdateCustomer", attributes.toXml(this.config.PantheonService), headers).then(result =>{
+
+            let dataResponse = this._getDataResponse(result.text(), "UpdateCustomer");
+
+            isUpdate = dataResponse[0] != undefined ? true : false;
+
+        })
+        .catch(err => {
+            console.error(err);
+            let error = this._catchError(err);
+
+            this.logger.error_log(this.TAG, "_updateCustomer()", error);
+            return Promise.reject(error);
+        });
+        await this.utils.delay(this.logger.EVENT_WRITE_FILE);
+
+        return Promise.resolve(isUpdate);
+    }
+
+    // DFT
+    //-------------------------------------------------------------------------------------------------------------
+
+    public async _getCashlessTransfertDFT(hashedKey: string, siteID: string, siteSlot: string,
+        clientID: string, currentCreditsOnSlot: string, pinCode: string): Promise<any[]> {
+       
+       if(hashedKey == ""){
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_getCashlessTransfertDFT()", "hashedKey empty");
+           // Return Error Message
+           return Promise.reject("hashedKey empty");
+       }
+
+       var cDFTTransfert = new Array();
+       var error = "";
+       var isOK = true;
+
+       var headers = new Headers();
+       headers.append('Content-Type', 'text/xml; charset=utf-8');
+       headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/GetCashlessTransfertDFT"');
+
+       let attributes = new SoapClientParameters();
+       attributes.add("hashedKey", hashedKey);
+       attributes.add("siteID", siteID);
+       attributes.add("siteSlot", siteSlot);
+       attributes.add("clientID", clientID);
+       attributes.add("currentCreditsOnSlot", currentCreditsOnSlot);
+       attributes.add("pinCode", pinCode);
+
+       await this.logger.log_log(this.TAG, "_getCashlessTransfertDFT()", "Request Parameters : " + attributes.toString());
+
+       await this.soapClient.createPostRequest(this.config.PantheonService, "GetCashlessTransfertDFT", attributes.toXml(this.config.PantheonService), headers)
+       .then(result => {
+
+        let dataResponse = this._getDataResponse(result.text(), "GetCashlessTransfertDFT");
+        
+        cDFTTransfert = dataResponse;
+        isOK = cDFTTransfert != undefined ? true : false, error = "Response data undefined";
+
+       })
+       .catch(err => {
+        error = this._catchError(err);
+       });
+
+       if(isOK) {
+           return Promise.resolve(cDFTTransfert);
+       } else {
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_getCashlessTransfertDFT()", error);
+           // Return Error Message
+           return Promise.reject(error);
+       }
+
+    }
+
+    public async _canBurnCashlessByDFT(hashedKey: string, siteId: string, clientId: string, amountOfCashless: string,
+        cardNumber: string, siteSlot: string, currentCreditsOnSlot: string, pinCode: string): Promise<any[]> {
+       
+       if(hashedKey == ""){
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_getCashlessTransfertDFT()", "hashedKey empty");
+           // Return Error Message
+           return Promise.reject("hashedKey empty");
+       }
+
+       var isCanBurnCashless = new Array();
+       var error = "";
+       var isOK = true;
+
+       var headers = new Headers();
+       headers.append('Content-Type', 'text/xml; charset=utf-8');
+       headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/CanBurnCashlessByDFT"');
+
+       let attributes = new SoapClientParameters();
+       attributes.add("hashedKey", hashedKey);
+       attributes.add("siteId", siteId);
+       attributes.add("clientId", clientId);
+       attributes.add("amountOfCashless", amountOfCashless);
+       attributes.add("cardNumber", cardNumber);
+       attributes.add("siteSlot", siteSlot);
+       attributes.add("currentCreditsOnSlot", currentCreditsOnSlot);
+       attributes.add("pinCode", pinCode);
+
+       await this.logger.log_log(this.TAG, "_getCashlessTransfertDFT()", "Request Parameters : " + attributes.toString());
+
+       await this.soapClient.createPostRequest(this.config.PantheonService, "CanBurnCashlessByDFT", attributes.toXml(this.config.PantheonService), headers)
+       .then(result => {
+
+        let dataResponse = this._getDataResponse(result.text(), "CanBurnCashlessByDFT");
+        
+        isCanBurnCashless = dataResponse;
+        isOK = isCanBurnCashless != undefined ? true : false, error = "Response data undefined";
+
+       })
+       .catch(err => {
+        error = this._catchError(err);
+       });
+
+       if(isOK) {
+           return Promise.resolve(isCanBurnCashless);
+       } else {
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_getCashlessTransfertDFT()", error);
+           // Return Error Message
+           return Promise.reject(error);
+       }
+
+    }
+
+    public async _burnCashlessByDFT(hashedKey: string, siteId: string, clientId: string, siteSlot: string, slotNumber: string,
+        amountOfCashless: string, cardNumber: string, pinCode: string): Promise<any[]> {
+   
+       if(hashedKey == ""){
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_burnCashlessByDFT()", "hashedKey empty");
+           // Return Error Message
+           return Promise.reject("hashedKey empty");
+       }
+
+       var cDFTTransaction = new Array();
+       var error = "";
+       var isOK = true;
+
+       var headers = new Headers();
+       headers.append('Content-Type', 'text/xml; charset=utf-8');
+       headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/BurnCashlessByDFT"');
+
+       let attributes = new SoapClientParameters();
+       attributes.add("hashedKey", hashedKey);
+       attributes.add("siteId", siteId);
+       attributes.add("clientId", clientId);
+       attributes.add("siteSlot", siteSlot);
+       attributes.add("slotNumber", slotNumber);
+       attributes.add("amountOfCashless", amountOfCashless);
+       attributes.add("cardNumber", cardNumber);
+       attributes.add("pinCode", pinCode);
+
+       await this.logger.log_log(this.TAG, "_burnCashlessByDFT()", "Request Parameters : " + attributes.toString());
+
+       await this.soapClient.createPostRequest(this.config.PantheonService, "BurnCashlessByDFT", attributes.toXml(this.config.PantheonService), headers)
+       .then(result => {
+
+           let dataArray = this._getDataResponse(result.text(), "BurnCashlessByDFT")
+           cDFTTransaction = dataArray;
+
+           isOK = cDFTTransaction != undefined ? true : false, error = "Response data undefined";
+       })
+       .catch(err => {
+           error = this._catchError(err);
+       });
+
+       if(isOK) {
+           return Promise.resolve(cDFTTransaction);
+       } else {
+           // Add a new log error message of the exception
+           await this.logger.error_log(this.TAG, "_burnCashlessByDFT()", error);
+           // Return Error Message
+           return Promise.reject(error);
+       }
+
+   }
+
+    public async _getLoyaltyPointsTransfertDFT(hashedKey: string, siteID: string, siteSlot: string,
+        clientID: string, currentCreditsOnSlot: string): Promise<any[]> {
+    
+        if(hashedKey == ""){
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_getLoyaltyPointsTransfertDFT()", "hashedKey empty");
+            // Return Error Message
+            return Promise.reject("hashedKey empty");
+        }
+
+        var cLoyalyPointsTransfertDFTResponse = new Array();
+        var error = "";
+        var isOK = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/GetLoyaltyPointsTransfertDFT"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("siteID", siteID);
+        attributes.add("siteSlot", siteSlot);
+        attributes.add("clientID", clientID);
+        attributes.add("currentCreditsOnSlot", currentCreditsOnSlot);
+        
+
+        await this.logger.log_log(this.TAG, "_getLoyaltyPointsTransfertDFT()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "GetLoyaltyPointsTransfertDFT", attributes.toXml(this.config.PantheonService), headers)
+        .then(result => {
+
+            let dataResponse = this._getDataResponse(result.text(), "GetLoyaltyPointsTransfertDFT");
+            
+            cLoyalyPointsTransfertDFTResponse = dataResponse;
+            isOK = cLoyalyPointsTransfertDFTResponse != undefined ? true : false, error = "Response data undefined";
+
+        })
+        .catch(err => {
+            error = this._catchError(err);
+        });
+
+        if(isOK) {
+            return Promise.resolve(cLoyalyPointsTransfertDFTResponse);
+        } else {
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_getLoyaltyPointsTransfertDFT()", error);
+            // Return Error Message
+            return Promise.reject(error);
+        }
+
+    }
+
+    public async _canBurnLoyaltyPointsByDFT(hashedKey: string, siteId: string, clientId: string,  
+         amountOfEurosLoyaltyPoints: string, cardNumber: string, siteSlot: string, currentCreditsOnSlot: string): Promise<any[]> {
+    
+        if(hashedKey == ""){
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_canBurnLoyaltyPointsByDFT()", "hashedKey empty");
+            // Return Error Message
+            return Promise.reject("hashedKey empty");
+        }
+
+        var cPointsClient = new Array();
+        var error = "";
+        var isOK = false;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/CanBurnLoyaltyPointsByDFT"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("siteId", siteId);
+        attributes.add("clientId", clientId);
+        attributes.add("amountOfEurosLoyaltyPoints", amountOfEurosLoyaltyPoints);
+        attributes.add("cardNumber", cardNumber);
+        attributes.add("siteSlot", siteSlot);
+        attributes.add("currentCreditsOnSlot", currentCreditsOnSlot);
+
+        await this.logger.log_log(this.TAG, "_canBurnLoyaltyPointsByDFT()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "CanBurnLoyaltyPointsByDFT", attributes.toXml(this.config.PantheonService), headers)
+        .then(result => {
+
+            let dataResponse = this._getDataResponse(result.text(), "CanBurnLoyaltyPointsByDFT");
+
+            cPointsClient = dataResponse;
+            isOK = cPointsClient != undefined ? true : false, error = "Response data undefined";
+        })
+        .catch(err => {
+            error = this._catchError(err);
+        });
+
+        if(isOK) {
+            return Promise.resolve(cPointsClient);
+        } else {
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_canBurnLoyaltyPointsByDFT()", error);
+            // Return Error Message
+            return Promise.reject(error);
+        }
+
+    }
+
+    public async _burnLoyaltyPointsByDFT(hashedKey: string, siteId: string, clientId: string, siteSlot: string, slotNumber: string,
+         amountOfEurosLoyaltyPoints: string, cardNumber: string): Promise<any[]> {
+    
+        if(hashedKey == ""){
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_burnLoyaltyPointsByDFT()", "hashedKey empty");
+            // Return Error Message
+            return Promise.reject("hashedKey empty");
+        }
+
+        var cDFTTransaction = new Array();
+        var error = "";
+        var isOK = true;
+
+        var headers = new Headers();
+        headers.append('Content-Type', 'text/xml; charset=utf-8');
+        headers.append('SOAPAction', '"' + this.config.PantheonService.targetNamespace + 'IWSPantheon/BurnLoyaltyPointsByDFT"');
+
+        let attributes = new SoapClientParameters();
+        attributes.add("hashedKey", hashedKey);
+        attributes.add("siteId", siteId);
+        attributes.add("clientId", clientId);
+        attributes.add("siteSlot", siteSlot);
+        attributes.add("slotNumber", slotNumber);
+        attributes.add("amountOfEurosLoyaltyPoints", amountOfEurosLoyaltyPoints);
+        attributes.add("cardNumber", cardNumber);
+
+        await this.logger.log_log(this.TAG, "_burnLoyaltyPointsByDFT()", "Request Parameters : " + attributes.toString());
+
+        await this.soapClient.createPostRequest(this.config.PantheonService, "BurnLoyaltyPointsByDFT", attributes.toXml(this.config.PantheonService), headers)
+        .then(result => {
+
+            let dataArray = this._getDataResponse(result.text(), "BurnLoyaltyPointsByDFT")
+            cDFTTransaction = dataArray;
+
+            isOK = cDFTTransaction!= undefined ? true : false, error = "Response data undefined";
+        })
+        .catch(err => {
+            error = this._catchError(err);
+        });
+
+        if(isOK) {
+            return Promise.resolve(cDFTTransaction);
+        } else {
+            // Add a new log error message of the exception
+            await this.logger.error_log(this.TAG, "_burnLoyaltyPointsByDFT()", error);
             // Return Error Message
             return Promise.reject(error);
         }
@@ -507,12 +909,12 @@ export class WSPantheonService {
 	// UTILS OPERATIONS
 	//#############################################################################################################
 
-    public _getHashedKey(token: string): Promise<string> {
+    public async _getHashedKey(token: string): Promise<string> {
 
         try {
 
             if(token == ""){
-                this.logger.error_log(this.TAG, "_getHashedKey()", "token empty");
+                await this.logger.error_log(this.TAG, "_getHashedKey()", "token empty");
                 return;
             }
                 
@@ -530,17 +932,11 @@ export class WSPantheonService {
             // 1 : Concate the variables together (Username, Password and Token) with a Pipe separator
             hashedKey = username + "|" + this.USER_PANTHEON_PASS + "|" + token;
 
-            this.logger.log_log(this.TAG, "_getHashedKey()", "step1 : " + hashedKey);
-
             // 2 : Hash the result with the MD5 algorithm
             hashedKey = Md5.hashStr(hashedKey).toString();
 
-            this.logger.log_log(this.TAG, "_getHashedKey()", "step2 : " + hashedKey);
-
             // 3 : Concate the result and the Username with a Pipe separator
             hashedKey = hashedKey + "|" + username;
-
-            this.logger.log_log(this.TAG, "_getHashedKey()", "step3 : " + hashedKey);
 
             // Return the Hashed Key
             return Promise.resolve(hashedKey);
@@ -548,13 +944,18 @@ export class WSPantheonService {
         } catch (err) {
 
             // Add a new log error message of the exception
-            this.logger.error_log(this.TAG, "_getHashedKey()", err);
+            await this.logger.error_log(this.TAG, "_getHashedKey()", err);
             // Return Error Message
             return Promise.reject(err);
         }
     }
 
-    private _getDataResponse(jsonData: string, soapAction: string) {
+    private _getDataResponse(jsonResponse: string, soapAction: string) {
+
+        var jsonData = ""
+        xml2js.parseString( jsonResponse, function (err, result) {
+            jsonData = result;
+        });
 
         var jsonString = JSON.stringify(jsonData, null, '\t');
         var json = JSON.parse(jsonString);
@@ -562,8 +963,46 @@ export class WSPantheonService {
 
         var arrayDataResult = undefined ? [] : Array.isArray(json) ? json : [json]
 
-        this.logger.log_complex_log(this.TAG, "_getDataResponse()", arrayDataResult);
+        //this.logger.log_complex_log(this.TAG, "_getDataResponse()", arrayDataResult);
 
         return arrayDataResult;
+    }
+
+    private _getErrorDataResponse(jsonResponse: string): {faultcode: string, faultstring: string} {
+
+        var jsonData = ""
+        xml2js.parseString( jsonResponse, function (err, result) {
+            jsonData = result;
+        });
+        
+        var jsonString = JSON.stringify(jsonData, null, '\t');
+        var json = JSON.parse(jsonString);
+        json = json["s:Envelope"]["s:Body"][0]["s:Fault"];
+
+        console.log(json);
+
+        var faultcode: string =  json[0]["faultcode"].toString();
+        faultcode = faultcode.substr(2);
+        var faultstring: string = json[0]["faultstring"][0]["_"];
+
+        //this.logger.log_complex_log(this.TAG, "_getErrorDataResponse()", arrayDataResult);
+
+        return {faultcode, faultstring};
+    }
+
+    private _catchError(resultError: any): string {
+
+        var error: string;
+
+        try {
+            let dataResponse = this._getErrorDataResponse(resultError.text());
+            error = "Fault Code : " + dataResponse.faultcode + " -----> " + "Fault Message : " + dataResponse.faultstring;
+            this.utils.alert_error(dataResponse.faultcode);
+        }
+        catch(e) {
+            error = resultError.toString();
+        }
+
+        return error;
     }
 }
