@@ -1,0 +1,68 @@
+<ion-header  class="page-header">
+  <ion-toolbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Settings
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button>
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
+      <button ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="page-content">
+
+  <ion-list>
+
+    <div class="component-box" ion-item no-lines>
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-globe fa-2x" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-9 class="item-content">
+          <div style="width: 100%;">
+            <h4>Language</h4>
+            <select>
+              <option selected="true">English</option>
+              <option>Français</option>
+            </select>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <button class="component-box" ion-item no-lines (click)="goHelpPage()">
+      <ion-row>
+        <ion-col col-3 class="item-icon">
+          <i class="fa fa-question-circle fa-2x" ion-icon item-start></i>
+        </ion-col>
+        <ion-col col-7 class="item-content">
+          <h4>Help</h4>
+        </ion-col>
+        <ion-col col-2 class="item-icon-end">
+          <i class="fa fa-chevron-right fa-lg" ion-icon item-end></i>
+        </ion-col>
+      </ion-row>
+    </button>
+
+    <ion-footer>
+      <div id="last-component">
+        <h4>About</h4>
+        <p>About this application</p>
+        <div class="separator"></div>
+        <p>Licences</p>
+        <div class="separator"></div>
+        <p>Legal</p>
+      </div>
+    </ion-footer>
+  </ion-list>
+
+</ion-content>

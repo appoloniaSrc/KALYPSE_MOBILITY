@@ -19,20 +19,60 @@
 // CSS General
 //==========================================================
 
-.alertPopup, .alertPrompt {
+.alert-md .alert-head {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+}
+
+.alert-popup, .alert-error, .alert-success, .alert-warning, .alert-prompt {
 
     .alert-title {
-        margin-bottom: 0.8em;
+        margin-bottom: 0.9em;
+        padding: 0.5em 1em;
+        
         text-align: center;
+
+        background-color: color($colors, primary)!important;
+        color: color($general-colors, light)!important;
+
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
     }
 
     .alert-sub-title{
+        padding: 0 0.5em;
         text-align: center;
     }
 }
 
-.text-error {
-    color: color($general-colors, danger) !important;
+.alert-success {
+    .alert-title {
+        background-color:color($general-colors, good)!important;
+    }
+
+    .alert-button-group{
+
+    }
+}
+
+.alert-warning {
+    .alert-title {
+        background-color:color($general-colors, warning)!important;
+    }
+
+    .alert-button-group{
+
+    }
+}
+
+.alert-error {
+    .alert-title {
+        background-color: color($general-colors, danger)!important;
+    }
+
+    .alert-button-group {
+
+    }
 }
 
 //==========================================================
@@ -125,7 +165,11 @@
         text-align: center;
     }
 
-    ion-label.required:after {content: " *"; color: color($general-colors, danger);}
+    .text-error {
+        color: color($general-colors, danger) !important;
+    }
+
+    .required:after {content: " *"; color: color($general-colors, danger);}
 
     @media screen and (min-width: 315px) and (max-width: 500px) {
 
@@ -210,15 +254,15 @@
 
 .page-header {
     .toolbar-background {
-        background: color($page-colors, header-background) !important;
+        background: color($page-colors, header-background);
     }
 
     .toolbar-title {
-        color: color($page-colors, header-text) !important;
+        color: color($page-colors, header-text);
     }
 
     .bar-button {
-        color: color($page-colors, header-icon) !important;
+        color: color($page-colors, header-icon);
     }
 }
 
@@ -282,9 +326,11 @@
     .header-list {
         border-top-left-radius: 1rem;
         border-top-right-radius: 1rem;
-        background-color: color($page-list-colors, header-backgound);
+        background-color: color($page-list-colors, header-background);
         color: color($page-list-colors, header-text);
     }
+
+    .required:after {content: " *"; color: color($general-colors, danger);}
     
     @media screen and (min-width: 315px) and (max-width: 500px) {
 

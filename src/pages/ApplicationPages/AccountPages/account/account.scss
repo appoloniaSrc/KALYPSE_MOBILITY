@@ -1,0 +1,45 @@
+page-account {
+    .page-header {
+        .toolbar-background {
+            background: color($account-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($account-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($account-page-colors, header-icon) !important;
+        }
+    }
+
+
+    .page-content {
+        background: color($account-page-colors, background) !important;
+
+        p {
+            color: color($account-page-colors, text) !important;
+        }
+
+        .component-box:first-child {
+            margin-top: 4%;
+        }
+
+        .component-box {
+            background-color: color($account-box-colors, background) !important;
+
+            p {
+                color: color($account-box-colors, text) !important;
+            }
+
+            h4 {
+                color: color($account-box-colors, text) !important;
+            }
+
+            .fa {
+                color: color($account-box-colors, icon) !important;
+            }
+        
+        }
+    }
+}

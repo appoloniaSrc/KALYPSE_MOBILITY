@@ -22,7 +22,7 @@ module.exports = {
     src: ['{{ROOT}}/node_modules/sw-toolbox/sw-toolbox.js'],
     dest: '{{BUILD}}'
   },
-  copyFontawesomeFonts: { 
+  copyFontawesome: { 
     src: ['{{ROOT}}/node_modules/font-awesome/fonts/**/*'], 
     dest: '{{WWW}}/assets/fonts'
   },

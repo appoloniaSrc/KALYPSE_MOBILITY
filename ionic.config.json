@@ -1,5 +1,8 @@
 {
-  "name": "projectMobility",
-  "app_id": "",
-  "type": "ionic-angular"
+  "name": "KALYPSE_MOBILITY",
+  "app_id": "3160bb8c",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

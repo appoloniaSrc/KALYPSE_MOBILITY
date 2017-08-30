@@ -3,12 +3,16 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav, IonicApp, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {Push, PushObject, PushOptions} from "@ionic-native/push";
+import { Push, PushObject, PushOptions } from "@ionic-native/push";
 import { Storage } from '@ionic/storage';
 
-import { HomePage } from '../pages/home/home';
-import { AccountPage } from '../pages/account/account';
-import { SettingsPage } from '../pages/settings/settings';
+import { HomePage } from '../pages/ApplicationPages/HomePages/home/home';
+import { AccountPage } from '../pages/ApplicationPages/AccountPages/account/account';
+import { SettingsPage } from '../pages/ApplicationPages/SettingsPages/settings/settings';
+
+import { AuthentificationWebService } from './../providers/authentification/authentification.web.service';
+import { LoggerService } from './../providers/logger/logger.service';
+import { Utils } from './../providers/utils/utils.service';
  
 @Component({
   templateUrl: 'app.html'
@@ -22,14 +26,12 @@ export class MyApp {
   TAG = "MyApp";
 
   @ViewChild(Nav) nav: Nav;
-
   rootPage:any = "LoginPage";
-
   pages: Array<{title: string, component: any}>;
 
   solde = "120.00"
 
-  isFinishDisplay = false;
+  timerLogout: any;
 
   //=================================
 	// CONSTRUCTOR
@@ -37,10 +39,14 @@ export class MyApp {
  
   constructor (
     private platform: Platform
-    ,private statusBar: StatusBar
-    ,private splashScreen: SplashScreen
-    ,private alertCtrl: AlertController
-    ,private pref: Storage
+    , private statusBar: StatusBar
+    , private splashScreen: SplashScreen
+    , private alertCtrl: AlertController
+    , private pref: Storage
+
+    , private auth: AuthentificationWebService
+    , private logger: LoggerService
+    , private utils: Utils
     //,private push: Push
   ) {
 
@@ -52,43 +58,45 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      // Clear all preferences
-      //this.pref.clear();
+      // Clear preferences
+      this.auth.deletePref();
+
+      // Set Site ID
+      this.pref.set("SITE_ID", "00154");
+
+      // When the app is put in the background
+      platform.pause.subscribe(() => {
+        this.timerLogout = setTimeout(() => {
+          this.auth.deletePref()
+            .then(() => {
+              this.nav.setRoot('LoginPage')
+            });
+        }, 600000);
+      }); 
+
+      // When the app is put in the foreground
+      platform.resume.subscribe(() => {
+        clearTimeout(this.timerLogout);
+      });
 
       // Override event BackButton on mobile
       platform.registerBackButtonAction(function(event) {
         let nav = self.nav;
         if(nav.getActive().component.name == "HomePage" || nav.getActive().component.name == "LoginPage"){
-          if(!this.isFinishDisplay)
-          { 
-            let alert = self.alertCtrl.create({
-              title: 'Quit',
-              message: 'Do you want to quit this application?',
-              buttons: [
-                {
-                  text: 'Cancel',
-                  role: 'cancel',
-                  handler: () => {
-                    console.log('Cancel clicked');
-                    this.isFinishDisplay = false;
-                  }
-                },
-                {
-                  text: 'OK',
-                  handler: () => {
-                    console.log('OK clicked');
-                    self.platform.exitApp();
-                  }
-                }
-              ]
-            });
-            alert.present();
+          var isCloseApp: boolean;
+          utils.alert_confirm({title: "Quit", message: "Do you want to quit this application ?"})
+            .then(result => isCloseApp = result);
 
-            this.isFinishDisplay = true;
+          if(isCloseApp){
+            auth.deletePref();
+            platform.exitApp();
           }
         }
-        else {
+        else if(nav.getActive().component.name == "AccountPage" || nav.getActive().component.name == "SettingsPage"){
           nav.setRoot(HomePage);
+        }
+        else {
+          nav.remove(nav.getActive().index);
         }
       })
     });
@@ -105,8 +113,8 @@ export class MyApp {
 
   //=================================
 	// METHODS
-	//=================================
-
+  //=================================
+  
   // Open the page passed as argument
   openPage(page) {
     // Reset the content nav to have just this page

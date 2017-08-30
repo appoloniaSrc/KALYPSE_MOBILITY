@@ -1,0 +1,66 @@
+page-settings {
+
+    .page-header {
+        .toolbar-background {
+            background: color($settings-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($settings-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($settings-page-colors, header-icon) !important;
+        }
+    }
+    
+    .page-content {
+        background: color($settings-page-colors, background) !important;
+
+        p {
+            color: color($settings-page-colors, text) !important;
+        }
+
+        .component-box {
+            background-color: color($settings-box-colors, background) !important;
+
+            p {
+                color: color($settings-box-colors, text) !important;
+            }
+
+            h4 {
+                color: color($settings-box-colors, text) !important;
+            }
+
+            .fa {
+                color: color($settings-box-colors, icon) !important;
+            }
+
+            select {
+                background: color($settings-select-colors, background) !important;
+                margin-top: 7px;
+
+                border: none;
+                border-bottom: 2px solid color($settings-select-colors, border-bottom);
+                color: color($settings-select-colors, text);
+                width: 100%;
+                
+                font-size: 0.9em;
+            }
+        }
+
+        #last-component{
+            width: 90%;
+            margin: 0 auto 3% auto;
+
+            h4 {
+                color: color($settings-page-colors, text);
+            }
+
+            .separator {
+                border-bottom: 2px solid color($settings-page-colors, divider);
+            }
+        }
+    }
+
+}

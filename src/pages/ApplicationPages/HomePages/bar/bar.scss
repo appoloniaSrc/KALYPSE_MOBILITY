@@ -1,0 +1,30 @@
+page-bar {
+    .page-header {
+        .toolbar-background {
+            background: color($brewery-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($brewery-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($brewery-page-colors, header-icon) !important;
+        }
+    }
+
+
+    .page-content {
+        background: color($brewery-page-colors, background) !important;
+
+        p {
+            color: color($brewery-page-colors, text) !important;
+        }
+
+        .header-list {
+            background-color: color($brewery-list-colors, header-background) !important;
+            color: color($brewery-list-colors, header-text) !important;
+        }
+
+    }
+}

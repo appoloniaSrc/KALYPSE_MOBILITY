@@ -1,0 +1,15 @@
+page-jackpots-tabs {
+    .page-header {
+        .toolbar-background {
+            background: color($jackpots-page-colors, header-background) !important;
+        }
+
+        .toolbar-title {
+            color: color($jackpots-page-colors, header-text) !important;
+        }
+
+        .bar-button {
+            color: color($jackpots-page-colors, header-icon) !important;
+        }
+    }
+}

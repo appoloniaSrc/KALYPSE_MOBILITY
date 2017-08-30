@@ -13,6 +13,8 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+
+
 //======================================================================
 // Named Color Variables
 //======================================================================
@@ -24,137 +26,131 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #606060,
-  secondary:  #2b78e4,
-  tertiary :  #b2b2b2,
-  quaternary: #8c8c8c,
-  danger:     #ff0000,
-  good:       #0eed0e,
-  light:      #ffffff,
-  dark:       #000000
+  primary:     #2b78e4
+  ,secondary:  #606060
+  ,danger:     #FC2828
+  ,good:       #31DB64
+  ,light:      #ffffff
+  ,dark:       #000000
 );
 
 // General color variables
 //######################################################################
 
 $general-colors: (
-  link:       #2b78e4,
-  danger:     #ff0000,
-  good:       #0eed0e,
-  light:      #ffffff,
-  dark:       #000000
+  link:        #2b78e4
+  ,danger:     color($colors, danger)
+  ,good:       color($colors, good)
+  ,warning:    #FF9500
+  ,light:      color($colors, light)
+  ,dark:       color($colors, dark)
 );
 
 // Color Variables for Connexion pages
 //######################################################################
 
 $connexion-pages-colors: (
-  background: #ffffff,
-  text:       #000000
+  background:  #ffffff
+  ,text:       #000000
 );
 
 $connexion-button-footer-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
-);
-
-// Color Variables for the Menu
-//######################################################################
-
-$menu-colors: (
-  background:            #ffffff,
-  header-background:     #606060,
-  header-text:           #ffffff,
-  text:                  #000000,
-  icon:                  #000000,
-  divider:               #000000
+  background:  color($colors, primary)
+  ,text:       #ffffff
+  ,icon:       #ffffff
 );
 
 // Color Variables for pages (Default use)
 //######################################################################
 
 $page-colors: (
-  background:            #b2b2b2,
-  header-background:     #606060,
-  header-text:           #ffffff,
-  header-icon:           #ffffff,
-  text:                  #ffffff
+  background:             #ffffff
+  ,header-background:     color($colors, primary)
+  ,header-text:           #ffffff
+  ,header-icon:           #ffffff
+  ,text:                  #000000
+  ,icon:                  #000000
 );
 
 $page-box-colors: (
-  general-background:   #606060,
-  transfer-background:  #8c8c8c,
-  text:                 #ffffff,
-  icon:                 #ffffff
+  general-background:    color($page-colors, header-background)
+  ,transfer-background:  #83B6FF
+  ,text:                 #ffffff
+  ,icon:                 #ffffff
 );
 
 $page-list-colors: (
-  background:      #b2b2b2,
-  header-backgound:#ff0000,
-  header-text:     #ffffff,
-  header-icon:     #ffffff,
-  impair-line-background:      #b2b2b2,
-  pair-line-background:        #8c8c8c,
-  line-text:                   #000000,
-  line-button-bacgound:        #ff0000,
-  line-button-text:            #ffffff,
+  background:                   #b2b2b2
+  ,header-background:           #ff0000
+  ,header-text:                 #ffffff
+  ,header-icon:                 #ffffff
+  ,information-line-background: #8c8c8c
+  ,information-line-text:       #000000
+  ,impair-line-background:      #b2b2b2
+  ,pair-line-background:        #8c8c8c
+  ,line-text:                   #000000
+  ,line-button-bacgound:        #ff0000
+  ,line-button-text:            #ffffff
 );
 
 // Color Variables for Home page
 //######################################################################
 
 $home-page-colors: (
-  background: #b2b2b2,
-  header:     #606060,
-  text:       #ffffff
+  background:         color($page-colors, background)
+  ,header-background: color($page-colors, header-background)
+  ,header-text:       color($page-colors, header-text)
+  ,header-icon:       color($page-colors, header-icon)
+  ,text:              color($page-colors, text)
 );
 
 $function-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
 $scan-qrcode-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
 $transfer-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
 $jackpots-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
     //----------------------------------------------------------------------
     // Color Variables for Jackpots page
     //----------------------------------------------------------------------
 
     $jackpots-page-colors: (
-      background: #ffffff,
-      header:     #606060,
-      text:       #000000
+      background:         color($page-colors, background)
+      ,header-background: color($page-colors, header-background)
+      ,header-text:       color($page-colors, header-text)
+      ,header-icon:       color($page-colors, header-icon)
+      ,text:              color($page-colors, text)
     );
 
     $jackpots-list-colors: (
-      background:      #b2b2b2,
-      header-backgound:#ff0000,
-      header-text:     #ffffff,
-      header-icon:     #ffffff,
-      information-line-background: #8c8c8c,
-      information-line-text:       #000000,
-      impair-line-background:      #b2b2b2,
-      pair-line-background:        #8c8c8c,
-      line-text:                   #000000,
-      line-button-bacgound:        #ff0000,
-      line-button-text:            #ffffff,
+      background:                   color($page-list-colors, background)
+      ,header-background:           color($page-list-colors, header-background)
+      ,header-text:                 color($page-list-colors, header-text)
+      ,header-icon:                 color($page-list-colors, header-icon)
+      ,information-line-background: color($page-list-colors, information-line-background)
+      ,information-line-text:       color($page-list-colors, information-line-text)
+      ,impair-line-background:      color($page-list-colors, impair-line-background)
+      ,pair-line-background:        color($page-list-colors, pair-line-background)
+      ,line-text:                   color($page-list-colors, line-text)
+      ,line-button-bacgound:        color($page-list-colors, line-button-bacgound)
+      ,line-button-text:            color($page-list-colors, line-button-text)
     );
 
     $jackpots-tabs-color: (
@@ -162,15 +158,15 @@ $jackpots-box-colors: (
     );
 
 $call-mcd-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
 $brewery-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
     //----------------------------------------------------------------------
@@ -178,94 +174,118 @@ $brewery-box-colors: (
     //----------------------------------------------------------------------
 
     $brewery-page-colors: (
-      background: #ffffff,
-      header:     #606060,
-      text:       #000000
+      background:         color($page-colors, background)
+      ,header-background: color($page-colors, header-background)
+      ,header-text:       color($page-colors, header-text)
+      ,header-icon:       color($page-colors, header-icon)
+      ,text:              color($page-colors, text)
     );
 
     $brewery-list-colors: (
-      background:      #b2b2b2,
-      header-backgound:#ff0000,
-      header-text:     #ffffff,
-      header-icon:     #ffffff,
-      information-line-background: #8c8c8c,
-      information-line-text:       #000000,
-      impair-line-background:      #b2b2b2,
-      pair-line-background:        #8c8c8c,
-      line-text:                   #000000,
-      line-button-bacgound:        #ff0000,
-      line-button-text:            #ffffff,
+      background:                   color($page-list-colors, background)
+      ,header-background:           color($page-list-colors, header-background)
+      ,header-text:                 color($page-list-colors, header-text)
+      ,header-icon:                 color($page-list-colors, header-icon)
+      ,information-line-background: color($page-list-colors, information-line-background)
+      ,information-line-text:       color($page-list-colors, information-line-text)
+      ,impair-line-background:      color($page-list-colors, impair-line-background)
+      ,pair-line-background:        color($page-list-colors, pair-line-background)
+      ,line-text:                   color($page-list-colors, line-text)
+      ,line-button-bacgound:        color($page-list-colors, line-button-bacgound)
+      ,line-button-text:            color($page-list-colors, line-button-text)
     );
 
-$information-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+$informations-box-colors: (
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
     //----------------------------------------------------------------------
     // Color Variables for Information page
     //----------------------------------------------------------------------
 
-    $information-page-colors: (
-      background: #ffffff,
-      header:     #606060,
-      text:       #000000
+    $informations-page-colors: (
+      background:         color($page-colors, background)
+      ,header-background: color($page-colors, header-background)
+      ,header-text:       color($page-colors, header-text)
+      ,header-icon:       color($page-colors, header-icon)
+      ,text:              color($page-colors, text)
     );
 
 // Color Variables for Account page
 //######################################################################
 
 $account-page-colors: (
-  background: #b2b2b2,
-  header:     #606060,
-  text:       #ffffff
+  background:         color($page-colors, background)
+  ,header-background: color($page-colors, header-background)
+  ,header-text:       color($page-colors, header-text)
+  ,header-icon:       color($page-colors, header-icon)
+  ,text:              color($page-colors, text)
 );
 
 $account-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:  color($page-box-colors, general-background)
+  ,text:       color($page-box-colors, text)
+  ,icon:       color($page-box-colors, icon)
 );
 
 // Color Variables for Settings page
 //######################################################################
 
 $settings-page-colors: (
-  background: #b2b2b2,
-  header:     #606060,
-  text:       #ffffff,
-  divider:    #ffffff
+  background:             #b2b2b2
+  ,header-background:     #606060
+  ,header-text:           #ffffff
+  ,header-icon:           #ffffff
+  ,text:                  #ffffff
+  ,icon:                  #ffffff
+  ,divider:               #ffffff
 );
 
 $settings-box-colors: (
-  background: #606060,
-  text:       #ffffff,
-  icon:       #ffffff
+  background:    #606060
+  ,transfer-background:  #8c8c8c
+  ,text:                 color($settings-page-colors, text)
+  ,icon:                 color($settings-page-colors, text)
 );
 
 $settings-select-colors: (
-  background: color($settings-box-colors, background),
-  border-bottom:  #8c8c8c,
-  text:           #ffffff
+  background:       color($settings-box-colors, background)
+  ,border-bottom:   #8c8c8c
+  ,text:            color($settings-box-colors, text)
 );
 
 // Color Variables for Transfer page
 //######################################################################
 
 $transfer-page-colors: (
-  background: #b2b2b2,
-  header:     #606060,
-  text:       #ffffff,
+  background:         color($page-colors, background)
+  ,header-background: color($page-colors, header-background)
+  ,header-text:       color($page-colors, header-text)
+  ,header-icon:       color($page-colors, header-icon)
+  ,text:              color($page-colors, text)
 );
 
 $transfer-box-colors: (
-  header-background: #606060,
-  header-text:       #ffffff,
-  header-icon:       #ffffff,
-  content-background:#8c8c8c,
-  content-text:      #ffffff,
-  content-icon:      #ffffff
+  header-background:  color($page-box-colors, general-background)
+  ,header-text:       color($page-box-colors, text)
+  ,header-icon:       color($page-box-colors, icon)
+  ,content-background:color($page-box-colors, transfer-background)
+  ,content-text:      color($page-box-colors, text)
+  ,content-icon:      color($page-box-colors, icon)
+);
+
+// Color Variables for the Menu
+//######################################################################
+
+$menu-colors: (
+  background:             color($page-colors, background)
+  ,header-background:     color($page-colors, header-background)
+  ,header-text:           color($page-colors, header-text)
+  ,text:                  color($general-colors, dark)
+  ,icon:                  color($general-colors, dark)
+  ,divider:               color($general-colors, dark)
 );
 
 //======================================================================
@@ -311,7 +331,6 @@ $transfer-box-colors: (
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
-@import "../../node_modules/font-awesome/scss/font-awesome";
 
 //======================================================================
 // Fonts

@@ -1,0 +1,46 @@
+<ion-content class="connexion-content">
+  <ion-row class="logo-row">
+    <ion-col>
+      <img class="app-logo" src="https://www.appolonia.fr/images/Resources/Articles/Presentation/image_presentation_opt.jpg"/>
+    </ion-col>
+  </ion-row>
+
+  <form class="input-container" [formGroup]="authForm" novalidate>
+
+        <ion-item>
+          <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+        </ion-item>
+        
+        <ion-item no-lines class="checkbox-container">
+          <ion-checkbox formControlName="rememberMe" mode="md"></ion-checkbox>
+          <ion-label>Remember Me</ion-label>
+        </ion-item>
+
+        <div style="display: flex;
+                    justify-content: flex-start;
+                    align-items: center;">
+          <ion-item>
+            <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+          </ion-item>
+          <i class="fa fa-chevron-right fa-lg" style="padding: 20px 0 20px 20px;" (click)="login()"></i>
+        </div>
+
+        <p class="text-error">{{errorText}}</p>
+
+        <p>Forgot your password ? Please click <a (click)="goRecoverPassword()">here</a></p>
+
+  </form>
+</ion-content>
+
+<ion-footer class="connexion-footer">
+  <ion-toolbar>
+      <ion-row>
+        <ion-col>
+          <button ion-button full clear (click)="createAccount()">First Visit</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button full clear [disabled]="!authForm.valid" (click)="login()">Login</button>
+        </ion-col>
+      </ion-row>
+  </ion-toolbar>
+</ion-footer>
