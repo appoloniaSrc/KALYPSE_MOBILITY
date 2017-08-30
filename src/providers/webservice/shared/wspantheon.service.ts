@@ -10,7 +10,7 @@ import 'rxjs/add/operator/toPromise';
 import { SoapClientService, SoapClientParameters } from './../Soap/soap-client.service';
 import { ConfigService } from './config.service';
 import { LoggerService } from './../../logger/logger.service';
-import { Utils } from './../../utils/utils.service';
+import { Utils, transfer_types_list } from './../../utils/utils.service';
 
 
 @Injectable()
@@ -602,7 +602,7 @@ export class WSPantheonService {
 
        var cDFTTransfert = new Array();
        var error = "";
-       var isOK = true;
+       var isOK = false;
 
        var headers = new Headers();
        headers.append('Content-Type', 'text/xml; charset=utf-8');
@@ -628,7 +628,7 @@ export class WSPantheonService {
 
        })
        .catch(err => {
-        error = this._catchError(err);
+        error = this._catchError(err, transfer_types_list.get("cashless"));
        });
 
        if(isOK) {
@@ -654,7 +654,7 @@ export class WSPantheonService {
 
        var isCanBurnCashless = new Array();
        var error = "";
-       var isOK = true;
+       var isOK = false;
 
        var headers = new Headers();
        headers.append('Content-Type', 'text/xml; charset=utf-8');
@@ -682,7 +682,7 @@ export class WSPantheonService {
 
        })
        .catch(err => {
-        error = this._catchError(err);
+        error = this._catchError(err, transfer_types_list.get("cashless"));
        });
 
        if(isOK) {
@@ -708,7 +708,7 @@ export class WSPantheonService {
 
        var cDFTTransaction = new Array();
        var error = "";
-       var isOK = true;
+       var isOK = false;
 
        var headers = new Headers();
        headers.append('Content-Type', 'text/xml; charset=utf-8');
@@ -735,7 +735,7 @@ export class WSPantheonService {
            isOK = cDFTTransaction != undefined ? true : false, error = "Response data undefined";
        })
        .catch(err => {
-           error = this._catchError(err);
+           error = this._catchError(err, transfer_types_list.get("cashless"));
        });
 
        if(isOK) {
@@ -787,7 +787,7 @@ export class WSPantheonService {
 
         })
         .catch(err => {
-            error = this._catchError(err);
+            error = this._catchError(err, transfer_types_list.get("loyaltyPoints"));
         });
 
         if(isOK) {
@@ -839,7 +839,7 @@ export class WSPantheonService {
             isOK = cPointsClient != undefined ? true : false, error = "Response data undefined";
         })
         .catch(err => {
-            error = this._catchError(err);
+            error = this._catchError(err, transfer_types_list.get("loyaltyPoints"));
         });
 
         if(isOK) {
@@ -865,7 +865,7 @@ export class WSPantheonService {
 
         var cDFTTransaction = new Array();
         var error = "";
-        var isOK = true;
+        var isOK = false;
 
         var headers = new Headers();
         headers.append('Content-Type', 'text/xml; charset=utf-8');
@@ -891,7 +891,7 @@ export class WSPantheonService {
             isOK = cDFTTransaction!= undefined ? true : false, error = "Response data undefined";
         })
         .catch(err => {
-            error = this._catchError(err);
+            error = this._catchError(err, transfer_types_list.get("loyaltyPoints"));
         });
 
         if(isOK) {
@@ -990,14 +990,17 @@ export class WSPantheonService {
         return {faultcode, faultstring};
     }
 
-    private _catchError(resultError: any): string {
+    private _catchError(resultError: any, typeTransfer?: number): string {
 
         var error: string;
 
         try {
             let dataResponse = this._getErrorDataResponse(resultError.text());
             error = "Fault Code : " + dataResponse.faultcode + " -----> " + "Fault Message : " + dataResponse.faultstring;
-            this.utils.alert_error(dataResponse.faultcode);
+            if(typeTransfer != undefined)
+                this.utils.alert_error(dataResponse.faultcode, typeTransfer);
+            else
+                this.utils.alert_error_simple(dataResponse.faultstring);
         }
         catch(e) {
             error = resultError.toString();

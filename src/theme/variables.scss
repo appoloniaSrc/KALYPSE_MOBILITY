@@ -26,8 +26,8 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:     #606060
-  ,secondary:  #2b78e4
+  primary:     #2b78e4
+  ,secondary:  #606060
   ,danger:     #FC2828
   ,good:       #31DB64
   ,light:      #ffffff
@@ -55,7 +55,7 @@ $connexion-pages-colors: (
 );
 
 $connexion-button-footer-colors: (
-  background:  #606060
+  background:  color($colors, primary)
   ,text:       #ffffff
   ,icon:       #ffffff
 );
@@ -64,17 +64,17 @@ $connexion-button-footer-colors: (
 //######################################################################
 
 $page-colors: (
-  background:             #b2b2b2
-  ,header-background:     #606060
+  background:             #ffffff
+  ,header-background:     color($colors, primary)
   ,header-text:           #ffffff
   ,header-icon:           #ffffff
-  ,text:                  #ffffff
-  ,icon:                  #ffffff
+  ,text:                  #000000
+  ,icon:                  #000000
 );
 
 $page-box-colors: (
-  general-background:    #606060
-  ,transfer-background:  #8c8c8c
+  general-background:    color($page-colors, header-background)
+  ,transfer-background:  #83B6FF
   ,text:                 #ffffff
   ,icon:                 #ffffff
 );
@@ -234,18 +234,20 @@ $account-box-colors: (
 //######################################################################
 
 $settings-page-colors: (
-  background:         color($page-colors, background)
-  ,header-background: color($page-colors, header-background)
-  ,header-text:       color($page-colors, header-text)
-  ,header-icon:       color($page-colors, header-icon)
-  ,text:              color($page-colors, text)
-  ,divider:           color($page-colors, text)
+  background:             #b2b2b2
+  ,header-background:     #606060
+  ,header-text:           #ffffff
+  ,header-icon:           #ffffff
+  ,text:                  #ffffff
+  ,icon:                  #ffffff
+  ,divider:               #ffffff
 );
 
 $settings-box-colors: (
-  background:  color($page-box-colors, general-background)
-  ,text:       color($page-box-colors, text)
-  ,icon:       color($page-box-colors, icon)
+  background:    #606060
+  ,transfer-background:  #8c8c8c
+  ,text:                 color($settings-page-colors, text)
+  ,icon:                 color($settings-page-colors, text)
 );
 
 $settings-select-colors: (
@@ -281,9 +283,9 @@ $menu-colors: (
   background:             color($page-colors, background)
   ,header-background:     color($page-colors, header-background)
   ,header-text:           color($page-colors, header-text)
-  ,text:                  color($page-colors, text)
-  ,icon:                  color($page-colors, icon)
-  ,divider:               color($page-colors, text)
+  ,text:                  color($general-colors, dark)
+  ,icon:                  color($general-colors, dark)
+  ,divider:               color($general-colors, dark)
 );
 
 //======================================================================

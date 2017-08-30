@@ -16,11 +16,6 @@ export class DftService {
 
   TAG = "DftService";
 
-  transfer_types_list = new Map<string, number>([
-    [ "loyaltyPoints", 0 ],
-    [ "cashless", 1 ]
-  ]);
-  
   //=========================================================================
   // CONSTRUCTOR
   //=========================================================================
@@ -95,12 +90,17 @@ async canBurnCashlessDFT(hashedKey: string, clientId: string, siteID: string, sl
   });
   loading.present();
 
+  var isOK = false
   var canCashless = false;;
 
   await this.webservice._canBurnCashlessByDFT(hashedKey, siteID, clientId, amountCashless,
       cardNumber, siteID + slotNumber, currentCreditSlot, pinCode)
     .then(result => {
-      canCashless = result[0] == "true" ? true: false;
+
+      isOK = (result[0] == "true") && (result[0] != undefined) ? true: false;
+
+      if(isOK)
+        canCashless = result[0] == "true" ? true: false;
     })
     .catch(err => {
       this.logger.error_log(this.TAG, "canBurnCashlessDFT()", err);			
@@ -109,7 +109,10 @@ async canBurnCashlessDFT(hashedKey: string, clientId: string, siteID: string, sl
   loading.dismiss();
   await this.utils.delay(this.logger.EVENT_WRITE_FILE);
 
-  return Promise.resolve(canCashless);
+  if(isOK)
+    return Promise.resolve(canCashless);
+  else
+    return Promise.reject(null);
 }
 
 async burnCashlessDFT(hashedKey: string, siteID: string, clientId: string, slotNumber: string,
@@ -208,12 +211,17 @@ async burnCashlessDFT(hashedKey: string, siteID: string, clientId: string, slotN
     });
     loading.present();
 
+    var isOK = false;
     var canTakePresent = false;;
 
     await this.webservice._canBurnLoyaltyPointsByDFT(hashedKey, siteID, clientId, amountEuros,
         cardNumber, siteID + slotNumber, currentCreditSlot)
       .then(result => {
-        canTakePresent = result[0]["a:CanTakePresent"] == "true" ? true: false;
+
+        isOK = result[0]["a:CanTakePresent"] != undefined ? true: false;
+
+        if(isOK)
+          canTakePresent = result[0]["a:CanTakePresent"] == "true" ? true: false;
       })
       .catch(err => {
         this.logger.error_log(this.TAG, "burnLoyaltyPoints()", err);			
@@ -222,7 +230,10 @@ async burnCashlessDFT(hashedKey: string, siteID: string, clientId: string, slotN
     loading.dismiss();
     await this.utils.delay(this.logger.EVENT_WRITE_FILE);
 
-    return Promise.resolve(canTakePresent);
+    if(isOK)
+      return Promise.resolve(canTakePresent);
+    else
+      return Promise.reject(null);
   }
 
   async burnLoyaltyPoints(hashedKey: string, clientId: string, siteID: string, slotNumber: string,

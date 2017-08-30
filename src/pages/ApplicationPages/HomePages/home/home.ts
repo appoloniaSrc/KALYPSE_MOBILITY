@@ -17,7 +17,7 @@ import { AuthentificationWebService } from './../../../../providers/authentifica
 import { DftService } from './../../../../providers/dft/dft.service';
 import { LoggerService } from './../../../../providers/logger/logger.service';
 import { LanguageService } from './../../../../providers/language/language.service';
-import { Utils } from './../../../../providers/utils/utils.service';
+import { Utils, transfer_types_list, getValueFromString } from './../../../../providers/utils/utils.service';
  
 @IonicPage()
 @Component({
@@ -55,12 +55,12 @@ export class HomePage {
     , isEmpty: boolean
   }>;
 
-  isScannedEGM : any;
-  egmId: string;
+  isScannedSlot : any;
+  slotNumber: string;
   
   resultsScan = {
     siteId: ""
-    , egmId: ""
+    , slotNumber: ""
   }
 
   //=================================
@@ -85,7 +85,7 @@ export class HomePage {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if(this.platform.is('ios') || this.platform.is('android')) {
-        this.isScannedEGM = false;
+        this.isScannedSlot = false;
 
         this.pagesFunctionsTemplate = [
           { slidesFunctions: this.FunctionsTemplate = [
@@ -102,7 +102,7 @@ export class HomePage {
                                   ]}
         ];
       } else {
-        this.isScannedEGM = true;
+        this.isScannedSlot = true;
 
         this.pagesFunctionsTemplate = [
           { slidesFunctions: this.FunctionsTemplate = [
@@ -135,15 +135,15 @@ export class HomePage {
     await this.logger.info_log(this.TAG, "init()", "End Method");
 
     await setTimeout(
-      this.pref.get("EGM_ID")
+      this.pref.get("SLOT_NUMBER")
         .then(value => {
-          this.egmId = value;
-          if(this.egmId != null)
-            this.isScannedEGM = true;
+          this.slotNumber = value;
+          if(this.slotNumber != null)
+            this.isScannedSlot = true;
         })
         .catch(err => {
-          this.isScannedEGM = false;
-          this.logger.error_log(this.TAG, "init()", "Get EGM ID error = " +err);
+          this.isScannedSlot = false;
+          this.logger.error_log(this.TAG, "init()", "Get Slot number error = " +err);
         })
     , this.logger.EVENT_WRITE_FILE);
 
@@ -223,12 +223,15 @@ export class HomePage {
 
           if(barcodeData.text != ""){
 
-            this.resultsScan.siteId = barcodeData.text.substr(0, 5);
-            this.resultsScan.egmId = barcodeData.text.substr(5);
+            this.resultsScan.siteId = getValueFromString(barcodeData.text, "SITE_ID")
+            console.log(this.resultsScan.siteId);
+
+            this.resultsScan.slotNumber = getValueFromString(barcodeData.text, "SLOT_NUMBER")
+            console.log(this.resultsScan.slotNumber);
 
             if(this.siteID == this.resultsScan.siteId){
-              this.pref.set("EGM_ID", this.resultsScan.egmId);
-              this.isScannedEGM = true;
+              this.pref.set("SLOT_NUMBER", this.resultsScan.slotNumber);
+              this.isScannedSlot = true;
               this.alert_choice_transfer();
             }
             else
@@ -253,7 +256,7 @@ export class HomePage {
 
       let alert = this.alertCtrl.create({
         title: this.langService.get("CHOICE_TRANSFER_TYPE"),
-        message: this.langService.get("EGM_NUMBER_MESSAGE") + this.resultsScan.egmId + ".\n" + this.langService.get("CHOICE_TRANSFER_TYPE_MESSAGE"),
+        message: this.langService.get("SLOT_NUMBER_MESSAGE") + this.resultsScan.slotNumber + ".\n" + this.langService.get("CHOICE_TRANSFER_TYPE_MESSAGE"),
         buttons: [
           {
             text: this.langService.get('CANCEL'),
@@ -289,19 +292,16 @@ export class HomePage {
 
     if(isOK) {
 
-      await this.dft.CanBurnLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.resultsScan.egmId, "1", this.cardNumber, "0")
+      await this.dft.CanBurnLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.resultsScan.slotNumber, "1", this.cardNumber, "0")
         .then(result => {
           if(result){
-            this.nav.push(TransfertPage, {TRANSFER_TYPE: this.dft.transfer_types_list.get("loyaltyPoints"), SITE_ID: this.siteID, EGM_ID: this.resultsScan.egmId, CLIENT_ID: this.clientID,
+            this.nav.push(TransfertPage, {TRANSFER_TYPE: transfer_types_list.get("loyaltyPoints"), SITE_ID: this.siteID, SLOT_NUMBER: this.resultsScan.slotNumber, CLIENT_ID: this.clientID,
               CARD_NUMBER: this.cardNumber, PIN_CODE: ""});
           }
           else {
             this.utils.alert_warning_simple("CREDITS_ACCOUNT_0");
           }
-        })
-        .catch(err => {
-          this.logger.error_log(this.TAG, "choice_loyaltyPoints()", err);
-        }) 
+        });
 
       await this.utils.delay(this.logger.EVENT_WRITE_FILE);
     } else {
@@ -362,19 +362,16 @@ export class HomePage {
 
     if(isOK) {
 
-      await this.dft.canBurnCashlessDFT(hashedKey, this.clientID, this.siteID, this.resultsScan.egmId, "1", this.cardNumber, "0", pinCode)
+      await this.dft.canBurnCashlessDFT(hashedKey, this.clientID, this.siteID, this.resultsScan.slotNumber, "1", this.cardNumber, "0", pinCode)
         .then(result => {
           if(result){
-            this.nav.push(TransfertPage, {TRANSFER_TYPE: this.dft.transfer_types_list.get("cashless"), SITE_ID: this.siteID, EGM_ID: this.resultsScan.egmId, CLIENT_ID: this.clientID,
+            this.nav.push(TransfertPage, {TRANSFER_TYPE: transfer_types_list.get("cashless"), SITE_ID: this.siteID, SLOT_NUMBER: this.resultsScan.slotNumber, CLIENT_ID: this.clientID,
               CARD_NUMBER: this.cardNumber, PIN_CODE: pinCode});
           }
           else {
             this.utils.alert_warning_simple("CREDITS_ACCOUNT_0");
           }
-        })
-        .catch(err => {
-          this.logger.error_log(this.TAG, "choice_loyaltyPoints()", err);
-        }) 
+        });
 
       await this.utils.delay(this.logger.EVENT_WRITE_FILE);
     } else {

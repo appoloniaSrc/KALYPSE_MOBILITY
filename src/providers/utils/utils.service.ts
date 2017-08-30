@@ -14,6 +14,11 @@ import { ErrorCaseService } from './../error-case/error-case.service';
 // Standalone exports
 // add here functions that can be used in classes not using the angular dependency injection (ex: models)
 
+export const transfer_types_list = new Map<string, number>([
+	[ "loyaltyPoints", 0 ],
+	[ "cashless", 1 ]
+  ]);
+
 export const noop = () => { };
 
 export function json2array(source: any): Array<any> {
@@ -35,6 +40,31 @@ export function toDate(dateString: string): string {
 	var result = dateString.substr(6,2) + ' - ' + dateString.substr(4,2) + ' - ' + dateString.substr(0,4);
 
 	return result;
+}
+
+// return index string into string parent
+export function getValueFromString(str: string, paramName: string): string {
+	var indexParam: number;
+	var value = "";
+	
+	indexParam = str.search(new RegExp(paramName)) + paramName.length + 1;
+	console.warn(indexParam);
+
+	// param not found
+	if(indexParam == -1)
+		return value;
+
+	let indexEndCharacter = str.indexOf(";", indexParam);
+	console.warn(indexEndCharacter);
+
+	// End charater not found
+	if(indexParam == -1)
+		return value;
+
+	value = str.substring(indexParam, indexEndCharacter);
+
+
+	return value;
 }
 
 /*export function date_utc_to_local_string(utc_date: string, timezone: string, seconds: boolean = false, with_sep:boolean = true): string {
@@ -222,9 +252,11 @@ export class Utils {
 
 	alert_error_simple(label_message?: string) {
 
+		let message = this.langService.get(label_message)? this.langService.get(label_message) : this.langService.get("UNKNOWN_ERROR");
+
 		let alert = this.alertCtrl.create({
 			title: this.langService.get("ERR"),
-			subTitle: this.langService.get(label_message),
+			subTitle: message,
 			buttons: ['OK'],
 			enableBackdropDismiss: false,
 			cssClass: 'alert-error'
@@ -236,11 +268,16 @@ export class Utils {
 		}, this.EVENT_DISMISS_ALERT);
 	}
 
-	alert_error(error) {
+	alert_error(error: string, typeTransfer?: number) {
 		
-		let labelError = this.errorService.get(error)
-		console.log(labelError);
-		let message = this.langService.get(labelError);
+		let labelError: string;
+
+		if(typeTransfer != undefined)
+			labelError = this.errorService.getErrorTransfer(error, typeTransfer);
+		else
+			labelError = this.errorService.getError(error);
+
+		let message = this.langService.get(labelError)? this.langService.get(labelError) : this.langService.get("UNKNOWN_ERROR");
 
 		let alert = this.alertCtrl.create({
 			title: this.langService.get("ERR") + ' "' + error + '"',

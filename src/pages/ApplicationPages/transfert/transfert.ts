@@ -27,7 +27,7 @@ export class TransfertPage {
   cardNumber: string;
   pinCode: string;
 
-  egmID:string;
+  slotNumber:string;
   amountEuros:string;
   amountCredits:string;
   amountDefault:string;
@@ -65,17 +65,15 @@ export class TransfertPage {
 
     await this.logger.info_log(this.TAG, "init()", "End Method");
 
-    console.log(this.navParams)
-
     this.transferType = this.navParams.get("TRANSFER_TYPE");
 
     this.siteID = this.navParams.get("SITE_ID");
     this.clientID = this.navParams.get("CLIENT_ID");
     this.cardNumber = this.navParams.get("CARD_NUMBER");
-    this.egmID = this.navParams.get("EGM_ID");
+    this.slotNumber = this.navParams.get("SLOT_NUMBER");
     this.pinCode = this.navParams.get("PIN_CODE");
 
-    if(this.transferType != null && this.siteID != null && this.clientID != null && this.cardNumber != null && this.egmID != null && this.pinCode != null){
+    if(this.transferType != null && this.siteID != null && this.clientID != null && this.cardNumber != null && this.slotNumber != null && this.pinCode != null){
       // Get Authorization to access Webservice
 
       var isOK: boolean;
@@ -89,7 +87,7 @@ export class TransfertPage {
       if(isOK) {
 
         if(this.transferType == 0){
-          await this.dft.getLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.siteID + this.egmID, "0")
+          await this.dft.getLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.siteID + this.slotNumber, "0")
             .then(result => {
               this.amountEuros = result[0]["a:Balance"];
               this.amountCredits = result[0]["a:Credits"];
@@ -100,7 +98,7 @@ export class TransfertPage {
               this.logger.error_log(this.TAG, "init()", err);
             })
         } else if(this.transferType == 1) {
-          await this.dft.getCashlessData(hashedKey, this.clientID, this.siteID, this.siteID + this.egmID, "0", this.pinCode)
+          await this.dft.getCashlessData(hashedKey, this.clientID, this.siteID, this.siteID + this.slotNumber, "0", this.pinCode)
             .then(result => {
               this.amountEuros = result[0]["a:Balance"];
               this.amountCredits = result[0]["a:Credits"];
@@ -146,12 +144,12 @@ export class TransfertPage {
 
     if(isOK) {
       if(this.transferType == 0){
-        await this.dft.burnLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.egmID, ammountSelect, this.cardNumber, "0")
+        await this.dft.burnLoyaltyPoints(hashedKey, this.clientID, this.siteID, this.slotNumber, ammountSelect, this.cardNumber, "0")
           .then(result => {
             this.utils.alert_success_simple("SUCCESS_TRANSFER_MESSAGE");
           })
       } else if(this.transferType == 1) {
-        await this.dft.burnCashlessDFT(hashedKey, this.siteID, this.clientID, this.egmID, ammountSelect, this.cardNumber, "0", this.pinCode)
+        await this.dft.burnCashlessDFT(hashedKey, this.siteID, this.clientID, this.slotNumber, ammountSelect, this.cardNumber, "0", this.pinCode)
           .then(result => {
             this.utils.alert_success_simple("SUCCESS_TRANSFER_MESSAGE");
           })
