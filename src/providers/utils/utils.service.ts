@@ -250,7 +250,7 @@ export class Utils {
 		}, this.EVENT_DISMISS_ALERT);
 	}
 
-	alert_error_simple(label_message?: string) {
+	alert_error_simple(label_message: string) {
 
 		let message = this.langService.get(label_message)? this.langService.get(label_message) : this.langService.get("UNKNOWN_ERROR");
 
@@ -268,16 +268,20 @@ export class Utils {
 		}, this.EVENT_DISMISS_ALERT);
 	}
 
-	alert_error(error: string, typeTransfer?: number) {
+	alert_error(error: string, errorString: string, typeTransfer?: number) {
 		
 		let labelError: string;
+		let message: string;
 
 		if(typeTransfer != undefined)
 			labelError = this.errorService.getErrorTransfer(error, typeTransfer);
 		else
 			labelError = this.errorService.getError(error);
 
-		let message = this.langService.get(labelError)? this.langService.get(labelError) : this.langService.get("UNKNOWN_ERROR");
+		if(labelError != error)
+			 message = this.langService.get(labelError);
+		else
+			message = errorString;
 
 		let alert = this.alertCtrl.create({
 			title: this.langService.get("ERR") + ' "' + error + '"',

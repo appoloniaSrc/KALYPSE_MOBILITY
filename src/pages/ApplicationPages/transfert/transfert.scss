@@ -22,7 +22,7 @@ page-transfert {
         }
 
         #subTitle {
-            margin: 1.5em 0 0 0;
+            margin: 1.5em 1em 1em 1em;
             text-align: center;
         }
 
@@ -60,6 +60,14 @@ page-transfert {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+            }
+
+            .item-title {
+                box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+            } 
+            
+            .item-icon-end {
+                box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.7);
             }
 
             .item-icon-end {

@@ -25,6 +25,8 @@ export class WSPantheonService {
     USER_PANTHEON_LOGIN = "MOBILITY";
     USER_PANTHEON_PASS = "VnnijWE1nE5YoI4dzOEiNZQsaOHkcCc9";
 
+    private delayRequestBurn = 40000;
+
 	//=========================================================================
 	// CONSTRUCTOR
 	//=========================================================================
@@ -726,7 +728,7 @@ export class WSPantheonService {
 
        await this.logger.log_log(this.TAG, "_burnCashlessByDFT()", "Request Parameters : " + attributes.toString());
 
-       await this.soapClient.createPostRequest(this.config.PantheonService, "BurnCashlessByDFT", attributes.toXml(this.config.PantheonService), headers)
+       await this.soapClient.createPostRequest(this.config.PantheonService, "BurnCashlessByDFT", attributes.toXml(this.config.PantheonService), headers, this.delayRequestBurn)
        .then(result => {
 
            let dataArray = this._getDataResponse(result.text(), "BurnCashlessByDFT")
@@ -882,7 +884,7 @@ export class WSPantheonService {
 
         await this.logger.log_log(this.TAG, "_burnLoyaltyPointsByDFT()", "Request Parameters : " + attributes.toString());
 
-        await this.soapClient.createPostRequest(this.config.PantheonService, "BurnLoyaltyPointsByDFT", attributes.toXml(this.config.PantheonService), headers)
+        await this.soapClient.createPostRequest(this.config.PantheonService, "BurnLoyaltyPointsByDFT", attributes.toXml(this.config.PantheonService), headers, this.delayRequestBurn)
         .then(result => {
 
             let dataArray = this._getDataResponse(result.text(), "BurnLoyaltyPointsByDFT")
@@ -998,12 +1000,13 @@ export class WSPantheonService {
             let dataResponse = this._getErrorDataResponse(resultError.text());
             error = "Fault Code : " + dataResponse.faultcode + " -----> " + "Fault Message : " + dataResponse.faultstring;
             if(typeTransfer != undefined)
-                this.utils.alert_error(dataResponse.faultcode, typeTransfer);
+                this.utils.alert_error(dataResponse.faultcode, dataResponse.faultstring, typeTransfer);
             else
                 this.utils.alert_error_simple(dataResponse.faultstring);
         }
         catch(e) {
             error = resultError.toString();
+            this.utils.alert_error_simple(error);
         }
 
         return error;

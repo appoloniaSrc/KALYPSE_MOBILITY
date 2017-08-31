@@ -49,8 +49,12 @@ export class SoapClientService {
         WSservice: WebServiceConfig
         , action: string
         , attributes: string
-        , headers: Headers
+		, headers: Headers
+		, delayTimeOut?: number
     ) {
+
+		if(delayTimeOut == undefined)
+			delayTimeOut = 5000;
 
         var body = '<?xml version="1.0" encoding="utf-8"?>\n' +
             '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:' + WSservice.label + '="' + WSservice.targetNamespace + '">\n' +
@@ -63,7 +67,7 @@ export class SoapClientService {
 			'</soapenv:Envelope>';
 
 		let request = this.http.post(WSservice.UrlService, body, {	headers : headers })
-			.timeout(5000)
+			.timeout(delayTimeOut)
 			.toPromise();
 		await this.utils.delay(this.logger.EVENT_WRITE_FILE);
 		
@@ -73,8 +77,12 @@ export class SoapClientService {
 	public async createGetRequest(
         WSservice: WebServiceConfig
         , action: string
-        , headers: Headers
+		, headers: Headers
+		, delayTimeOut?: number
     ) {
+
+		if(delayTimeOut == undefined)
+			delayTimeOut = 10000;
 
 		let request = this.http.get(WSservice.UrlService + '/' + action, {	headers : headers })
 			.timeout(5000)

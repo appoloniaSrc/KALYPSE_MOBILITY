@@ -207,7 +207,7 @@ export class LoggerService {
     await this.file.getFile(dirEntry, fileName + "1.log", {create: false, exclusive: false})
       .then(fileEntry => {
         fileEntry.file(
-          function success(fileLOG) {
+          async function success(fileLOG) {
             console.log("File size: " + fileLOG.size);
 
             // Allows to Increment the Log Files
@@ -219,7 +219,7 @@ export class LoggerService {
                 loggerObject.file.removeFile(loggerObject.dirPath, fileName + loggerObject.iNbLogFiles + ".log");
               });
 
-              setTimeout(removeLastFile, loggerObject.EVENT_WRITE_FILE);
+              await setTimeout(removeLastFile, loggerObject.EVENT_WRITE_FILE);
               
               // Allows to Cross all Log Files in order to Increment them
               for(var i = loggerObject.iNbLogFiles - 1; i >= 1; i--){
