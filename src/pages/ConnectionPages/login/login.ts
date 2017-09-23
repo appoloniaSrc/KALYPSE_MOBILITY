@@ -113,8 +113,11 @@ export class LoginPage {
           // Save informations client into preferences
           this.pref.set("CLIENT_ID",    result.customerArray[0]["a:ClientId"]);
 
-          this.pref.set("LANGUAGE",     result.customerArray[0]["a:Language"]).then(() => {
-            this.languageService.set_language(result.customerArray[0]["a:Language"].toString());
+          this.pref.get("LANGUAGE").then(value => {
+            if(value == null)
+              this.languageService.set_language(result.customerArray[0]["a:Language"].toString());
+            else
+              this.languageService.set_language(value);
           });
 
           this.pref.set("CURRENCY",     result.customerArray[0]["a:Currency"]);

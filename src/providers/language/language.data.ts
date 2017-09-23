@@ -3,8 +3,8 @@ export type LanguageCode = "ENG" | "FR";
 export type LangConfig = { code: string, name: string };
 
 export const lang_list: Array<LangConfig> = [
-	{ "code": "FR", "name": "Français" },
 	{ "code": "ENG", "name": "English" }
+	, { "code": "FR", "name": "Français" }
 ]
 
 export const lang_dictionary_list = new Map<string, Map<string, string>>([

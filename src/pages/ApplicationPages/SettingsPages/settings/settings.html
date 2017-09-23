@@ -30,9 +30,9 @@
         <ion-col col-9 class="item-content">
           <div style="width: 100%;">
             <h4>Language</h4>
-            <select>
-              <option selected="true">English</option>
-              <option>Français</option>
+            <select [(ngModel)]="selectLanguageValue" (change)="onSelectLanguageChanged()">
+              <option value="ENG" [selected]="selectLanguageValue == 'ENG'">English</option>
+              <option value="FR" [selected]="selectLanguageValue == 'FR'">Français</option>
             </select>
           </div>
         </ion-col>
