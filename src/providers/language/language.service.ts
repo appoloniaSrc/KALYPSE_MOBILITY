@@ -51,6 +51,6 @@ export class LanguageService {
 		this.language_code_curr = lang;
 		this.dictionary_curr = lang_dictionary_list.get(lang);
 		console.log('set_language ' + this.language_code_curr);
-		console.log(this.dictionary_curr);
+		//console.log(this.dictionary_curr);
 	}
 }
