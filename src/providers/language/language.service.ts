@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { lang_dictionary_list, lang_list, LanguageCode, LangConfig } from './language.data';
+import { LoggerService } from './../logger/logger.service';
 
 @Injectable()
 export class LanguageService {
 
 
-	private language_code_curr: LanguageCode;
+	private language_code_curr: string;
 
 	//TODO: get it in conf ++ use local storage
 	private language_code_preferred: LanguageCode = 'ENG';
@@ -16,11 +17,23 @@ export class LanguageService {
 
 	constructor(
 		public storage: Storage
+
+		, private logger: LoggerService
 	) {
-		this.storage.get('LANGUAGE')
-			.then(val => { if (!val) throw new Error(); this.set_language(val) })
-			.catch(() => this.set_language(this.language_code_preferred));
+
 	}
+
+	ionViewDidLoad() {
+		setTimeout(
+			this.storage.get('LANGUAGE')
+				.then(val => { 
+					if (val == null) 
+						this.set_language(this.language_code_preferred);
+					else
+						this.set_language(val);
+				})
+		, this.logger.EVENT_WRITE_FILE);
+	  }
 
 	get(key: string, language?: LanguageCode): string {
 
@@ -42,6 +55,10 @@ export class LanguageService {
 		return lang_list.find(l => l.code == this.language_code_curr);
 	}
 
+	get_language_code_preferred(): string {
+		return this.language_code_preferred;
+	}
+
 	get_languages(): any[] {
 		return lang_list;
 	}
@@ -50,6 +67,8 @@ export class LanguageService {
 
 		this.language_code_curr = lang;
 		this.dictionary_curr = lang_dictionary_list.get(lang);
+		this.storage.set('LANGUAGE', lang);
+
 		console.log('set_language ' + this.language_code_curr);
 		//console.log(this.dictionary_curr);
 	}
