@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Storage } from '@ionic/storage';
+
 import { HelpPage } from './../help/help';
 import { AuthentificationWebService } from './../../../../providers/authentification/authentification.web.service';
+import { LanguageService } from './../../../../providers/language/language.service';
 import { LoggerService } from './../../../../providers/logger/logger.service';
 import { Utils } from './../../../../providers/utils/utils.service';
-
 
 @IonicPage()
 @Component({
@@ -20,16 +22,20 @@ export class SettingsPage {
 
   TAG = "SettingsPage";
 
+  selectLanguageValue: any;
+
   //=================================
 	// CONSTRUCTOR
 	//=================================
 
   constructor(
     public nav: NavController
-    , private auth: AuthentificationWebService
     , public navParams: NavParams
+    , public pref: Storage
 
     , private logger: LoggerService
+    , private auth: AuthentificationWebService
+    , private languageService: LanguageService
     , private utils: Utils
   ) {
     
@@ -40,7 +46,19 @@ export class SettingsPage {
 	//=================================
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SettingsPage');
+    setTimeout(
+      this.pref.get("LANGUAGE")
+        .then(value => { 
+          if(value != null)
+            this.selectLanguageValue = value
+          else
+            this.selectLanguageValue = this.languageService.get_language_code_preferred();          
+        })
+    , this.logger.EVENT_WRITE_FILE);
+  }
+
+  public onSelectLanguageChanged(){
+    this.languageService.set_language(this.selectLanguageValue);
   }
 
   // Deconnexion

@@ -55,7 +55,7 @@ export class HomePage {
     , isEmpty: boolean
   }>;
 
-  isScannedSlot : any;
+  isScannedSlot : boolean;
   slotNumber: string;
   
   resultsScan = {
@@ -96,17 +96,6 @@ export class HomePage {
                                   ]}
           ,{ slidesFunctions: this.FunctionsTemplate = [
                                     { function: '', icon: 'fa-cutlery', title: 'Bar', isEmpty: false }
-                                    ,{ function: '', icon: 'fa-info-circle', title: 'Info', isEmpty: false }
-                                    ,{ function: '', icon: '', title: '', isEmpty: true }
-                                    ,{ function: '', icon: '', title: '', isEmpty: true }
-                                  ]}
-        ];
-      } else {
-        this.isScannedSlot = true;
-
-        this.pagesFunctionsTemplate = [
-          { slidesFunctions: this.FunctionsTemplate = [
-                                    { function: '', icon: 'fa-line-chart', title: 'Jackpots', isEmpty: false }
                                     ,{ function: '', icon: 'fa-info-circle', title: 'Info', isEmpty: false }
                                     ,{ function: '', icon: '', title: '', isEmpty: true }
                                     ,{ function: '', icon: '', title: '', isEmpty: true }
@@ -321,7 +310,8 @@ export class HomePage {
           {
             name: 'pinCode',
             placeholder: this.langService.get("PIN_CODE"),
-            type: 'number'
+            type: 'password',
+            id: 'pinCodeInput'
           }
         ],
         buttons: [
