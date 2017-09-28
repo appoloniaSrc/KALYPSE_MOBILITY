@@ -46,7 +46,7 @@
         <ion-slide *ngFor="let pageFunctionsTemplate of pagesFunctionsTemplate">
           <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty || !pageFunctionsTemplate.slidesFunctions[1].isEmpty">
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[0].isEmpty">
-              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[0].title)">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[0].function)">
                 <div class="function-content">
                   <i class="fa {{ pageFunctionsTemplate.slidesFunctions[0].icon }} fa-5x" ion-icon></i>
                   <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[0].title }}</p>
@@ -54,7 +54,7 @@
               </button>
             </ion-col>
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[1].isEmpty">
-              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[1].title)">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[1].function)">
                 <div class="function-content">
                   <i class="fa {{ pageFunctionsTemplate.slidesFunctions[1].icon }} fa-5x" ion-icon></i>
                   <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[1].title }}</p>
@@ -65,7 +65,7 @@
 
           <ion-row class="function-row" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty || !pageFunctionsTemplate.slidesFunctions[3].isEmpty" >
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[2].isEmpty">
-              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[2].title)">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[2].function)">
                 <div class="function-content">
                   <i class="fa {{ pageFunctionsTemplate.slidesFunctions[2].icon }} fa-5x" ion-icon></i>
                   <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[2].title }}</p>
@@ -73,7 +73,7 @@
               </button>
             </ion-col>
             <ion-col col-6 class="function-col" *ngIf="!pageFunctionsTemplate.slidesFunctions[3].isEmpty">
-              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[3].title)">
+              <button class="function" (click)= "funcOpen($event, pageFunctionsTemplate.slidesFunctions[3].function)">
                 <div class="function-content">
                   <i class="fa {{ pageFunctionsTemplate.slidesFunctions[3].icon }} fa-5x" ion-icon></i>
                   <p class="function-title">{{ pageFunctionsTemplate.slidesFunctions[3].title }}</p>

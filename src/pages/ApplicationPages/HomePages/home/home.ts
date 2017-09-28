@@ -89,18 +89,29 @@ export class HomePage {
 
         this.pagesFunctionsTemplate = [
           { slidesFunctions: this.FunctionsTemplate = [
-                                    { function: 'scan()', icon: 'fa-qrcode', title: 'Scan QR Code', isEmpty: false }
-                                    ,{ function: 'goTransfer()', icon: 'fa-euro', title: 'Transfer', isEmpty: false }
-                                    ,{ function: '', icon: 'fa-line-chart', title: 'Jackpots', isEmpty: false }
-                                    ,{ function: '', icon: 'fa-bell', title: 'Call MCD', isEmpty: false }
+                                    { function: 'Scan', icon: 'fa-qrcode', title: 'Scan QR Code', isEmpty: false }
+                                    ,{ function: 'GoTransfer', icon: 'fa-euro', title: 'Transfer', isEmpty: false }
+                                    ,{ function: 'GoJackpots', icon: 'fa-line-chart', title: 'Jackpots', isEmpty: false }
+                                    ,{ function: 'CallMCD', icon: 'fa-bell', title: 'Call MCD', isEmpty: false }
                                   ]}
           ,{ slidesFunctions: this.FunctionsTemplate = [
-                                    { function: '', icon: 'fa-cutlery', title: 'Bar', isEmpty: false }
-                                    ,{ function: '', icon: 'fa-info-circle', title: 'Info', isEmpty: false }
+                                    { function: 'GoBar', icon: 'fa-cutlery', title: 'Bar', isEmpty: false }
+                                    ,{ function: 'GoInfo', icon: 'fa-info-circle', title: 'Info', isEmpty: false }
                                     ,{ function: '', icon: '', title: '', isEmpty: true }
                                     ,{ function: '', icon: '', title: '', isEmpty: true }
                                   ]}
         ];
+      } else { 
+        this.isScannedSlot = true; 
+
+        this.pagesFunctionsTemplate = [ 
+          { slidesFunctions: this.FunctionsTemplate = [ 
+                                    { function: 'GoJackpots', icon: 'fa-line-chart', title: 'Jackpots', isEmpty: false } 
+                                    ,{ function: 'CallMCD', icon: 'fa-bell', title: 'Call MCD', isEmpty: false }
+                                    ,{ function: 'GoInfo', icon: 'fa-info-circle', title: 'Info', isEmpty: false } 
+                                    ,{ function: '', icon: '', title: '', isEmpty: true } 
+                                  ]} 
+        ]; 
       }
     });
 
@@ -121,7 +132,7 @@ export class HomePage {
 
   private async init() {
     
-    await this.logger.info_log(this.TAG, "init()", "End Method");
+    await this.logger.info_log(this.TAG, "init()", "Start Method");
 
     await setTimeout(
       this.pref.get("SLOT_NUMBER")
@@ -378,23 +389,25 @@ export class HomePage {
 
   public funcOpen(event, item) {
     switch(item){
-      case 'Scan QR Code':
+      case 'Scan':
         this.scan();
         break;
-      case 'Transfer':
+      case 'GoTransfer':
         this.alert_choice_transfer();
         break;
-      case 'Jackpots':
+      case 'GoJackpots':
         this.goPage(JackpotsTabsPage);
         break;
-      case 'Call MCD':
+      case 'CallMCD':
         alert('Open ' + item);
         break;
-      case 'Bar':
+      case 'GoBar':
         this.goPage(BarPage);
         break;
-      case 'Info':
+      case 'GoInfo':
         this.goPage(InformationsPage);
+        break;
+      default:
         break;
     }
   }

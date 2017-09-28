@@ -46,7 +46,14 @@ export class SettingsPage {
 	//=================================
 
   ionViewDidLoad() {
-    setTimeout(
+    this.init();
+  }
+
+  private async init() {
+
+    await this.logger.info_log(this.TAG, "init()", "Start Method");
+
+    await setTimeout(
       this.pref.get("LANGUAGE")
         .then(value => { 
           if(value != null)
@@ -55,6 +62,8 @@ export class SettingsPage {
             this.selectLanguageValue = this.languageService.get_language_code_preferred();          
         })
     , this.logger.EVENT_WRITE_FILE);
+
+    await this.logger.info_log(this.TAG, "init()", "End Method");
   }
 
   public onSelectLanguageChanged(){

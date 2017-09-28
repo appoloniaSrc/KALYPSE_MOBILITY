@@ -63,7 +63,14 @@ export class LoginPage {
   //=================================
 
   ionViewDidLoad() {
-    setTimeout(
+    this.init();
+  }
+
+  private async init() {
+    
+    await this.logger.info_log(this.TAG, "init()", "Start Method");
+
+    await setTimeout(
       this.pref.get('IDENTIFIANT')
         .then((value) => {
           this.authForm.controls['email'].setValue(value);
@@ -74,6 +81,15 @@ export class LoginPage {
           this.logger.error_log(this.TAG, "ionViewDidLoad()", '"IDENTIFIANT" value in pref =' + err);
         })
     , this.logger.EVENT_WRITE_FILE);
+
+    await setTimeout(
+      this.pref.get("LANGUAGE").then(value => {
+        if(value != null)
+          this.languageService.set_language(value);
+      })
+    , this.logger.EVENT_WRITE_FILE);  
+
+    await this.logger.info_log(this.TAG, "logout()", "End Method");
   }
  
   async login() {
@@ -116,17 +132,11 @@ export class LoginPage {
           this.pref.get("LANGUAGE").then(value => {
             if(value == null)
               this.languageService.set_language(result.customerArray[0]["a:Language"].toString());
-            else
-              this.languageService.set_language(value);
           });
 
           this.pref.set("CURRENCY",     result.customerArray[0]["a:Currency"]);
 
           this.pref.set("CARD_NUMBER",  result.playerCardArray[0]["a:CardNumber"]);
-
-          this.pref.forEach((value, key, index) => {
-            console.log("Key : '" + key + "' | Value : '" + value + "' | index : " + index);
-          })
 
           this.nav.setRoot('HomePage');
         })

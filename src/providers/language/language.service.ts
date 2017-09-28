@@ -7,6 +7,7 @@ import { LoggerService } from './../logger/logger.service';
 @Injectable()
 export class LanguageService {
 
+	private TAG = "LanguageService";
 
 	private language_code_curr: string;
 
@@ -24,7 +25,14 @@ export class LanguageService {
 	}
 
 	ionViewDidLoad() {
-		setTimeout(
+		this.init();
+	}
+
+	private async init() {
+		
+		await this.logger.info_log(this.TAG, "init()", "Start Method");
+	
+		await setTimeout(
 			this.storage.get('LANGUAGE')
 				.then(val => { 
 					if (val == null) 
@@ -33,7 +41,9 @@ export class LanguageService {
 						this.set_language(val);
 				})
 		, this.logger.EVENT_WRITE_FILE);
-	  }
+
+		await this.logger.info_log(this.TAG, "init()", "End Method");
+	}
 
 	get(key: string, language?: LanguageCode): string {
 
@@ -63,13 +73,12 @@ export class LanguageService {
 		return lang_list;
 	}
 
-	set_language(lang: LanguageCode): void {
+	async set_language(lang: LanguageCode) {
 
 		this.language_code_curr = lang;
 		this.dictionary_curr = lang_dictionary_list.get(lang);
-		this.storage.set('LANGUAGE', lang);
+		await this.storage.set('LANGUAGE', lang);
 
-		console.log('set_language ' + this.language_code_curr);
-		//console.log(this.dictionary_curr);
+		await this.logger.info_log(this.TAG, "set_language()", "Set language : " + this.language_code_curr);
 	}
 }
